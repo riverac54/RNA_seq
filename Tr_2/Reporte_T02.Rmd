@@ -17,29 +17,36 @@ output:
 ---
 
 
-# Usando BWA para indexar de e.coli
+# Para _E.coli_
+
+## Usando bwa para _indexar_ el genoma de _E.coli_
+
+Se comienza por crear un entorno de trabajo con los archivos necesarios para la practica
+
+```bash
+# Se crea un screen de la practica para poder recurrir a los comandos en distintos momentos
+screen -r -D Alignment
+
+# Pasar archivos que se necesitan a carpeta de trabajo
+cp -r /mnt/Timina/bioinfoII/data/alignment/ /mnt/Timina/bioinfoII/arodriguez/alignment
+
+# Cargar modulos
+module load bwa/0.7.15
+module load fastqc/0.11.3
+module load samtools/1.9
+
+```
+Para este alineamiento, los archivos `Escherichia_coli_K12_MG1655.fasta` y `SRX189773_FNR_ChIP.fastq` se refieren al genoma de referencia y a las lecturas del experimento, respectivamente.
+
+
+## Usando bwa para _indexar_ el genoma de _E.coli_
+
+Los indices permiten a las herramientas de alineacion (STAR, BWA, minimap2) recuperar rápida y eficientemente la información de la secuencia de referencia, ahorrando tiempo y memoria.
 
 ```bash
 
-#Cargar modulo
-module load bwa/0.7.8
-
-#Donde esta el genoma de referencia y de alineamiento
-# Referencia -->"Escherichia_coli_K12_MG1655.fasta"
-# Alineamiento --> "SRX189773_FNR_ChIP.fastq"
-/mnt/Timina/bioinfoII/data/alignment
-
-# Indexar el genoma de refrerencia
-bwa index Escherichia_coli_K12_MG1655.fasta 
-
-#Alinear el genoma
-bwa mem Escherichia_coli_K12_MG1655.fasta SRX189773_FNR_ChIP.fastq > alineado.sam
-
 ```
 
-Prueba 1
-
-# Alinear las lectura del raton ChIP-seq experiment
 
 
 
