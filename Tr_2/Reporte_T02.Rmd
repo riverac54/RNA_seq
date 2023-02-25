@@ -63,11 +63,17 @@ bwa samse E_index Escherichia.sai SRX189773_FNR_ChIP.fastq > Escherichia.sam
 ### Otras alternativas 
 
 ```bash
+# OPcion 1
 bwa aln E_index SRX189773_FNR_ChIP.fastq > Escherichia.bwa
 bwa samse E_index Escherichia.bwa SRX189773_FNR_ChIP.fastq > Escherichia.sam
+
+# Opcion 2
+bwa mem E_index SRX189773_FNR_ChIP.fastq > Escherichia.sam
 ```
 
-## Analisis de calidad post-alineamiento
+- `mem` se refiere al algoritmo mem, que es uno de los tres algoritmos proporcionados por BWA. Realiza la alineación local y produce alineaciones para diferentes partes de la secuencia de consulta.
+
+## Analisis de calidad del alineamiento
 
 ```bash
 # Opcion 1
@@ -88,4 +94,36 @@ samtools flagstat Escherichia.sam
 # Para *Mus musculus*
 
 ## Control de calidad de las secuencias crudas (*raw sequences*)
+
+__FastQC__, es una herramienta utilizada para proporcionar una visión general de las métricas básicas de control de calidad para los datos de secuenciación de próxima generación sin procesar. En este caso, los datos crudos de las lecturas se encuentran en el archivo `mus_musculus_CEBPA_liver_ERR005132.fastq.gz`
+
+```bash
+fastqc mus_musculus_CEBPA_liver_ERR005132.fastq.gz
+```
+
+### Per Base Sequence Quality
+
+### Per Sequence Quality Scores
+
+### Per Base Sequence Content
+
+### Per Base GC Content
+
+### Per Sequence GC Content
+
+### Per Base N Content
+
+### Sequence Length Distribution
+
+### Duplicate Sequences
+
+### Overrepresented Kmers
+
+## Index para el genoma de *Mus musculus*
+
+## Alineacion del genoma de raton de un experimento ChiP-seq utilizando bwa
+
+## Analisis decalidad del alineamiento
+
+
 
