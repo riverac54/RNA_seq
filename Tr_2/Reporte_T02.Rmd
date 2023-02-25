@@ -19,7 +19,7 @@ output:
 
 # Usando BWA para indexar de e.coli
 
-```{r}
+```bash
 
 #Cargar modulo
 module load bwa/0.7.8
@@ -36,10 +36,6 @@ bwa index Escherichia_coli_K12_MG1655.fasta
 bwa mem Escherichia_coli_K12_MG1655.fasta SRX189773_FNR_ChIP.fastq > alineado.sam
 
 ```
-
-hola
-
-hola2
 
 # Alinear las lectura del raton ChIP-seq experiment
 
