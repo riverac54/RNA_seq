@@ -85,5 +85,7 @@ samtools flagstat Escherichia.sam
 
 ### Indeles por ciclo (*Indels by cycle*)
 
+# Para *Mus musculus*
 
+## Control de calidad de las secuencias crudas (*raw sequences*)
 
