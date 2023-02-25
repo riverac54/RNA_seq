@@ -44,9 +44,46 @@ Para este alineamiento, los archivos `Escherichia_coli_K12_MG1655.fasta` y `SRX1
 Los indices permiten a las herramientas de alineacion (STAR, BWA, minimap2) recuperar rápida y eficientemente la información de la secuencia de referencia, ahorrando tiempo y memoria.
 
 ```bash
-
+bwa index -p E_index -a bwtsw Escherichia_coli_K12_MG1655.fastax
 ```
 
+- `-p` indica el prefijo de los archivos generados
+- `-a` elige alguno de los algoritmos de indexacion de bwa (en este caso bwtsw).
+
+## Alinea las lecturas de un experimento de FNR Chip-seq 
+
+```bash
+bwa aln E_index SRX189773_FNR_ChIP.fastq > Escherichia.sai
+bwa samse E_index Escherichia.sai SRX189773_FNR_ChIP.fastq > Escherichia.sam
+```
+
+- `bwa aln` alinea el archivo de entrada de datos de secuencia con el genoma de referencia y produce un archivo `*.sai` de todos los posibles candidatos.
+- `samse` genera los alineamientos en un archivo `.sam` dado un archivo `.sai` y el prefijo dado en `aln` (`E_index` en este caso). Se utiliza en lecturas **********single-end**********.
+
+### Otras alternativas 
+
+```bash
+bwa aln E_index SRX189773_FNR_ChIP.fastq > Escherichia.bwa
+bwa samse E_index Escherichia.bwa SRX189773_FNR_ChIP.fastq > Escherichia.sam
+```
+
+## Analisis de calidad post-alineamiento
+
+```bash
+# Opcion 1
+samtools view -H Escherichia.sam | less -S
+# Opcion 2
+samtools stats Escherichia.sam | grep 'SN'
+# Opcion 3
+samtools flagstat Escherichia.sam
+```
+### Radio de Mapeo (*Mapping rate*)
+
+### DRadio de duplicacion (*Duplication rate*)
+
+### Contenido de GC vs Profundidad de Lectura
+
+### Indeles por ciclo (*Indels by cycle*)
 
 
 
