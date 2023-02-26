@@ -121,9 +121,73 @@ fastqc mus_musculus_CEBPA_liver_ERR005132.fastq.gz
 
 ## Index para el genoma de *Mus musculus*
 
+Los archivos de *indexación* y el genoma de referencia se encuentran en el siguiente directorio del cluster:
+
+```bash
+/mnt/Archives/genome/mouse/mm10/UCSC/bwa-0.7.15-index/index
+```
+
+Donde `mm10.fa` se refiere al genoma de referencia (Genome Reference Consortium Mouse Build 38 (GCA_000001635.2)); mientras que `mm10.fa.amb`, `mm10.fa.ann`, `mm10.fa.bwt`, `mm10.fa.pac`, y `mm10.fa.sa` son los archivos del *index*.
+
 ## Alineacion del genoma de raton de un experimento ChiP-seq utilizando bwa
+
+Antes de realizar el alineamiento, verificamos el tamaño de los archivos 
+
+```bash
+cd /mnt/Archives/genome/mouse/mm10/UCSC/bwa-0.7.15-index/index
+ls -lh
+```
+
+Teniendo en cuenta el tamaño de los archivos tanto del genoma de referencia *Mus musculus* como de los datos de ChIP-seq de CEBPA, la memoria disponible para las sesiones de `qlogin` podría no ser suficiente, y probablemente haría que el proceso se suspendiera indefinidamente. Por lo tanto se generó un script sge llamadao `MusculusAlignment.sge`, el cual contiene lo siguiente:
+
+```bash
+#!/bin/bash
+#
+# Use Current working directory
+#$ -cwd
+#
+# Join stdout and stderr
+#$ -j n
+#
+# Run job through bash shell
+#$ -S /bin/bash
+#
+# You can edit the script since this line
+#
+# Your job name
+#$ -N MusculusAlignment
+#
+# Send an email after the job has finished
+#$ -m e
+#$ -M axelrdz5205@gmail.com
+#
+#
+# If modules are needed, source modules environment (Do not delete the next line):
+. /etc/profile.d/modules.sh
+#
+# Add any modules you might require:
+module load bwa/0.7.15
+#
+# Write your commands in the next line
+
+# Generar alineamiento
+# trabajando en /mnt/Timina/bioinfoII/arodriguez/alignment/Musmusculus/
+bwa mem -M -t 8 /mnt/Archives/genome/mouse/mm10/UCSC/bwa-0.7.15-index/index/mm10.fa ./mus_musculus_CEBPA_liver_ERR005132.fastq.gz > Mus_alg.sam
+
+# -M deja la mejor (más larga) alineación para una lectura como alineación primaria y alineaciones adicionales para la lectura como secundaria
+# -t indica el número de núcleos de procesador utilizados para hacer la alineación
+```
 
 ## Analisis decalidad del alineamiento
 
+```bash
+# Opcion 1
+samtools view -H Mus_alg.sam | less -S
+# Opcion 2
+samtools stats Mus_alg.sam | grep 'SN'
+# Opcion 3
+samtools flagstat Mus_alg.sam
+```
 
+Nota: los archivos de alineamiento se enceuntran en la carpeta `/mnt/Timina/bioinfoII/arodriguez/alignment/Musmusculus`
 
