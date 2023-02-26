@@ -1715,14 +1715,75 @@ Kmers</h3>
 <div id="index-para-el-genoma-de-mus-musculus" class="section level2" number="2.2">
 <h2><span class="header-section-number">2.2</span> Index para el genoma
 de <em>Mus musculus</em></h2>
+<p>Los archivos de <em>indexación</em> y el genoma de referencia se
+encuentran en el siguiente directorio del cluster:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/mnt/Archives/genome/mouse/mm10/UCSC/bwa-0.7.15-index/index</span></span></code></pre></div>
+<p>Donde <code>mm10.fa</code> se refiere al genoma de referencia (Genome
+Reference Consortium Mouse Build 38 (GCA_000001635.2)); mientras que
+<code>mm10.fa.amb</code>, <code>mm10.fa.ann</code>,
+<code>mm10.fa.bwt</code>, <code>mm10.fa.pac</code>, y
+<code>mm10.fa.sa</code> son los archivos del <em>index</em>.</p>
 </div>
 <div id="alineacion-del-genoma-de-raton-de-un-experimento-chip-seq-utilizando-bwa" class="section level2" number="2.3">
 <h2><span class="header-section-number">2.3</span> Alineacion del genoma
 de raton de un experimento ChiP-seq utilizando bwa</h2>
+<p>Antes de realizar el alineamiento, verificamos el tamaño de los
+archivos</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /mnt/Archives/genome/mouse/mm10/UCSC/bwa-0.7.15-index/index</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span></span></code></pre></div>
+<p>Teniendo en cuenta el tamaño de los archivos tanto del genoma de
+referencia <em>Mus musculus</em> como de los datos de ChIP-seq de CEBPA,
+la memoria disponible para las sesiones de <code>qlogin</code> podría no
+ser suficiente, y probablemente haría que el proceso se suspendiera
+indefinidamente. Por lo tanto se generó un script sge llamadao
+<code>MusculusAlignment.sge</code>, el cual contiene lo siguiente:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Use Current working directory</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#$ -cwd</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Join stdout and stderr</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#$ -j n</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Run job through bash shell</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#$ -S /bin/bash</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co"># You can edit the script since this line</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Your job name</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#$ -N MusculusAlignment</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Send an email after the job has finished</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">#$ -m e</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">#$ -M axelrdz5205@gmail.com</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co"># If modules are needed, source modules environment (Do not delete the next line):</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="bu">.</span> /etc/profile.d/modules.sh</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Add any modules you might require:</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load bwa/0.7.15</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Write your commands in the next line</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Generar alineamiento</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="co"># trabajando en /mnt/Timina/bioinfoII/arodriguez/alignment/Musmusculus/</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="ex">bwa</span> mem <span class="at">-M</span> <span class="at">-t</span> 8 /mnt/Archives/genome/mouse/mm10/UCSC/bwa-0.7.15-index/index/mm10.fa ./mus_musculus_CEBPA_liver_ERR005132.fastq.gz <span class="op">&gt;</span> Mus_alg.sam</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a><span class="co"># -M deja la mejor (más larga) alineación para una lectura como alineación primaria y alineaciones adicionales para la lectura como secundaria</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="co"># -t indica el número de núcleos de procesador utilizados para hacer la alineación</span></span></code></pre></div>
 </div>
 <div id="analisis-decalidad-del-alineamiento" class="section level2" number="2.4">
 <h2><span class="header-section-number">2.4</span> Analisis decalidad
 del alineamiento</h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Opcion 1</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-H</span> Mus_alg.sam <span class="kw">|</span> <span class="fu">less</span> <span class="at">-S</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Opcion 2</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> stats Mus_alg.sam <span class="kw">|</span> <span class="fu">grep</span> <span class="st">&#39;SN&#39;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Opcion 3</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> flagstat Mus_alg.sam</span></code></pre></div>
+<p>Nota: los archivos de alineamiento se enceuntran en la carpeta
+<code>/mnt/Timina/bioinfoII/arodriguez/alignment/Musmusculus</code></p>
 </div>
 </div>
 
