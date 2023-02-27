@@ -37,7 +37,20 @@ bwa mem Escherichia_coli_K12_MG1655.fasta SRX189773_FNR_ChIP.fastq > alineado.sa
 
 ```
 
-Prueba 1
+## Análisis alineamiento 
+
+1. raw total sequences --> Numero total de lecturas en el archivo. 
+2. Sequences --> Reads totales
+3. reads mapped --> Numero de lecturas mapeadas.
+4. Reads unmapped --> Numero de lecturas no mapeadas
+5. Reads MQ0 --> Lecturas con calidad de MQ0 (mapea en 10 o mas lugares)
+6. Total lenght --> Numero de bases que no son secundarias (mapean en mas de un lugar) o suplementarias 
+7. Bases mapped --> Numero de bases que pertenecen a las lecturas mapeadas.
+8. Mismatches --> Mistmatches
+9. Error rate --> Mismatches / Bases mapeadas (cigar)
+
+El ratio de error es de .00199, es decir, en 100 mil secuencias, 199 no mapearon.
+
 
 # Alinear las lectura del raton ChIP-seq experiment
 
