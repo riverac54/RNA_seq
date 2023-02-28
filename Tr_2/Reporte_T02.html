@@ -1622,11 +1622,11 @@ lecturas <em>single-end</em>.</li>
 <div id="otras-alternativas" class="section level3" number="1.3.1">
 <h3><span class="header-section-number">1.3.1</span> Otras
 alternativas</h3>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Opción 1</span></span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Opcion 1</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bwa</span> aln E_index SRX189773_FNR_ChIP.fastq <span class="op">&gt;</span> Escherichia.bwa</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">bwa</span> samse E_index Escherichia.bwa SRX189773_FNR_ChIP.fastq <span class="op">&gt;</span> Escherichia.sam</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Opcioó 2</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Opcion 2</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">bwa</span> mem E_index SRX189773_FNR_ChIP.fastq <span class="op">&gt;</span> Escherichia.sam</span></code></pre></div>
 <ul>
 <li><code>mem</code> se refiere al algoritmo mem, que es uno de los tres
@@ -1644,6 +1644,29 @@ del alineamiento</h2>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> stats Escherichia.sam <span class="kw">|</span> <span class="fu">grep</span> <span class="st">&#39;SN&#39;</span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Opción 3</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> flagstat Escherichia.sam</span></code></pre></div>
+<ol style="list-style-type: decimal">
+<li>raw total sequences –&gt; Numero total de lecturas en el
+archivo.</li>
+<li>Sequences –&gt; Reads totales</li>
+<li>reads mapped –&gt; Numero de lecturas mapeadas.</li>
+<li>Reads unmapped –&gt; Numero de lecturas no mapeadas</li>
+<li>Reads MQ0 –&gt; Lecturas con calidad de MQ0 (mapea en 10 o mas
+lugares)</li>
+<li>Total lenght –&gt; Numero de bases que no son secundarias (mapean en
+mas de un lugar) o suplementarias</li>
+<li>Bases mapped –&gt; Numero de bases que pertenecen a las lecturas
+mapeadas.</li>
+<li>Mismatches –&gt; Mistmatches</li>
+<li>Error rate –&gt; Mismatches / Bases mapeadas (cigar)</li>
+</ol>
+<ul>
+<li><p>El numero total de lecturas es de: <span class="math inline">\(3,603,544\)</span>, de las cuales <span class="math inline">\(2,351,791\)</span> lecturas mapean con el genoma
+de referencia.</p></li>
+<li><p>De las lecturas mapeadas, <span class="math inline">\(85,370\)</span> mapean en 10 lugares o mas, es
+decir, el <span class="math inline">\(2.36905\%\)</span>.</p></li>
+<li><p>El ratio de error fue de <span class="math inline">\(.00199\)</span>, esto indica que en <span class="math inline">\(100,000\)</span> secuencias, <span class="math inline">\(199\)</span> no mapearon.</p></li>
+<li><p>La calidad en promedio fue de <span class="math inline">\(34.6\)</span>.</p></li>
+</ul>
 </div>
 </div>
 <div id="para-mus-musculus" class="section level1" number="2">
@@ -1788,7 +1811,8 @@ hubo un error durante la secuenciación.</p>
 </div>
 </div>
 <div id="referencias" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Referencias</h1>
+<h1><span class="header-section-number">3</span>
+<strong>Referencias</strong></h1>
 <ul>
 <li>BabrahamBioinf (Director). (2010, septiembre 22). <em>Using FastQC
 to check the quality of high throughput sequence</em>. <a href="https://www.youtube.com/watch?v=bz93ReOv87Y">https://www.youtube.com/watch?v=bz93ReOv87Y</a></li>

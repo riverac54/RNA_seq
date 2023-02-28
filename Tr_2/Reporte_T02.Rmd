@@ -63,11 +63,11 @@ bwa samse E_index Escherichia.sai SRX189773_FNR_ChIP.fastq > Escherichia.sam
 ### Otras alternativas 
 
 ```bash
-# Opción 1
+# Opcion 1
 bwa aln E_index SRX189773_FNR_ChIP.fastq > Escherichia.bwa
 bwa samse E_index Escherichia.bwa SRX189773_FNR_ChIP.fastq > Escherichia.sam
 
-# Opcioó 2
+# Opcion 2
 bwa mem E_index SRX189773_FNR_ChIP.fastq > Escherichia.sam
 ```
 
@@ -203,7 +203,7 @@ Primeramente, dado los datos arrojados podemos observar que seguramente existe u
 
 Ahora bien, las lecturas mapeadas fueron 6,530,881 y las no mapeadas cuentan con un número mayor, siendo este de 10, 640, 249. Finalmente, la calidad de mapeo fue de MQ = 0, lo cual una vez más nos hace pensar que hubo un error durante la secuenciación. 
 
-# Referencias 
+# **Referencias** 
 
 - BabrahamBioinf (Director). (2010, septiembre 22). *Using FastQC to check the quality of high throughput sequence*. [https://www.youtube.com/watch?v=bz93ReOv87Y](https://www.youtube.com/watch?v=bz93ReOv87Y)
 - *Bwa Aln And Samse Options*. (s/f). Recuperado el 28 de febrero de 2023, de [https://www.biostars.org/p/59572/](https://www.biostars.org/p/59572/)
