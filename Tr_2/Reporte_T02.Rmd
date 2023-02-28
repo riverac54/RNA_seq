@@ -102,7 +102,7 @@ samtools flagstat Escherichia.sam
 
 - La calidad en promedio fue de $34.6$, es decir, el error de secuenciacion esta entre $0.1\%$ (Phred 30) y $0.01\%$ (Phred 40).
 
-Dado que son datos de un experimento de ChiP-seq, se espera que el porcentaje de lecturas que mapean correctamente a la referencia se bajo, de hehco, en este caso es de ~65%, lo cual se considera aceptable en este contexto. 
+Dado que son datos de un experimento de ChiP-seq, se espera que el porcentaje de lecturas que mapean correctamente a la referencia sea bajo, de hehco, en este caso es de ~65%, lo cual se considera aceptable en este contexto. 
 
 Considerando que los estadísticos mencionados anteriormente son aceptables, se puede concluir que el alineamiento es confiable.
 
