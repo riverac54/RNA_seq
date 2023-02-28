@@ -21,16 +21,16 @@ output:
 
 ## Usando bwa para _indexar_ el genoma de _E.coli_
 
-Se comienza por crear un entorno de trabajo con los archivos necesarios para la practica
+Se comienza por crear un entorno de trabajo con los archivos necesarios para la práctica
 
 ```bash
-# Se crea un screen de la practica para poder recurrir a los comandos en distintos momentos
+# Se crea un screen de la práctica para poder recurrir a los comandos en distintos momentos
 screen -r -D Alignment
 
 # Pasar archivos que se necesitan a carpeta de trabajo
 cp -r /mnt/Timina/bioinfoII/data/alignment/ /mnt/Timina/bioinfoII/arodriguez/alignment
 
-# Cargar modulos
+# Cargar módulos
 module load bwa/0.7.15
 module load fastqc/0.11.3
 module load samtools/1.9
@@ -41,14 +41,14 @@ Para este alineamiento, los archivos `Escherichia_coli_K12_MG1655.fasta` y `SRX1
 
 ## Usando bwa para _indexar_ el genoma de _E.coli_
 
-Los indices permiten a las herramientas de alineacion (STAR, BWA, minimap2) recuperar rápida y eficientemente la información de la secuencia de referencia, ahorrando tiempo y memoria.
+Los índices permiten a las herramientas de alineación (STAR, BWA, minimap2) recuperar rápida y eficientemente la información de la secuencia de referencia, ahorrando tiempo y memoria.
 
 ```bash
 bwa index -p E_index -a bwtsw Escherichia_coli_K12_MG1655.fastax
 ```
 
 - `-p` indica el prefijo de los archivos generados
-- `-a` elige alguno de los algoritmos de indexacion de bwa (en este caso bwtsw).
+- `-a` elige alguno de los algoritmos de indexación de bwa (en este caso bwtsw).
 
 ## Alinea las lecturas de un experimento de FNR Chip-seq 
 
@@ -63,29 +63,29 @@ bwa samse E_index Escherichia.sai SRX189773_FNR_ChIP.fastq > Escherichia.sam
 ### Otras alternativas 
 
 ```bash
-# OPcion 1
+# Opción 1
 bwa aln E_index SRX189773_FNR_ChIP.fastq > Escherichia.bwa
 bwa samse E_index Escherichia.bwa SRX189773_FNR_ChIP.fastq > Escherichia.sam
 
-# Opcion 2
+# Opcioó 2
 bwa mem E_index SRX189773_FNR_ChIP.fastq > Escherichia.sam
 ```
 
 - `mem` se refiere al algoritmo mem, que es uno de los tres algoritmos proporcionados por BWA. Realiza la alineación local y produce alineaciones para diferentes partes de la secuencia de consulta.
 
-## Analisis de calidad del alineamiento
+## Análisis de calidad del alineamiento
 
 ```bash
-# Opcion 1
+# Opción 1
 samtools view -H Escherichia.sam | less -S
-# Opcion 2
+# Opción 2
 samtools stats Escherichia.sam | grep 'SN'
-# Opcion 3
+# Opción 3
 samtools flagstat Escherichia.sam
 ```
 ### Radio de Mapeo (*Mapping rate*)
 
-### DRadio de duplicacion (*Duplication rate*)
+### DRadio de duplicación (*Duplication rate*)
 
 ### Contenido de GC vs Profundidad de Lectura
 
@@ -138,7 +138,7 @@ cd /mnt/Archives/genome/mouse/mm10/UCSC/bwa-0.7.15-index/index
 ls -lh
 ```
 
-Teniendo en cuenta el tamaño de los archivos tanto del genoma de referencia *Mus musculus* como de los datos de ChIP-seq de CEBPA, la memoria disponible para las sesiones de `qlogin` podría no ser suficiente, y probablemente haría que el proceso se suspendiera indefinidamente. Por lo tanto se generó un script sge llamadao `MusculusAlignment.sge`, el cual contiene lo siguiente:
+Teniendo en cuenta el tamaño de los archivos tanto del genoma de referencia *Mus musculus* como de los datos de ChIP-seq de CEBPA, la memoria disponible para las sesiones de `qlogin` podría no ser suficiente, y probablemente haría que el proceso se suspendiera indefinidamente. Por lo tanto se generó un script sge llamado `MusculusAlignment.sge`, el cual contiene lo siguiente:
 
 ```bash
 #!/bin/bash
@@ -178,16 +178,21 @@ bwa mem -M -t 8 /mnt/Archives/genome/mouse/mm10/UCSC/bwa-0.7.15-index/index/mm10
 # -t indica el número de núcleos de procesador utilizados para hacer la alineación
 ```
 
-## Analisis decalidad del alineamiento
+## Analisis de calidad del alineamiento
 
 ```bash
-# Opcion 1
+# Opción 1
 samtools view -H Mus_alg.sam | less -S
-# Opcion 2
+# Opción 2
 samtools stats Mus_alg.sam | grep 'SN'
-# Opcion 3
+# Opción 3
 samtools flagstat Mus_alg.sam
 ```
 
-Nota: los archivos de alineamiento se enceuntran en la carpeta `/mnt/Timina/bioinfoII/arodriguez/alignment/Musmusculus`
+Primeramente, dado los datos arrojados podemos observar que seguramente existe un error de secuenciación ya que tenemos un promedio de calidad de 18.7%, además, una taza de error mayor a un 1% (2.094056e-02 por cada 1 000 bases mapeadas), de tal forma que la calidad de secuenciación es baja.
+
+Ahora bien, las lecturas mapeadas fueron 6,530,881 y las no mapeadas cuentan con un número mayor, siendo este de 10, 640, 249. Finalmente, la calidad de mapeo fue de MQ = 0, lo cual una vez más nos hace pensar que hubo un error durante la secuenciación. 
+
+
+Nota: los archivos de alineamiento se encuentran en la carpeta `/mnt/Timina/bioinfoII/arodriguez/alignment/Musmusculus`
 
