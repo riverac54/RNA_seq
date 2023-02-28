@@ -94,13 +94,17 @@ samtools flagstat Escherichia.sam
 8. Mismatches --> Mistmatches
 9. Error rate --> Mismatches / Bases mapeadas (cigar)
 
-- El numero total de lecturas es de: $3,603,544$, de las cuales $2,351,791$ lecturas mapean con el genoma de referencia.
+- El numero total de lecturas es de: $3,603,544$, de las cuales $2,351,791$ (64.99%) lecturas mapean con el genoma de referencia.
 
 - De las lecturas mapeadas, $85,370$ mapean en 10 lugares o mas, es decir, el $2.36905\%$.
 
 - El ratio de error fue de $.00199$, esto indica que en $100,000$ secuencias, $199$ no mapearon.
 
 - La calidad en promedio fue de $34.6$.
+
+Dado que son datos de un experimento de ChiP-seq, se espera que el porcentaje de lecturas que mapean correctamente a la referencia se bajo, de hehco, en este caso es de ~65%, lo cual se considera aceptable en este contexto. 
+
+Considerando que los estadísticos mencionados anteriormente son aceptables, se puede concluir que el alineamiento es confiable.
 
 # **Para _Mus musculus_**
 
