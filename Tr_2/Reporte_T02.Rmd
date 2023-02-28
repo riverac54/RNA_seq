@@ -117,15 +117,15 @@ rsync -rptuvl arodriguez@dna.lavis.unam.mx:\
 ```
 La longitud promedio de estas lecturas de de 42 bp, mientras que el porcentaje global de GC en todas las bases de todas las secuencias fue de 45%. 
 
-Analizando la **calidad de secuencia por base**, se denota un severo problema, ya que ni siquiera la mitad de las seceuncias tiene una calidad decente (<30, Fig.1).  Por otro lado, parece ser que los **puntajes de calidad de cada carril** (*tile*) fueron constantemente aceptables (Fig.2), sin embargo se pueden observar diferentes zonas con colores un poco mas calidos al resto, lo que significa que se observarán sesgos en las secuencias obtenidas. De igual forma, los **puntajes de calidad por secuencia** arrojan resultados inquietantes, ya que se muchos se encuentran cercanos a 6 (un error cada 4 bp) y el promedio general por secuencia es de ~15 phred (Fig.3).
+Analizando la **calidad de secuencia por base**, se denota un severo problema, ya que ni siquiera la mitad de las secuencias tiene una calidad decente (<30, Fig.1).  Por otro lado, parece ser que los **puntajes de calidad de cada carril** (*tile*) fueron constantemente aceptables (Fig.2), sin embargo, se pueden observar diferentes zonas con colores un poco mas calidos al resto, lo que significa que se observarán sesgos en las secuencias obtenidas. De igual forma, los **puntajes de calidad por secuencia** arrojan resultados inquietantes, ya que se muchos se encuentran cercanos a 6 (un error cada 4 bp) y el promedio general por secuencia es de ~15 phred (Fig.3).
 
-En conclusión, a pesar de que otros parametros no sean significativamente malos, se aconseja fuertemente no considerar ninguna conclusion obtenida en este informe como significativa.
+En conclusión, a pesar de que otros parámetros no sean significativamente malos, se aconseja fuertemente no considerar ninguna conclusión obtenida en este informe como significativa.
 
-![**Calidad de secuencias por base.** La calidad de secuencia por base parece reducirse drasticamente de una puntuacion de calidad media de 28 en la primera base, a 7 en la ultima.](./fastqc_analisys/per_base_quality.png)
+![**Calidad de secuencias por base.** La calidad de secuencia por base parece reducirse drásticamente de una puntuación de calidad media de 28 en la primera base, a 7 en la última.](./fastqc_analisys/per_base_quality.png)
 
 ![**Calidad por carril.** Las razones para ver advertencias o errores en este gráfico podrían ser problemas transitorios, como burbujas que atraviesan la celda de flujo, o podrían ser problemas más permanentes, como manchas en la celda de flujo o desechos dentro del carril de la celda de flujo.](./fastqc_analisys/per_tile_quality.png)
 
-![**Puntajes de calidad por secuencia.** Esta grafica permite ver si un subconjunto de sus secuencias tiene valores de calidad universalmente bajos. Se emite una advertencia si la calidad media observada con mayor frecuencia es inferior a 27, lo que equivale a una tasa de error del 0,2%.](./fastqc_analisys/per_sequence_quality.png)
+![**Puntajes de calidad por secuencia.** Esta gráfica permite ver si un subconjunto de sus secuencias tiene valores de calidad universalmente bajos. Se emite una advertencia si la calidad media observada con mayor frecuencia es inferior a 27, lo que equivale a una tasa de error del 0,2%.](./fastqc_analisys/per_sequence_quality.png)
 
 ## Index para el genoma de *Mus musculus*
 
@@ -215,3 +215,6 @@ Ahora bien, las lecturas mapeadas fueron 6,530,881 y las no mapeadas cuentan con
 - *Practical 2: Short Read Alignment*. (s/f-b). Recuperado el 28 de febrero de 2023, de [https://bioinformatics-core-shared-training.github.io/cruk-summer-school-2019/Introduction/SS_DB/Materials/Practicals/Practical2_alignment_JK.html#reference-genome-index](https://bioinformatics-core-shared-training.github.io/cruk-summer-school-2019/Introduction/SS_DB/Materials/Practicals/Practical2_alignment_JK.html#reference-genome-index)
 - Skidmore, Z. (2d. C., abril 1). *Indexing*. Griffith Lab. [http://www.pmbio.org//module-02-inputs/0002/04/01/Indexing/](http://www.pmbio.org//module-02-inputs/0002/04/01/Indexing/)
 - *What is the purpose of indexing a genome*. (s/f). Recuperado el 28 de febrero de 2023, de [https://www.biostars.org/p/212594/](https://www.biostars.org/p/212594/)
+-bwa.1. (n.d.). Sourceforge.net. Recuperado Febrero 28, 2023, de https://bio-bwa.sourceforge.net/bwa.shtml
+-HCC-DOCS. (2023,Recuperado Febrero). Unl.edu. https://hcc.unl.edu/docs/applications/app_specific/bioinformatics_tools/alignment_tools/bwa/running_bwa_commands/
+-Samarajiiwa, S., & Bihary, D. (n.d.). Practical 2: Short read alignment. Github.Io. Recuperado Febrero, 2023, de https://bioinformatics-core-shared-training.github.io/cruk-summer-school-2018/Introduction/SS_DB/Materials/Practicals/Practical2_alignment_SS.html
