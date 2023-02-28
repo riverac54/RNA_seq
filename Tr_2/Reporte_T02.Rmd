@@ -3,6 +3,10 @@ title: "ReporteT02"
 author: "Jessica Garcia, Manuel Rivera, Axel Rodriguez"
 date: "2023-02-10"
 output:
+  pdf_document: 
+    toc: true
+    toc_depth: 3
+    number_sections: true
   html_document:
     
     toc: true # table of content true
@@ -11,17 +15,7 @@ output:
     number_sections: true  ## if you want number sections at each table header
     theme: united  # many options for theme, this one is my favorite.
     highlight: tango  # specifies the syntax highlighting style
-  pdf_document: 
-    toc: true
-    toc_depth: 3
-    number_sections: true
 ---
-
-```{r echo = F}
-library(knitr)
-opts_chunk$set(fig.lp = '')
-```
-
 
 # **Para _E.coli_**
 
@@ -191,3 +185,16 @@ samtools flagstat Mus_alg.sam
 Primeramente, dado los datos arrojados podemos observar que seguramente existe un error de secuenciación ya que tenemos un promedio de calidad de 18.7%, además, una taza de error mayor a un 1% (2.094056e-02 por cada 1 000 bases mapeadas), de tal forma que la calidad de secuenciación es baja.
 
 Ahora bien, las lecturas mapeadas fueron 6,530,881 y las no mapeadas cuentan con un número mayor, siendo este de 10, 640, 249. Finalmente, la calidad de mapeo fue de MQ = 0, lo cual una vez más nos hace pensar que hubo un error durante la secuenciación. 
+
+# Referencias 
+
+- BabrahamBioinf (Director). (2010, septiembre 22). *Using FastQC to check the quality of high throughput sequence*. [https://www.youtube.com/watch?v=bz93ReOv87Y](https://www.youtube.com/watch?v=bz93ReOv87Y)
+- *Bwa Aln And Samse Options*. (s/f). Recuperado el 28 de febrero de 2023, de [https://www.biostars.org/p/59572/](https://www.biostars.org/p/59572/)
+- *Bwa.1*. (s/f). Recuperado el 28 de febrero de 2023, de [https://bio-bwa.sourceforge.net/bwa.shtml](https://bio-bwa.sourceforge.net/bwa.shtml)
+- *FastQC Tutorial & FAQ*. (s/f). Recuperado el 28 de febrero de 2023, de [https://rtsf.natsci.msu.edu/genomics/tech-notes/fastqc-tutorial-and-faq/](https://rtsf.natsci.msu.edu/genomics/tech-notes/fastqc-tutorial-and-faq/)
+- *HCC-DOCS*. (s/f). Recuperado el 28 de febrero de 2023, de [https://hcc.unl.edu/docs/applications/app_specific/bioinformatics_tools/alignment_tools/bwa/running_bwa_commands/](https://hcc.unl.edu/docs/applications/app_specific/bioinformatics_tools/alignment_tools/bwa/running_bwa_commands/)
+- *Index of /projects/fastqc/Help/3 Analysis Modules*. (s/f). Analysis Modules. Recuperado el 28 de febrero de 2023, de [https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/)
+- *Practical 2: Short Read Alignment*. (s/f-a). Recuperado el 28 de febrero de 2023, de [https://bioinformatics-core-shared-training.github.io/cruk-summer-school-2018/Introduction/SS_DB/Materials/Practicals/Practical2_alignment_SS.html#short-read-alignment-and-quality-control](https://bioinformatics-core-shared-training.github.io/cruk-summer-school-2018/Introduction/SS_DB/Materials/Practicals/Practical2_alignment_SS.html#short-read-alignment-and-quality-control)
+- *Practical 2: Short Read Alignment*. (s/f-b). Recuperado el 28 de febrero de 2023, de [https://bioinformatics-core-shared-training.github.io/cruk-summer-school-2019/Introduction/SS_DB/Materials/Practicals/Practical2_alignment_JK.html#reference-genome-index](https://bioinformatics-core-shared-training.github.io/cruk-summer-school-2019/Introduction/SS_DB/Materials/Practicals/Practical2_alignment_JK.html#reference-genome-index)
+- Skidmore, Z. (2d. C., abril 1). *Indexing*. Griffith Lab. [http://www.pmbio.org//module-02-inputs/0002/04/01/Indexing/](http://www.pmbio.org//module-02-inputs/0002/04/01/Indexing/)
+- *What is the purpose of indexing a genome*. (s/f). Recuperado el 28 de febrero de 2023, de [https://www.biostars.org/p/212594/](https://www.biostars.org/p/212594/)
