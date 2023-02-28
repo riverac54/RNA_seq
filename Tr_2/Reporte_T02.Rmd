@@ -3,17 +3,18 @@ title: "ReporteT02"
 author: "Jessica Garcia, Manuel Rivera, Axel Rodriguez"
 date: "2023-02-10"
 output:
-  pdf_document: 
-    toc: true
-    toc_depth: 3
-    number_sections: true
   html_document:
+    
     toc: true # table of content true
     toc_float: yes
     toc_depth: 3  # upto three depths of headings (specified by #, ## and ###)
     number_sections: true  ## if you want number sections at each table header
     theme: united  # many options for theme, this one is my favorite.
     highlight: tango  # specifies the syntax highlighting style
+  pdf_document: 
+    toc: true
+    toc_depth: 3
+    number_sections: true
 ---
 
 ```{r echo = F}
@@ -99,7 +100,8 @@ __FastQC__, es una herramienta utilizada para proporcionar una visión general d
 # Analisis fastqc
 fastqc mus_musculus_CEBPA_liver_ERR005132.fastq.gz
 # Obtener las imagenes a computadora local
-rsync -rptuvl arodriguez@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/arodriguez/alignment/Musmusculus/fastqc_analisys .
+rsync -rptuvl arodriguez@dna.lavis.unam.mx:\
+/mnt/Timina/bioinfoII/arodriguez/alignment/Musmusculus/fastqc_analisys .
 ```
 
 La longitud promedio de estas lecturas de de 42 bp, mientras que el porcentaje global de GC en todas las bases de todas las secuencias fue de 45%. 
@@ -108,11 +110,11 @@ Analizando la **calidad de secuencia por base**, se denota un severo problema, y
 
 En conclusión, a pesar de que otros parametros no sean significativamente malos, se aconseja fuertemente no considerar ninguna conclusion obtenida en este informe como significativa.
 
-![**Fig.1. Calidad de secuencias por base.** La calidad de secuencia por base parece reducirse drasticamente de una puntuacion de calidad media de 28 en la primera base, a 7 en la ultima.](./fastqc_analisys/per_base_quality.png)
+![**Calidad de secuencias por base.** La calidad de secuencia por base parece reducirse drasticamente de una puntuacion de calidad media de 28 en la primera base, a 7 en la ultima.](./fastqc_analisys/per_base_quality.png)
 
-![**Fig.2. Calidad por carril** Las razones para ver advertencias o errores en este gráfico podrían ser problemas transitorios, como burbujas que atraviesan la celda de flujo, o podrían ser problemas más permanentes, como manchas en la celda de flujo o desechos dentro del carril de la celda de flujo.](./fastqc_analisys/per_tile_quality.png)
+![**Calidad por carril.** Las razones para ver advertencias o errores en este gráfico podrían ser problemas transitorios, como burbujas que atraviesan la celda de flujo, o podrían ser problemas más permanentes, como manchas en la celda de flujo o desechos dentro del carril de la celda de flujo.](./fastqc_analisys/per_tile_quality.png)
 
-![**Fig.3. Puntajes de calidad por secuencia ** Esta grafica permite ver si un subconjunto de sus secuencias tiene valores de calidad universalmente bajos. Se emite una advertencia si la calidad media observada con mayor frecuencia es inferior a 27, lo que equivale a una tasa de error del 0,2%.](./fastqc_analisys/per_sequence_quality.png)
+![**Puntajes de calidad por secuencia.** Esta grafica permite ver si un subconjunto de sus secuencias tiene valores de calidad universalmente bajos. Se emite una advertencia si la calidad media observada con mayor frecuencia es inferior a 27, lo que equivale a una tasa de error del 0,2%.](./fastqc_analisys/per_sequence_quality.png)
 
 ## Index para el genoma de *Mus musculus*
 
@@ -167,9 +169,11 @@ module load bwa/0.7.15
 
 # Generar alineamiento
 # trabajando en /mnt/Timina/bioinfoII/arodriguez/alignment/Musmusculus/
-bwa mem -M -t 8 /mnt/Archives/genome/mouse/mm10/UCSC/bwa-0.7.15-index/index/mm10.fa ./mus_musculus_CEBPA_liver_ERR005132.fastq.gz > Mus_alg.sam
+bwa mem -M -t 8 /mnt/Archives/genome/mouse/mm10/UCSC/bwa-0.7.15-index/index/mm10.fa \ 
+./mus_musculus_CEBPA_liver_ERR005132.fastq.gz > Mus_alg.sam
 
-# -M deja la mejor (más larga) alineación para una lectura como alineación primaria y alineaciones adicionales para la lectura como secundaria
+# -M deja la mejor (más larga) alineación para una lectura como alineación primaria 
+#    y alineaciones adicionales para la lectura como secundaria
 # -t indica el número de núcleos de procesador utilizados para hacer la alineación
 ```
 
