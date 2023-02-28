@@ -84,6 +84,24 @@ samtools stats Escherichia.sam | grep 'SN'
 samtools flagstat Escherichia.sam
 ```
 
+1. raw total sequences --> Numero total de lecturas en el archivo. 
+2. Sequences --> Reads totales
+3. reads mapped --> Numero de lecturas mapeadas.
+4. Reads unmapped --> Numero de lecturas no mapeadas
+5. Reads MQ0 --> Lecturas con calidad de MQ0 (mapea en 10 o mas lugares)
+6. Total lenght --> Numero de bases que no son secundarias (mapean en mas de un lugar) o suplementarias 
+7. Bases mapped --> Numero de bases que pertenecen a las lecturas mapeadas.
+8. Mismatches --> Mistmatches
+9. Error rate --> Mismatches / Bases mapeadas (cigar)
+
+- El numero total de lecturas es de: $3,603,544$, de las cuales $2,351,791$ lecturas mapean con el genoma de referencia.
+
+- De las lecturas mapeadas, $85,370$ mapean en 10 lugares o mas, es decir, el $2.36905\%$.
+
+- El ratio de error fue de $.00199$, esto indica que en $100,000$ secuencias, $199$ no mapearon.
+
+- La calidad en promedio fue de $34.6$.
+
 # **Para _Mus musculus_**
 
 ## Control de calidad de las secuencias crudas (*raw sequences*)
@@ -97,7 +115,6 @@ fastqc mus_musculus_CEBPA_liver_ERR005132.fastq.gz
 rsync -rptuvl arodriguez@dna.lavis.unam.mx:\
 /mnt/Timina/bioinfoII/arodriguez/alignment/Musmusculus/fastqc_analisys .
 ```
-
 La longitud promedio de estas lecturas de de 42 bp, mientras que el porcentaje global de GC en todas las bases de todas las secuencias fue de 45%. 
 
 Analizando la **calidad de secuencia por base**, se denota un severo problema, ya que ni siquiera la mitad de las seceuncias tiene una calidad decente (<30, Fig.1).  Por otro lado, parece ser que los **puntajes de calidad de cada carril** (*tile*) fueron constantemente aceptables (Fig.2), sin embargo se pueden observar diferentes zonas con colores un poco mas calidos al resto, lo que significa que se observarán sesgos en las secuencias obtenidas. De igual forma, los **puntajes de calidad por secuencia** arrojan resultados inquietantes, ya que se muchos se encuentran cercanos a 6 (un error cada 4 bp) y el promedio general por secuencia es de ~15 phred (Fig.3).
