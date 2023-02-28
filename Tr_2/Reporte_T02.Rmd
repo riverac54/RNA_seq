@@ -3,6 +3,10 @@ title: "ReporteT02"
 author: "Jessica Garcia, Manuel Rivera, Axel Rodriguez"
 date: "2023-02-10"
 output:
+  pdf_document: 
+    toc: true
+    toc_depth: 3
+    number_sections: true
   html_document:
     toc: true # table of content true
     toc_float: yes
@@ -10,14 +14,15 @@ output:
     number_sections: true  ## if you want number sections at each table header
     theme: united  # many options for theme, this one is my favorite.
     highlight: tango  # specifies the syntax highlighting style
-  pdf_document: 
-    toc: true
-    toc_depth: 3
-    number_sections: true
 ---
 
+```{r echo = F}
+library(knitr)
+opts_chunk$set(fig.lp = '')
+```
 
-# Para _E.coli_
+
+# **Para _E.coli_**
 
 ## Usando bwa para _indexar_ el genoma de _E.coli_
 
@@ -84,7 +89,7 @@ samtools stats Escherichia.sam | grep 'SN'
 samtools flagstat Escherichia.sam
 ```
 
-# Para *Mus musculus*
+# **Para _Mus musculus_**
 
 ## Control de calidad de las secuencias crudas (*raw sequences*)
 
@@ -103,17 +108,11 @@ Analizando la **calidad de secuencia por base**, se denota un severo problema, y
 
 En conclusión, a pesar de que otros parametros no sean significativamente malos, se aconseja fuertemente no considerar ninguna conclusion obtenida en este informe como significativa.
 
-### **Calidad de secuencia por base**
+![**Fig.1. Calidad de secuencias por base.** La calidad de secuencia por base parece reducirse drasticamente de una puntuacion de calidad media de 28 en la primera base, a 7 en la ultima.](./fastqc_analisys/per_base_quality.png)
 
-![******Fig.1.****** La calidad de secuencia por base parece reducirse drasticamente de una puntuacion de calidad media de 28 en la primera base, a 7 en la ultima.](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/58961d1b-bd82-4bad-bd5e-3bfd96dd744a/Untitled.png)
+![**Fig.2. Calidad por carril** Las razones para ver advertencias o errores en este gráfico podrían ser problemas transitorios, como burbujas que atraviesan la celda de flujo, o podrían ser problemas más permanentes, como manchas en la celda de flujo o desechos dentro del carril de la celda de flujo.](./fastqc_analisys/per_tile_quality.png)
 
-### **Per tile sequence quality**
-
-![************Fig.2.************ Las razones para ver advertencias o errores en este gráfico podrían ser problemas transitorios, como burbujas que atraviesan la celda de flujo, o podrían ser problemas más permanentes, como manchas en la celda de flujo o desechos dentro del carril de la celda de flujo.](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6a22ceb1-da8c-4387-bf10-9e34f0e95831/Untitled.png)
-
-### **Per sequence quality scores**
-
-![**Fig.3.** Esta grafica permite ver si un subconjunto de sus secuencias tiene valores de calidad universalmente bajos. Se emite una advertencia si la calidad media observada con mayor frecuencia es inferior a 27, lo que equivale a una tasa de error del 0,2%.](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0932d8c1-61ba-48e2-b677-b3b15e293abe/Untitled.png)
+![**Fig.3. Puntajes de calidad por secuencia ** Esta grafica permite ver si un subconjunto de sus secuencias tiene valores de calidad universalmente bajos. Se emite una advertencia si la calidad media observada con mayor frecuencia es inferior a 27, lo que equivale a una tasa de error del 0,2%.](./fastqc_analisys/per_sequence_quality.png)
 
 ## Index para el genoma de *Mus musculus*
 
@@ -188,7 +187,3 @@ samtools flagstat Mus_alg.sam
 Primeramente, dado los datos arrojados podemos observar que seguramente existe un error de secuenciación ya que tenemos un promedio de calidad de 18.7%, además, una taza de error mayor a un 1% (2.094056e-02 por cada 1 000 bases mapeadas), de tal forma que la calidad de secuenciación es baja.
 
 Ahora bien, las lecturas mapeadas fueron 6,530,881 y las no mapeadas cuentan con un número mayor, siendo este de 10, 640, 249. Finalmente, la calidad de mapeo fue de MQ = 0, lo cual una vez más nos hace pensar que hubo un error durante la secuenciación. 
-
-
-Nota: los archivos de alineamiento se encuentran en la carpeta `/mnt/Timina/bioinfoII/arodriguez/alignment/Musmusculus`
-
