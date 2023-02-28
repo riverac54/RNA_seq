@@ -3,10 +3,6 @@ title: "ReporteT02"
 author: "Jessica Garcia, Manuel Rivera, Axel Rodriguez"
 date: "2023-02-10"
 output:
-  pdf_document: 
-    toc: true
-    toc_depth: 3
-    number_sections: true
   html_document:
     toc: true # table of content true
     toc_float: yes
@@ -14,6 +10,10 @@ output:
     number_sections: true  ## if you want number sections at each table header
     theme: united  # many options for theme, this one is my favorite.
     highlight: tango  # specifies the syntax highlighting style
+  pdf_document: 
+    toc: true
+    toc_depth: 3
+    number_sections: true
 ---
 
 
@@ -58,7 +58,7 @@ bwa samse E_index Escherichia.sai SRX189773_FNR_ChIP.fastq > Escherichia.sam
 ```
 
 - `bwa aln` alinea el archivo de entrada de datos de secuencia con el genoma de referencia y produce un archivo `*.sai` de todos los posibles candidatos.
-- `samse` genera los alineamientos en un archivo `.sam` dado un archivo `.sai` y el prefijo dado en `aln` (`E_index` en este caso). Se utiliza en lecturas **********single-end**********.
+- `samse` genera los alineamientos en un archivo `.sam` dado un archivo `.sai` y el prefijo dado en `aln` (`E_index` en este caso). Se utiliza en lecturas *single-end*.
 
 ### Otras alternativas 
 
@@ -83,13 +83,6 @@ samtools stats Escherichia.sam | grep 'SN'
 # Opción 3
 samtools flagstat Escherichia.sam
 ```
-### Radio de Mapeo (*Mapping rate*)
-
-### DRadio de duplicación (*Duplication rate*)
-
-### Contenido de GC vs Profundidad de Lectura
-
-### Indeles por ciclo (*Indels by cycle*)
 
 # Para *Mus musculus*
 
@@ -98,26 +91,29 @@ samtools flagstat Escherichia.sam
 __FastQC__, es una herramienta utilizada para proporcionar una visión general de las métricas básicas de control de calidad para los datos de secuenciación de próxima generación sin procesar. En este caso, los datos crudos de las lecturas se encuentran en el archivo `mus_musculus_CEBPA_liver_ERR005132.fastq.gz`
 
 ```bash
+# Analisis fastqc
 fastqc mus_musculus_CEBPA_liver_ERR005132.fastq.gz
+# Obtener las imagenes a computadora local
+rsync -rptuvl arodriguez@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/arodriguez/alignment/Musmusculus/fastqc_analisys .
 ```
 
-### Per Base Sequence Quality
+La longitud promedio de estas lecturas de de 42 bp, mientras que el porcentaje global de GC en todas las bases de todas las secuencias fue de 45%. 
 
-### Per Sequence Quality Scores
+Analizando la **calidad de secuencia por base**, se denota un severo problema, ya que ni siquiera la mitad de las seceuncias tiene una calidad decente (<30, Fig.1).  Por otro lado, parece ser que los **puntajes de calidad de cada carril** (*tile*) fueron constantemente aceptables (Fig.2), sin embargo se pueden observar diferentes zonas con colores un poco mas calidos al resto, lo que significa que se observarán sesgos en las secuencias obtenidas. De igual forma, los **puntajes de calidad por secuencia** arrojan resultados inquietantes, ya que se muchos se encuentran cercanos a 6 (un error cada 4 bp) y el promedio general por secuencia es de ~15 phred (Fig.3).
 
-### Per Base Sequence Content
+En conclusión, a pesar de que otros parametros no sean significativamente malos, se aconseja fuertemente no considerar ninguna conclusion obtenida en este informe como significativa.
 
-### Per Base GC Content
+### **Calidad de secuencia por base**
 
-### Per Sequence GC Content
+![******Fig.1.****** La calidad de secuencia por base parece reducirse drasticamente de una puntuacion de calidad media de 28 en la primera base, a 7 en la ultima.](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/58961d1b-bd82-4bad-bd5e-3bfd96dd744a/Untitled.png)
 
-### Per Base N Content
+### **Per tile sequence quality**
 
-### Sequence Length Distribution
+![************Fig.2.************ Las razones para ver advertencias o errores en este gráfico podrían ser problemas transitorios, como burbujas que atraviesan la celda de flujo, o podrían ser problemas más permanentes, como manchas en la celda de flujo o desechos dentro del carril de la celda de flujo.](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6a22ceb1-da8c-4387-bf10-9e34f0e95831/Untitled.png)
 
-### Duplicate Sequences
+### **Per sequence quality scores**
 
-### Overrepresented Kmers
+![**Fig.3.** Esta grafica permite ver si un subconjunto de sus secuencias tiene valores de calidad universalmente bajos. Se emite una advertencia si la calidad media observada con mayor frecuencia es inferior a 27, lo que equivale a una tasa de error del 0,2%.](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0932d8c1-61ba-48e2-b677-b3b15e293abe/Untitled.png)
 
 ## Index para el genoma de *Mus musculus*
 
