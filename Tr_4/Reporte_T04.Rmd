@@ -1,1 +1,144 @@
-hola
+---
+title: "ReporteT02"
+author: "Jessica Garcia, Manuel Rivera, Axel Rodriguez"
+date: "2023-02-28"
+output:
+  pdf_document: 
+    toc: true
+    toc_depth: 3
+    number_sections: true
+  html_document:
+    
+    toc: true # table of content true
+    toc_float: yes
+    toc_depth: 3  # upto three depths of headings (specified by #, ## and ###)
+    number_sections: true  ## if you want number sections at each table header
+    theme: united  # many options for theme, this one is my favorite.
+    highlight: tango  # specifies the syntax highlighting style
+---
+
+# Visualizar utilizando IGV
+
+```bash
+
+#Carpeta donde estan los archivos
+cd /mnt/Timina/bioinfoII/data/IGV/
+
+# Pasar archivos a computadora local para utilizarlos en IGV
+# -r Recursivo
+# -p Establecer permisos igual que en origen
+# -t Transfiere los tiempos del archivo al destino
+# -u Si un archivo es mas nuevo en la fuente que en el destino, salta la instalacion del archivo nuevo al destino
+# -v Muestra el progreso del proceso
+# -l Si encuentra enlaces simbolicos (symlinks) son recreados en el destino
+
+rsync -rptuvl arodriguez@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/data/IGV/PccAS_v3_genome.fa .
+rsync -rptuvl arodriguez@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/data/IGV/PccAS_v3_genome.fa.fai .
+rsync -rptuvl arodriguez@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/data/IGV/PccAS_v3.gff3 .
+
+```
+# Cargar las anotaciones del genoma
+
+- El archivo `PccAS_v3.gff3` contiene las anotaciones del genoma. Contiene las regiones que son intrones y exones.
+
+- Si hacemos "zoom in" podemos ver los aminoacidos que generan esas bases.
+
+- Si hacemos "zoom out" podemos ver los intrones (lineas), exones (cajas) y la flecha nos indica la direccion en la que el gen se transcribe.
+
+-------------------------------------------------------------------------------------------------------------------------
+
+# PARTE 2
+
+
+
+# Indexación del genoma
+
+```bash
+# Cargar los modulos necesarios
+module load  hisat2/2.0.0-beta
+
+# Ubicacion de archivos
+cd /mnt/Timina/bioinfoII/data/IGV/
+
+# Copiar archivos necesarios a carpeta de trabajo 
+cp -r /mnt/Timina/bioinfoII/arodriguez/
+
+# Indexar el genoma
+hisat2-build PccAS_v3_genome.fa PccAS_v3_hisat2.idx
+```
+
+- Esto genera todos estos archivos
+
+PccAS_v3_hisat2.idx.1.ht2  
+PccAS_v3_hisat2.idx.2.ht2 
+PccAS_v3_hisat2.idx.3.ht2
+PccAS_v3_hisat2.idx.4.ht2  
+PccAS_v3_hisat2.idx.5.ht2
+PccAS_v3_hisat2.idx.6.ht2
+PccAS_v3_hisat2.idx.7.ht2
+PccAS_v3_hisat2.idx.8.ht2
+    
+  
+# Generar alineamiento con MT1
+
+```bash
+# Generar alineamiento
+hisat2 --max-intronlen 10000 -x PccAS_v3_hisat2.idx -1 MT1_1.fastq -2 MT1_2.fastq -S MT1.sam
+
+# Convertir SAM-->BAM
+
+# Se cargan los modulos 
+module load samtools/1.9
+
+# Se convierte SAM a BAM
+samtools view -bS MT1.sam > MT1.bam
+
+# Ordenar el archivo 
+samtools sort MT1.bam -o MT1_sorted.bam
+
+#Indezar el archivo
+samtools index MT1_sorted.bam
+```
+
+# Generar alineamiento con MT2
+
+```bash
+# Generar alineamiento
+hisat2 --max-intronlen 10000 -x PccAS_v3_hisat2.idx -1 MT2_1.fastq -2 MT2_2.fastq -S MT2.sam
+
+# Convertir SAM-->BAM
+
+# Se cargan los modulos 
+module load samtools/1.9
+
+# Se convierte SAM a BAM
+samtools view -bS MT2.sam > MT2.bam
+
+# Ordenar el archivo 
+samtools sort MT2.bam -o MT2_sorted.bam
+
+#Indezar el archivo
+samtools index MT2_sorted.bam
+```
+
+# Visualizar en IGV
+
+```bash
+# Obtener archivos a computadora local.
+# Trabajando en /home/axel/Documents/ENES/4toSem/Bioinfo/T03
+
+# Descargar alineamientos
+rsync -rptuvl arodriguez@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/arodriguez/GenBrowser/Pchabaudi/MT1_sorted.bam .
+rsync -rptuvl arodriguez@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/arodriguez/GenBrowser/Pchabaudi/MT2_sorted.bam .
+
+# Descargar sus index
+rsync -rptuvl arodriguez@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/arodriguez/GenBrowser/Pchabaudi/MT1_sorted.bam.bai .
+rsync -rptuvl arodriguez@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/arodriguez/GenBrowser/Pchabaudi/MT2_sorted.bam.bai .
+```
+
+
+
+
+
+
+
