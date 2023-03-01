@@ -134,7 +134,43 @@ rsync -rptuvl arodriguez@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/arodriguez/GenB
 # Descargar sus index
 rsync -rptuvl arodriguez@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/arodriguez/GenBrowser/Pchabaudi/MT1_sorted.bam.bai .
 rsync -rptuvl arodriguez@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/arodriguez/GenBrowser/Pchabaudi/MT2_sorted.bam.bai .
+
+# Obtener archivos a computadora local.
+rsync -rptuvl mrivera@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/mrivera/Pchabaudi/MT1_sorted.bam .
+rsync -rptuvl mrivera@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/mrivera/Pchabaudi/MT2_sorted.bam .
+rsync -rptuvl mrivera@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/mrivera/Pchabaudi/MT1_sorted.bam.bai .
+rsync -rptuvl mrivera@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/mrivera/Pchabaudi/MT2_sorted.bam.bai .
 ```
+
+------------------------------------------------------------------------------------------------------------------------
+# Coverage Track
+
+- El 'coverage track' muestra la cobertura de las lecturas en cada locus con una grafica gris. Si un nucleotido difiere de la referencia en mas del 20% (por default), IGV lo colorea de acuerdo a la proporcion del nucleotido.
+
+- Podemos ver la cobertura en un determinado locus haciendo zoom y haciendo click derecho a la grafica.
+
+- Podemos aumentar la cobertura con otro archivo en extension TDF.
+
+# Splice junction track
+- Las uniones en la hebra + son de color rojo y sobre la linea que se muestra, mientras que las uniones de la hebra - son de color azul y estan por debajo de la linea.
+
+-Haciendo click derecho sobre la union podemos observar la informacion de cobertura.
+
+
+# Alligment track
+
+- Las inserciones son indicadas con morado. 
+
+- Las deleciones son indicadas con un -.
+
+
+# Cómo exportar figuras?
+Haciendo click derecho y seleccionando la opicon hasta abajo "save PNG image"...
+--------------------------------------------------------------------------------------------------------------
+
+# Mouse data IGV
+
+
 
 
 
