@@ -363,7 +363,7 @@ Permite la actividad de unión del receptor GABA, la actividad del canal iónico
 
 Interviene en la organización de la red tubular del retículo endoplásmico, la regulación positiva de la respuesta a proteínas no plegadas del retículo endoplásmico y la regulación de la organización de la red tubular del retículo endoplásmico
 
-![](./IGV_images/igv_panel.png)
+![](./IGV_images/Tmem33.png)
 
 3. Limch1
 
@@ -420,3 +420,6 @@ Aquí visualizamos la vista del navegador UCSC de los datos del experimento de C
 
 Específicamente en esta foto mostramos el gen Fabp1 (proteína fijadora de ácidos grasos 1), una enzima producida por hepatocitos que participa en la absorción de colesterol mediada por lipoproteínas. Aquí podemos ver múltiples regiones donde Cebpa está unido al gen Fabp1.
 
+------------------------------------------------------------------------------------
+
+# Referencias 
