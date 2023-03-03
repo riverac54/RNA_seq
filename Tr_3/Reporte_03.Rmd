@@ -1,0 +1,43 @@
+---
+title: "Reporte_03"
+author: "Axel R"
+date: "2023-03-03"
+output: html_document
+---
+
+# Utiliza IGV para vizualizar datos de  *Plasmodium chabaudi* (*P. chabaudi*)
+
+```bash
+cd /mnt/Timina/bioinfoII/data/IGV/
+# Pasar archivos a computadora local para utilizarlos en IGV
+rsync -rptuvl arodriguez@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/data/IGV/PccAS_v3_genome.fa .
+rsync -rptuvl arodriguez@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/data/IGV/PccAS_v3_genome.fa.fai .
+rsync -rptuvl arodriguez@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/data/IGV/PccAS_v3.gff3 .
+
+```
+
+El archivo `PccAS_v3_genome.fa` es el archivo con el genoma de referencia de *P. chabaudi*, mientras que `PccAS_v3.gff3` son las anotaciones. 
+
+## Carga el genoma de referencia desde un archivo (bota que ha sido _indexado_ )
+
+Para cargar el genoma de referencia en IGV se va a `Genomes -> Load Genome from File…"`. Se selecciona "`PccAS_v3_genome.fa`” y se da clic en “`open`".
+
+## Carga las anotaciones del genoma
+
+Para cargar el archivo de anotacion, se da click en `"File -> Load from File…"` y se selecciona "`PccAS_v3.gff3`” para despues dar click en “`Open`”.
+
+### ¿Que describe el formato del archivo de anotaciones?
+
+No sólo se requiere ver dónde han mapeado las lecturas, sino a qué genes han mapeado. Para ello, se tiene el archivo de anotación en **formato GFF3** (`PccAS_v3.gff3`), el cual contiene una lista de características, coordenadas y orientaciones correspondientes al genoma de referencia.
+
+### ¿Que esta mostrando el _browser_?
+
+Una vez cargado el archivo, se despliega una nueva pista llamada "**PccAS_v3. gff3**". La pista se muestra como un gráfico de densidad. 
+
+### ¿Qué pasa si te acercas o te alejas?
+
+Se puede hacer **zoom** para ver los genes individuales, incluyendo intrones y exones. Si se hace ***zoom out*** las ubicaciones de los genes se superponen mostrando la abundancia relativa de genes en todo el genoma.
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f4385fe5-a808-4dda-bf4b-75fa6f62ed97/Untitled.png)
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/39e27993-2a90-4245-9c80-f6bbe0c9b451/Untitled.png)
