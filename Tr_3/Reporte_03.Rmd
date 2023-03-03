@@ -359,7 +359,7 @@ Cobertura de $13$. Se cree que interviene en varios procesos, como la respuesta 
 Predicted to enable GABA receptor binding activity; GABA-gated chloride ion channel activity; and transmitter-gated ion channel activity involved in regulation of postsynaptic membrane potential. 
 
 
-![](./IGV_images/igv_panel.png)
+![](./IGV_images/Gabrb1.png)
 
 2. Tmem33
 
@@ -367,11 +367,11 @@ Predicted to enable GABA receptor binding activity; GABA-gated chloride ion chan
 
 3. Limch1
 
-![](./IGV_images/igv_panel.png)
+![](./IGV_images/Limch1.png)
 
 4. Rbm47
 
-![](./IGV_images/igv_panel.png)
+![](./IGV_images/Rbm47.png)
 
 --------------------------------------------------------------------------------
 
