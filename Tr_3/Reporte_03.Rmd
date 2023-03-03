@@ -2,7 +2,9 @@
 title: "Reporte_03"
 author: "Axel R"
 date: "2023-03-03"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 # Utiliza IGV para vizualizar datos de  *Plasmodium chabaudi* (*P. chabaudi*)
@@ -38,6 +40,68 @@ Una vez cargado el archivo, se despliega una nueva pista llamada "**PccAS_v3. gf
 
 Se puede hacer **zoom** para ver los genes individuales, incluyendo intrones y exones. Si se hace ***zoom out*** las ubicaciones de los genes se superponen mostrando la abundancia relativa de genes en todo el genoma.
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f4385fe5-a808-4dda-bf4b-75fa6f62ed97/Untitled.png)
+<div>
+<p style = 'text-align:center;'>
+<img src="./IGV_images/igv_snapshot.png" alt="JuveYell" width=70%>
+</p>
+</div>
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/39e27993-2a90-4245-9c80-f6bbe0c9b451/Untitled.png)
+<div>
+<p style = 'text-align:center;'>
+<img src="./IGV_images/igv_panel.png" alt="JuveYell" width=70%>
+</p>
+</div>
+
+En la pista de anotación, los genes se presentan como cajas azules y líneas. Estas cajas representan exones, mientras que las líneas representan regiones intrónicas. Las flechas indican la dirección (o cadena) de la transcripción para cada uno de los genes. Ahora que tenemos nuestro genoma y sus características anotadas, sólo necesitamos las alineaciones de lectura para nuestras cinco muestras.
+
+# Utiliza IGV para cargar un archivo de alineamiento para un experimento de RNA-seq (MT1 y MT2)
+
+### ¿Están los datos en el formato correcto?
+
+No, los archivos a disposicion se encuentran en formato `fastq`.
+
+### ¿Qué tipo de datos se necesitan?
+
+Es necesaria el alineamiento de las lecturas, del cual el resultado es un archivo `.bam`, que es el formato requerido.
+
+### ¿Por qué hay dos archivos por muestra?
+
+Porque las lecturas crudas vienen de una secuenciacion **********paired-end**********. 
+
+## Alineamiento de lecturas
+
+Se trata de datos de RNA-seq así que necesitamos alineadores especiales para tener en cuenta las isoformas.
+
+Usaremos **[HISAT2](http://daehwankimlab.github.io/hisat2/manual/)** para mapear las lecturas de RNA-Seq de nuestras muestras al genoma de referencia. HISAT2 es un programa de alineación rápido y sensible para el mapeo de lecturas de secuenciación de próxima generación (tanto de DNA como de RNA) a una población de genomas humanos (así como a un solo genoma de referencia).
+
+### Indexación del genoma
+
+```bash
+# Cargar los modulos necesarios
+module load  hisat2/2.0.0-beta
+
+# Copiar archivos necesarios a carpeta de trabajo 
+cd /mnt/Timina/bioinfoII/data/IGV/
+cp -r ./ ../../arodriguez/GenBrowser/
+
+# Indexar el genoma
+hisat2-build PccAS_v3_genome.fa PccAS_v3_hisat2.idx
+```
+
+- `hisat2-build` construye un índice HISAT2 a partir del archivo de genoma de referencia (`PccAS_v3_genome.fa`) y el prefijo que tendra el conjunto de archivos de salida generados por el mismo (`PccAS_v3_hisat2.idx`):
+
+```bash
+PccAS_v3_hisat2.idx.1.ht2
+PccAS_v3_hisat2.idx.2.ht2
+PccAS_v3_hisat2.idx.3.ht2
+PccAS_v3_hisat2.idx.4.ht2
+PccAS_v3_hisat2.idx.5.ht2
+PccAS_v3_hisat2.idx.6.ht2
+PccAS_v3_hisat2.idx.7.ht2
+PccAS_v3_hisat2.idx.8.ht2
+```
+
+<div class="alert alert-block alert-info">
+**Nota**: estos ficheros juntos constituyen el índice. Son todo lo que se necesita para alinear las lecturas a esa referencia..
+</div>
+
