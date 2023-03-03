@@ -1,5 +1,5 @@
 ---
-title: "ReporteT02"
+title: "ReporteT04"
 author: "Jessica Garcia, Manuel Rivera, Axel Rodriguez"
 date: "2023-02-28"
 output:
@@ -170,10 +170,33 @@ Haciendo click derecho y seleccionando la opicon hasta abajo "save PNG image"...
 
 # Mouse data IGV
 
+#Generar el alineamiento
+
+```bash
+
+# Genoma de referencia
+cd /mnt/Archives/genome/mouse/mm10/UCSC/bwa-0.7.15-index/index/mm10.fa
+
+# Genoma a alinear
+cd /mnt/Timina/bioinfoII/data/alignment/mus_musculus_CEBPA_liver_ERR005132.fastq.gz
 
 
+# Alineamiento
+cd /mnt/Timina/bioinfoII/mrivera/MusMusculus/Mus_alg_sorted.bam
+
+# Descargar alineamiento 
+rsync -rptuvl mrivera@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/mrivera/MusMusculus/Mus_alg_sorted.bam .
+
+```
 
 
+# Genes encontrados
+
+
+Gabrb1
+Tmem33
+Limch1
+Rbm47
 
 
 
