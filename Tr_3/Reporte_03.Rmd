@@ -423,3 +423,14 @@ Específicamente en esta foto mostramos el gen Fabp1 (proteína fijadora de áci
 ------------------------------------------------------------------------------------
 
 # Referencias 
+
+Gabrb1 gamma-aminobutyric acid (GABA) A receptor, subunit beta 1 [Mus musculus (house mouse)] - Gene - NCBI. (n.d.). Nih.gov. Retrieved March 3, 2023, from https://www.ncbi.nlm.nih.gov/gene/14400
+
+Limch1 LIM and calponin homology domains 1 [Mus musculus (house mouse)] - Gene - NCBI. (n.d.). Nih.gov. Retrieved March 3, 2023, from https://www.ncbi.nlm.nih.gov/gene/77569
+
+Rbm47 RNA binding motif protein 47 [Mus musculus (house mouse)] - Gene - NCBI. (n.d.). Nih.gov. Retrieved March 3, 2023, from https://www.ncbi.nlm.nih.gov/gene/245945
+
+Tmem33 transmembrane protein 33 [Mus musculus (house mouse)] - Gene - NCBI. (n.d.). Nih.gov. Retrieved March 3, 2023, from https://www.ncbi.nlm.nih.gov/gene/67878
+
+
+
