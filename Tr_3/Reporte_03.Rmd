@@ -354,22 +354,26 @@ rsync -rptuvl mrivera@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/mrivera/MusMusculu
 ## Es un conjunto de datos hepáticos, ¿puedes apuntar a un loci interesante?
 
 1. Gabrb1
-Cobertura de $13$. Se cree que interviene en varios procesos, como la respuesta celular a la histamina, el transporte transmembrana de cloruro y la vía de señalización del ácido gamma-aminobutírico.
 
-Predicted to enable GABA receptor binding activity; GABA-gated chloride ion channel activity; and transmitter-gated ion channel activity involved in regulation of postsynaptic membrane potential. 
-
+Permite la actividad de unión del receptor GABA, la actividad del canal iónico de cloruro activado por GABA y la actividad del canal iónico activado por transmisor implicado en la regulación del potencial de membrana postsináptico
 
 ![](./IGV_images/Gabrb1.png)
 
 2. Tmem33
 
+Interviene en la organización de la red tubular del retículo endoplásmico, la regulación positiva de la respuesta a proteínas no plegadas del retículo endoplásmico y la regulación de la organización de la red tubular del retículo endoplásmico
+
 ![](./IGV_images/igv_panel.png)
 
 3. Limch1
 
+Permite la actividad de unión de la cabeza/cuello de la miosina II. Está implicada en la contracción citoplasmática de actina implicada en la motilidad celular, en la regulación positiva del ensamblaje de las fibras de estrés y en la regulación del ensamblaje de la adhesión focal.
+
 ![](./IGV_images/Limch1.png)
 
 4. Rbm47
+
+Permite la actividad de unión al ARN. Actúa antes o durante la edición de citidina a uridina y la diferenciación de células  hematopoyéticas. Se localiza en el núcleo.
 
 ![](./IGV_images/Rbm47.png)
 
