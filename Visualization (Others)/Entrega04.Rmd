@@ -42,7 +42,7 @@ plotHeatmap -m matrix_H3K36me3_matrix.tab.gz -out H3K36me3_genes.png --heatmapHe
 
 ![](./T04_images/H3K36me3_genes.png)
 
-En esta imagen podemos observar en una región del centro de los genes a -2.0 kb hasta 2.0 Kb que las señales de la histona H3K36me3 en los genes humanos Gencodev39 no son lo suficientemente significativas como para llegar a una conclusión rotunda, sin embargo, podemos observar que hay una ligera señal aumentada en el sitio terminal de transcripción, al igual que en el sitio de inicio de la transcripción, pero en menor medida.
+En esta imagen podemos observar en una región del centro de los genes a -2.0 kb hasta 2.0 Kb que las señales de la histona H3K36me3 en los genes humanos Gencodev39 no son lo suficientemente significativas, sin embargo, podemos observar que hay una ligera señal aumentada en el sitio terminal de la transcripción, al igual que en el sitio de inicio de la transcripción, pero en menor medida.
 
 # Heatmap de ratón (*visualization of M. musculus Cebpa ChIP data*)
 
