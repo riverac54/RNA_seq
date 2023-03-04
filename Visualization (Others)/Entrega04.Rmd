@@ -284,6 +284,8 @@ ggplot(mapping= aes(x=bt$`Coat Grooming Frequency`, y=br$`2020 Rank`, colour= bt
 
 #Referencias
 
-computeMatrix — deepTools 3.5.0 documentation. (n.d.). Readthedocs.Io. Retrieved Marzo 4, 2023, de https://deeptools.readthedocs.io/en/develop/content/tools/computeMatrix.html
+computeMatrix — deepTools 3.5.0 documentation. (n.d.). Readthedocs.Io. Recuperado Marzo 4, 2023, de https://deeptools.readthedocs.io/en/develop/content/tools/computeMatrix.html
 
-plotHeatmap — deepTools 3.5.0 documentation. (n.d.). Readthedocs.Io. Retrieved Marzo 4, 2023, de https://deeptools.readthedocs.io/en/develop/content/tools/plotHeatmap.html
+plotHeatmap — deepTools 3.5.0 documentation. (n.d.). Readthedocs.Io. Recuperado Marzo 4, 2023, de https://deeptools.readthedocs.io/en/develop/content/tools/plotHeatmap.html
+
+(N.d.). Nih.gov. Recuperado Marzo 4, 2023, de https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6153486/
