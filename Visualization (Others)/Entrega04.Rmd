@@ -1,0 +1,67 @@
+---
+title: "Reporte_04"
+author: "Axel R"
+date: "2023-03-03"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+
+
+------------------------------------------------
+
+# 'TidyTuesday plot'
+TidyTuesday plot. Elegir datos que le interesen y hacer una gráfica con ellos
+
+
+```{r,  error=FALSE, echo=FALSE}
+
+# Importar archivos "Breed Traits"
+bt <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-02-01/breed_traits.csv')
+
+# Importar archivos "Breed Rank"
+br <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-02-01/breed_rank.csv')
+```
+
+- Tratar como factor los datos no numericos
+```{r, eval=FALSE}
+
+# Tratar como factor algunas variables
+bt$`Coat Type` = as.factor(bt$`Coat Type`)
+class(bt$`Coat Type`)
+
+bt$`Coat Length` = as.factor(bt$`Coat Length`)
+class(bt$`Coat Length`)
+
+# Asignar a los valores sin ranking 0
+br[is.na(br) ] = 0
+```
+
+
+- Como saber que variables influyen en el posicionamiento del perro? Para esto utilizare los datos del ranking mas reciente, de 2020, primero tratare de predecir que variables influyen en el posicionamiento de un perro...
+
+```{r, eval=FALSE}
+# Remover columna con nombres de razas
+bt = bt[,-1]
+
+#Predecir que variables me importan
+modelo = glm(br$`2020 Rank` ~ ., data=bt)
+summary (modelo)
+```
+
+- Las variables que mas influyen en la posicion de un perro son: Playfulness Level, Coat Type(Plott Hounds), Coat Grooming Frequency.
+
+```{r}
+
+# Modelo con las variables que me importan
+modelo2= glm(br$`2020 Rank` ~ bt$`Playfulness Level` + bt$`Coat Grooming Frequency` + bt$`Coat Type`)
+
+#Generar grafica
+library(ggplot2)
+ggplot(mapping= aes(x=bt$`Coat Grooming Frequency`, y=br$`2020 Rank`, colour= bt$`Coat Type`))+ geom_point() + labs (y= "Ranking 2020", x = "Frecuencia de cepillado") + labs(color = "Tipo de pelo")
+
+
+```
+
+- Tiene sentido la grafica?
