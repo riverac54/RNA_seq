@@ -238,7 +238,7 @@ bt <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytue
 br <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-02-01/breed_rank.csv')
 ```
 
-- Tratar como factor los datos no numericos. Hay algunos datos como la longitud del pelaje y el tipo de pelaje que no vienen en un factor numerico, por lo que los trate como factores (clases). Tambien en el ranking hay razas que no tienen un ranking en algunos años, por lo que si no tienen ninguna posicion les asigne el 0.
+- Tratar como factor los datos no numericos. Hay algunos datos como la longitud del pelaje y el tipo de pelaje que no vienen en un factor numérico, por lo que los trate como factores (clases). También en el ranking hay razas que no tienen un ranking en algunos años, por lo que si no tienen ninguna posición les asigné el 0.
 
 ```{r, eval=FALSE}
 
@@ -254,9 +254,9 @@ br[is.na(br) ] = 0
 ```
 
 
-- Como saber que variables influyen en el posicionamiento del perro? Para esto utilizare los datos mas recientes, los del ranking de 2020, primero tratare de predecir que variables influyen en el posicionamiento de un perro, mediante una regresion logistica. 
+- ¿Cómo saber que variables influyen en el posicionamiento del perro? Para esto utilizaré los datos más recientes, los del ranking de 2020, primero trataré de predecir que variables influyen en el posicionamiento de un perro, mediante una regresión logística. 
 
-Para ver las variables que tienen mas significancia en el posicionamiento me interesa observar el pvalor que muestra el 'summary', un menor pvalor es igual a mayor significancia.
+Para ver las variables que tienen más significancia en el posicionamiento me interesa observar el pvalor que muestra el 'summary', un menor pvalor es igual a mayor significancia.
 
 ```{r, eval=FALSE}
 # Remover columna con nombres de razas
@@ -267,7 +267,7 @@ modelo = glm(br$`2020 Rank` ~ ., data=bt)
 summary (modelo)
 ```
 
-- Las variables que mas influyen en la posicion de un perro son: Playfulness Level, Coat Type( especificamente Plott Hounds) y Coat Grooming Frequency. Con estas variables genere un segundo modelo y tambien grafique el ranking de un perro contra el tipo de pelaje y la frecuencia de cepillado, ya que la frecuencia de cepillado y el tipo de pelaje son las variables que mas influyen en la posicion de una raza.
+- Las variables que más influyen en la posición de un perro son: Playfulness Level, Coat Type( específicamente Plott Hounds) y Coat Grooming Frequency. Con estas variables generé un segundo modelo y también grafiqué el ranking de un perro contra el tipo de pelaje y la frecuencia de cepillado, ya que la frecuencia de cepillado y el tipo de pelaje son las variables que más influyen en la posición de una raza.
 
 
 ```{r}
