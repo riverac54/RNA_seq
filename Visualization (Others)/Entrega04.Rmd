@@ -21,6 +21,29 @@ output:
 
 # Crear plot de H3K36me3 (*visualization of Human H3K36me3 ChIP data*)
 
+```bash
+
+# Copiar los archivos necesarios a una carpeta de trabajo propia asignada para esta tarea
+
+cd /mnt/Timina/bioinfoII/data/deepTools
+cp H3K36me3.bw /mnt/Timina/bioinfoII/jgarcia/Tarea03
+cp Human38_genesGencodev39.bed /mnt/Timina/bioinfoII/jgarcia/Tarea03 
+
+# Cargar módulos
+module load deeptools/2.4.1
+
+#Generar una matriz de 2000 x 2000 que contenga las puntuaciones por regiones del genoma y preparar un archivo intermedio para usarse con el comando plotHeatmap.
+computeMatrix reference-point -S H3K36me3.bw -R Human38_genesGencodev39.bed --referencePoint center -a 2000 -b 2000 -out matrix_H3K36me3_matrix.tab.gz
+
+#Generar un mapa de calor para las puntuaciones asociadas a regiones genómicas
+plotHeatmap -m matrix_H3K36me3_matrix.tab.gz -out H3K36me3_genes.png --heatmapHeight 15 --refPointLabel gene.center --regionsLabel genes --plotTitle ' H3K36me3 signal'
+
+```
+
+![](./T04_images/H3K36me3_genes.png)
+
+En esta imagen podemos observar en una región del centro de los genes a -2.0 hasta 2.0 Kb que las señales de la histona H3K36me3 en los genes humanos Gencodev39 no son lo suficientemente significativas como para llegar a una conclusión rotunda, sin embargo, podemos observar que hay una ligera señal aumentada en el sitio terminal de transcripción, al igual que en el sitio de inicio de la transcripción, pero en menor medida.
+
 # Heatmap de ratón (*visualization of M. musculus Cebpa ChIP data*)
 
 Para este ejemplo, vamos a crear un mapa de calor a partir de los datos ChIP-seq de la tarea anterior. Es necesario un fichero bigWig (`Mus_alg_sorted.bw`) que contenga los datos de cobertura del experimento y un fichero `.bed` que contenga las regiones de interés. En este caso, no tenemos un fichero `.bed` de referencia para ratón, pero es posible obtener uno entrando en el *[Table Browser](https://genome.ucsc.edu/cgi-bin/hgTables)* del *UCSC Genome Browser* y rellenando un formulario de la siguiente forma:
@@ -259,3 +282,8 @@ ggplot(mapping= aes(x=bt$`Coat Grooming Frequency`, y=br$`2020 Rank`, colour= bt
 
 ```
 
+#Referencias
+
+computeMatrix — deepTools 3.5.0 documentation. (n.d.). Readthedocs.Io. Retrieved Marzo 4, 2023, de https://deeptools.readthedocs.io/en/develop/content/tools/computeMatrix.html
+
+plotHeatmap — deepTools 3.5.0 documentation. (n.d.). Readthedocs.Io. Retrieved Marzo 4, 2023, de https://deeptools.readthedocs.io/en/develop/content/tools/plotHeatmap.html
