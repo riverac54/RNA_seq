@@ -1,0 +1,90 @@
+---
+title: "Reporte_05"
+author: "Jessica Garcia, Manuel Rivera, Axel Rodriguez"
+date: "2023-03-03"
+output:
+  html_document:
+    toc: true # table of content true
+    toc_float: yes
+    toc_depth: 3  # upto three depths of headings (specified by #, ## and ###)
+    number_sections: true  ## if you want number sections at each table header
+    theme: united  # many options for theme, this one is my favorite.
+    highlight: tango  # specifies the syntax highlighting style
+  pdf_document: 
+    toc: true
+    toc_depth: 3
+    number_sections: true
+    pandoc_args: --listings # Para que no se salga el codigo del margen
+    includes:
+      in_header: preamble.tex
+---
+
+
+# Informacion de los datos
+
+- Nombre del proyecto: PRJNA826506
+
+- Link: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE200762
+
+- Especie: Homo_Sapiens
+
+- Descargar los archivos de Bioproject
+```bash 
+# Nombres de los SRA
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/human_fastq.txt
+
+# Instrucciones para descarga
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/SRAData_dow.sh
+
+# Donde se descargan
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/data
+
+# Ruta del JOB
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/SRA_run.sge
+```
+
+- Analisis de calidad
+
+
+
+
+
+--------------------------------------------------------------------------------
+
+# Abstract o resumen de mi trabajo
+
+¿Qué comparamos?
+
+¿Qué tipo de datos analizaste?
+
+¿Qué programas usaste y por qué?
+
+Información breve de que obtuviste
+
+Máximo 200 palabras
+
+--------------------------------------------------------------------------------
+
+# Buenas practicas de bioinformatica
+
+
+
+
+--------------------------------------------------------------------------------
+
+# Resultados y discusión
+
+
+
+
+--------------------------------------------------------------------------------
+
+# Visualizacion de grafica
+
+
+
+
+
+
+
+
