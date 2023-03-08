@@ -51,7 +51,50 @@ cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens
 # Descargar analisis FastQC --> computadora
 rsync -rptuvl mrivera@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_rawData ./Documents
 ```
-- Interpretacion archivo fastqc
+--------------------------------------------------------------------------------
+
+# Analisis MultiQC
+
+- Todas son de 150 bp.
+
+- El SRA que tiene mas secuenciaciones es 'SRR18745762' con $66.1 \space Millones$. El SRA con menos secuencias fue 'SRR18745771' con $3 \space Millones$.
+
+- El SRA 'SRR18745762' tiene $75.6 \% $ de duplicados. Si bien esto podría suponer un problema, debemos recordar que trabajamos con RNA-seq y los duplicados se puede deber a la expresion de un pequeño numero de genes. En RRna-seq no deben de eliminarse los duplicados, a menos que tengan UMIs(barcodes).
+
+- Esta grafica nos muestra que todos los archivos tuvieron una buena calidad. Siendo la muestra 'SRR18745771_1' la que tiene la calidad mas baja de $24.53$, es decir, el error esta entre $0.01<error<.001$
+
+- https://dnatech.genomecenter.ucdavis.edu/faqs/should-i-remove-pcr-duplicates-from-my-rna-seq-data/
+- https://www.biostars.org/p/14283/ 
+
+
+
+## Per Sequence GC Content 
+
+- Solamente 2 muestras salieron bien, el resto tuvieron alertas (11) o fueron marcadas como errores (9). Esto es normal, ya que las primeras 10-12 bases son resultado del hexamero utilizado como primers, este hexamero esta compuesto de forma aleatoria.
+
+- https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon/lessons/qc_fastqc_assessment.html#:~:text=The%20%E2%80%9CPer%20sequence%20GC%20content,expected%20%25%20GC%20for%20the%20organism.
+
+## Per Base N Content 
+
+- Todas las muestras pasaron la prueba, esto indica que todas las posiciones tienen asignadas una base.
+
+- https://rtsf.natsci.msu.edu/sites/_rtsf/assets/File/FastQC_TutorialAndFAQ_080717.pdf
+
+
+## Overrepresented sequence
+
+- Es posible que la sobrerepresentacion de las secuencias se deban a que un transcriptoma es muy abundante.
+
+- https://rtsf.natsci.msu.edu/genomics/tech-notes/fastqc-tutorial-and-faq/#:~:text=Overrepresented%20Sequences,to%20try%20to%20identify%20it.
+
+## Adapter Content 
+
+- Solamente 2 muestras tienen alerta 'SRR18745771_1 y SRR18745768_1' esto ocurre debido a que el adaptador esta presente en mas del $5 \% $ de las lecturas. El resto de las muestras tienen errores, esto indica que el adaptador esta presente en mas del $10 \% $ de las lecturas.
+
+- https://www.ridom.de/seqsphere/u/FASTQ_Quality_Control_(FastQC).html
+
+--------------------------------------------------------------------------------
+# Caractersticas de las muestras
 
 - Tipo de bibliotecas
 
