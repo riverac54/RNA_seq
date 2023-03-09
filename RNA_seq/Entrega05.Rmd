@@ -121,6 +121,7 @@ Hs_Kall_Ass_3.sge ---> KALLISTOOOO
 --------------------------------------------------------------------------------
 # Kallisto pseudo alligment
 
+- Descargar transcriptoma de referencia
 ```bash
 # Generar transcriptoma de referencia meaidnte el JOB 'Transcript_down.sge', con las instrucciones:
 wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_43/gencode.v43.transcripts.fa.gz 
@@ -132,17 +133,70 @@ cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/gencode.v43
 cd ./gencode.v43.transcripts.fa.gz.1
 
 # Carpeta de archivos kallisto
-mkdir kallisto_quant
-
-# Generar index con Kallisto
-module load kallisto/0.45.0 # cargar modulo de kallisto
-kallisto index gencode.v43.transcripts.fa.gz -i ./kallisto_quant/HS_ref.kidx 
-
-# CONTINUARR-...................................
-
+mkdir kallisto_quant_test
 ```
 
+- Generar un JOB 'Kallisto_down_data.sge'.
+```bash
+#!/bin/bash
+#
+# Use Current working directory
+#$ -cwd
+#
+# Join stdout and stderr
+#$ -j n
+#
+# Run job through bash shell
+#$ -S /bin/bash
+#
+# You can edit the script since this line
+#
+# Your job name
+#$ -N Kallisto_down_data
+#
+# Send an email after the job has finished
+#$ -m e
+#$ -M rivera20c3@gmail.com
+#
+#
+# If modules are needed, source modules environment (Do not delete the next line):
+. /etc/profile.d/modules.sh
+#
+# Add any modules you might require:
+module load kallisto/0.45.0
+#
+# Write your commands in the next line
 
+# Generar index de kallisto
+kallisto index ./gencode.v43.transcripts.fa.gz -i ./kallisto_quant_test/HS_ref.kidx 
+
+# - i nombre del archivo de salida, i.e., indice
+#- Input =  gencode.v43.transcripts.fa.gz, transcriptoma de referencia
+
+# Paired-end ORIGINAL
+for file in ./data_trimmed/*_1_trimmed.fastq.gz                                                         # Read1
+do
+  clean=$(echo $file | sed 's/^.\{15\}//g;s/_trimmed//;s/\.fastq\.gz//;s/_1\.fq\.gz//')         # Nombre de la carpeta de salida, mismo nombre de SRA
+  file_2=$(echo ${clean}_2.fastq.gz| sed 's/FP/RP/')                                            # Read2
+  kallisto quant --index ./kallisto_quant_test/HS_ref.kidx --output-dir ./kallisto_quant_test/${clean} --threads 12 ${file} ${file_2}
+done
+
+ # Paired-end AXEL 
+for file in ./*_1_trimmed.fastq.gz                                                 # Read1
+do
+  clean=$(echo $file | sed 's/_trimmed//;s/\.fastq\.gz//;s/_1//')         # Nombre de la carpeta de salida, mismo nombre de SRA
+  file_2=$(echo ${clean}_2_trimmed.fastq.gz| sed 's/FP/RP/')                                            # Read2
+  kallisto quant --index ../kallisto_quant3/Hm_ref.kidx --output-dir ../kallisto_quant3/${clean} --threads 12 ${file} ${file_2}
+done
+```
+
+- Mostrar resultados del alineamiento
+```bash
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/data_trimmed
+
+
+
+```
 --------------------------------------------------------------------------------
 # Caractersticas de las muestras
 
