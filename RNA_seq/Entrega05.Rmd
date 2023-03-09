@@ -43,7 +43,7 @@ cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/data
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/SRA_run.sge
 ```
 
-- Para el analisis de calidad se creo el job "Trimmed_run.sge"
+- Para el analisis de calidad de la 'rawdata' se creo el job "Trimmed_run.sge"
 ```bash
 # Ubicacion del JOB
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens
@@ -51,9 +51,28 @@ cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens
 # Descargar analisis FastQC --> computadora
 rsync -rptuvl mrivera@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_rawData ./Documents
 ```
+
+## Limpieza de adaptadores
+
+- Limpieza de adaptadores con el JOB 'Trimmed_run.sge'
+```bash
+
+# Ubicacion de adaptadores para paired-end
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/TruSeq3-PE.fa
+
+# Ubicacion de los datos sin adaptadores
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/data_trimmed
+
+# Analisis MultiQC de datos sin adaptadores
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_trimmed/multiqc_report.html
+
+# Descargar MultiQC de datos sin adaptadores a mi computadora
+rsync -rptuvl mrivera@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_trimmed ./Documents
+```
+Hs_Kall_Ass_3.sge ---> KALLISTOOOO
 --------------------------------------------------------------------------------
 
-# Analisis MultiQC
+# Analisis MultiQC rawdata
 
 - Todas son de 150 bp.
 
@@ -65,8 +84,6 @@ rsync -rptuvl mrivera@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_
 
 - https://dnatech.genomecenter.ucdavis.edu/faqs/should-i-remove-pcr-duplicates-from-my-rna-seq-data/
 - https://www.biostars.org/p/14283/ 
-
-
 
 ## Per Sequence GC Content 
 
@@ -80,7 +97,6 @@ rsync -rptuvl mrivera@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_
 
 - https://rtsf.natsci.msu.edu/sites/_rtsf/assets/File/FastQC_TutorialAndFAQ_080717.pdf
 
-
 ## Overrepresented sequence
 
 - Es posible que la sobrerepresentacion de las secuencias se deban a que un transcriptoma es muy abundante.
@@ -92,6 +108,40 @@ rsync -rptuvl mrivera@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_
 - Solamente 2 muestras tienen alerta 'SRR18745771_1 y SRR18745768_1' esto ocurre debido a que el adaptador esta presente en mas del $5 \% $ de las lecturas. El resto de las muestras tienen errores, esto indica que el adaptador esta presente en mas del $10 \% $ de las lecturas.
 
 - https://www.ridom.de/seqsphere/u/FASTQ_Quality_Control_(FastQC).html
+
+--------------------------------------------------------------------------------
+# Analisis MultiQC sin adaptadores
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------
+# Kallisto pseudo alligment
+
+```bash
+# Generar transcriptoma de referencia meaidnte el JOB 'Transcript_down.sge', con las instrucciones:
+wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_43/gencode.v43.transcripts.fa.gz 
+
+# Ubicacion transciptoma de referencia
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/gencode.v43.transcripts.fa.gz
+
+# tambien arroja uno con un 1 al final ?????????
+cd ./gencode.v43.transcripts.fa.gz.1
+
+# Carpeta de archivos kallisto
+mkdir kallisto_quant
+
+# Generar index con Kallisto
+module load kallisto/0.45.0 # cargar modulo de kallisto
+kallisto index gencode.v43.transcripts.fa.gz -i ./kallisto_quant/HS_ref.kidx 
+
+# CONTINUARR-...................................
+
+```
+
 
 --------------------------------------------------------------------------------
 # Caractersticas de las muestras
