@@ -129,9 +129,6 @@ wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_43/gencod
 # Ubicacion transciptoma de referencia
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/gencode.v43.transcripts.fa.gz
 
-# tambien arroja uno con un 1 al final ?????????
-cd ./gencode.v43.transcripts.fa.gz.1
-
 # Carpeta de archivos kallisto
 mkdir kallisto_quant_test
 ```
@@ -173,29 +170,24 @@ kallisto index ./gencode.v43.transcripts.fa.gz -i ./kallisto_quant_test/HS_ref.k
 # - i nombre del archivo de salida, i.e., indice
 #- Input =  gencode.v43.transcripts.fa.gz, transcriptoma de referencia
 
-# Paired-end ORIGINAL
-for file in ./data_trimmed/*_1_trimmed.fastq.gz                                                         # Read1
-do
-  clean=$(echo $file | sed 's/^.\{15\}//g;s/_trimmed//;s/\.fastq\.gz//;s/_1\.fq\.gz//')         # Nombre de la carpeta de salida, mismo nombre de SRA
-  file_2=$(echo ${clean}_2.fastq.gz| sed 's/FP/RP/')                                            # Read2
-  kallisto quant --index ./kallisto_quant_test/HS_ref.kidx --output-dir ./kallisto_quant_test/${clean} --threads 12 ${file} ${file_2}
-done
-
- # Paired-end AXEL 
-for file in ./*_1_trimmed.fastq.gz                                                 # Read1
+ # Paired-end  
+for file in ./data_trimmed/*_1_trimmed.fastq.gz                                                 # Read1
 do
   clean=$(echo $file | sed 's/_trimmed//;s/\.fastq\.gz//;s/_1//')         # Nombre de la carpeta de salida, mismo nombre de SRA
   file_2=$(echo ${clean}_2_trimmed.fastq.gz| sed 's/FP/RP/')                                            # Read2
-  kallisto quant --index ../kallisto_quant3/Hm_ref.kidx --output-dir ../kallisto_quant3/${clean} --threads 12 ${file} ${file_2}
+  kallisto quant --index ./kallisto_quant_test/HS_ref.kidx --output-dir ./kallisto_quant_test/${clean} --threads 12 ${file} ${file_2}
 done
 ```
 
+
 - Mostrar resultados del alineamiento
 ```bash
-cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/data_trimmed
 
+# JOB 'Kallisto_down_data.sge' para generar el alineamiento
+cd ./Kallisto_down_data.sge
 
-
+# Se encuentran en el archivo de errores del JOB
+cat Kallisto_down_data.e276381 
 ```
 --------------------------------------------------------------------------------
 # Caractersticas de las muestras
@@ -243,13 +235,13 @@ Máximo 200 palabras
 
 
 --------------------------------------------------------------------------------
-
-# Visualizacion de grafica
-
-
-
+# DESEQ2 
+# Jessica 'Volcano plot'
+# Axel 'Heatmap'
 
 
+--------------------------------------------------------------------------------
+# Graficas GO (Manuel)
 
 
 
