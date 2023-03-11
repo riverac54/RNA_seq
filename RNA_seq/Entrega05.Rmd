@@ -194,15 +194,19 @@ cat Kallisto_down_data.e276381
 
 - Tipo de bibliotecas: Paired-end
 
-- Método de selección: cDNA *** 
+- Método de selección: ARN Total, cDNA
 
 - Número de transcriptomas: 6 transcriptomas 
 
-- Número de réplicas biológicas: 11 ***
+- Número de réplicas biológicas: 3 con un total de 11 corridas
 
 - Secuenciador: Illumina NovaSeq 6000
 
-- Distribución de las muestras: (control y tratamiento)
+- Distribución de las muestras: 
+
+  Tratamiento con DMSO (hTSC, DMSO) - SRR18745765 (repbio1), SRR18745766 (repbio1), SRR18745770 (repbio2), SRR18745771 (repbio2), SRR18745772 (repbio2), SRR18745767 (repbio3), SRR18745768 (repbio3), SRR18745769 (repbio3) #Cells were treated with either 10 µM SP60015 or DMSO control for 96 hours.
+
+  Tratamiento con SP600125 (hTSC, SP600125) - SRR18745764 (repbio1), SRR18745763 (repbio2) y SRR18745762 (repbio3)
 
 - Profundidad de secuenciación de cada transcriptoma:
 
