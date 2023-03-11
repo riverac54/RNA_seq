@@ -192,19 +192,19 @@ cat Kallisto_down_data.e276381
 --------------------------------------------------------------------------------
 # Caractersticas de las muestras
 
-- Tipo de bibliotecas
+- Tipo de bibliotecas: Paired-end
 
-- Método de selección (ej: poly A)
+- Método de selección: cDNA *** 
 
-- Número de transcriptomas
+- Número de transcriptomas: 6 transcriptomas 
 
-- Número de réplicas biológicas
+- Número de réplicas biológicas: 11 ***
 
-- Secuenciador
+- Secuenciador: Illumina NovaSeq 6000
 
-- Distribución de las muestras (control y tratamiento)
+- Distribución de las muestras: (control y tratamiento)
 
-- Profundidad de secuenciación de cada transcriptoma
+- Profundidad de secuenciación de cada transcriptoma:
 
 --------------------------------------------------------------------------------
 
@@ -212,7 +212,7 @@ cat Kallisto_down_data.e276381
 
 ¿Qué comparamos?
 
-¿Qué tipo de datos analizaste?
+¿Qué tipo de datos analizaste? RNA-seq
 
 ¿Qué programas usaste y por qué?
 
