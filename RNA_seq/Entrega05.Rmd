@@ -69,7 +69,6 @@ cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_trim
 # Descargar MultiQC de datos sin adaptadores a mi computadora
 rsync -rptuvl mrivera@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_trimmed ./Documents
 ```
-Hs_Kall_Ass_3.sge ---> KALLISTOOOO
 --------------------------------------------------------------------------------
 
 # Analisis MultiQC rawdata
