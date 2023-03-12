@@ -228,7 +228,46 @@ Máximo 200 palabras
 
 # Buenas practicas de bioinformatica
 
+```{r}
+library(tximport)
+library(tidyverse)
+library(DESeq2)
+library(ggplot2)
+library(ggrepel)
+library(rhdf5)
+library(GenomicFeatures)
+```
 
+## Importacion de datos de kallisto en R
+
+Antes de comenzar, se requiere de la creación de una tabla tx2gene. Para ello, se implementa el siguiente código:
+
+```{r eval=FALSE, include=FALSE}
+txdb <- makeTxDbFromGFF(file="gencode.v43.annotation.gtf")
+saveDb(x=txdb, file = "gencode.v43.annotation.TxDb")
+k <- keys(txdb, keytype = "TXNAME")
+tx2gene <- select(txdb, k, "GENEID", "TXNAME")
+head(tx2gene)
+write.table(tx2gene, "tx2gene.gencode.v43.csv", sep = ",", row.names = FALSE)
+```
+
+Lo cual genera el archivo 'tx2gene.gencode.v43.csv'. 
+
+```{r}
+# > H. sapiens
+# generar tabla de metadatos
+Hs_metadata.tsv <- data.frame("SRA" =c("SRR18745765","SRR18745766",  # Control R1
+                                       "SRR18745770", "SRR18745771", "SRR18745772",  # Control R2
+                                       "SRR18745767", "SRR18745768", "SRR18745769",  # Control R3
+                                       "SRR18745764", "SRR18745763", "SRR18745762"),  # JNK_inh
+                              "sample" = c("control_1_R1","control_2_R1",
+                                           "control_1_R2", "control_2_R2",  "control_3_R2", 
+                                           "control_1_R3", "control_2_R3",  "control_3_R3",
+                                           "JNK_inh_R1", "JNK_inh_R2", "JNK_inh_R3") , 
+                              "dex" = c(rep("control",8), 
+                                        rep("JNK_inh",3)), 
+                              "species" = "Homo_sapiens")
+```
 
 
 --------------------------------------------------------------------------------
@@ -240,8 +279,10 @@ Máximo 200 palabras
 
 --------------------------------------------------------------------------------
 # DESEQ2 
-# Jessica 'Volcano plot'
-# Axel 'Heatmap'
+
+## Instalaciones 
+
+
 
 
 --------------------------------------------------------------------------------
