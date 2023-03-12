@@ -8,7 +8,7 @@ output:
     toc_float: yes
     toc_depth: 3  # upto three depths of headings (specified by #, ## and ###)
     number_sections: true  ## if you want number sections at each table header
-    theme: united  # many options for theme, this one is my favorite.
+    theme: united  # many options for theme, this one is my favorite
     highlight: tango  # specifies the syntax highlighting style
   pdf_document: 
     toc: true
