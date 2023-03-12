@@ -8,7 +8,7 @@ output:
     toc_float: yes
     toc_depth: 3  # upto three depths of headings (specified by #, ## and ###)
     number_sections: true  ## if you want number sections at each table header
-    theme: united  # many options for theme, this one is my favorite.
+    theme: united  # many options for theme, this one is my favorite
     highlight: tango  # specifies the syntax highlighting style
   pdf_document: 
     toc: true
@@ -191,19 +191,23 @@ cat Kallisto_down_data.e276381
 --------------------------------------------------------------------------------
 # Caractersticas de las muestras
 
-- Tipo de bibliotecas
+- Tipo de bibliotecas: Paired-end
 
-- Método de selección (ej: poly A)
+- Método de selección: ARN Total, cDNA
 
-- Número de transcriptomas
+- Número de transcriptomas: 6 transcriptomas 
 
-- Número de réplicas biológicas
+- Número de réplicas biológicas: 3 con un total de 11 corridas
 
-- Secuenciador
+- Secuenciador: Illumina NovaSeq 6000
 
-- Distribución de las muestras (control y tratamiento)
+- Distribución de las muestras: 
 
-- Profundidad de secuenciación de cada transcriptoma
+  Tratamiento con DMSO (hTSC, DMSO) - SRR18745765 (repbio1), SRR18745766 (repbio1), SRR18745770 (repbio2), SRR18745771 (repbio2), SRR18745772 (repbio2), SRR18745767 (repbio3), SRR18745768 (repbio3), SRR18745769 (repbio3) #Cells were treated with either 10 µM SP60015 or DMSO control for 96 hours.
+
+  Tratamiento con SP600125 (hTSC, SP600125) - SRR18745764 (repbio1), SRR18745763 (repbio2) y SRR18745762 (repbio3)
+
+- Profundidad de secuenciación de cada transcriptoma:
 
 --------------------------------------------------------------------------------
 
@@ -211,7 +215,7 @@ cat Kallisto_down_data.e276381
 
 ¿Qué comparamos?
 
-¿Qué tipo de datos analizaste?
+¿Qué tipo de datos analizaste? RNA-seq
 
 ¿Qué programas usaste y por qué?
 
