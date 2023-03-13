@@ -292,7 +292,7 @@ Hs_metadata.tsv <- data.frame("SRA" =c("SRR18745765","SRR18745766",  # Control R
 # Anotacion articulo
 Hs_samples <- Hs_metadata.tsv
 Hs_samples
-Hs_files   <- file.path(".", Hs_samples$SRA,"abundance.h5") # Crear ruta a cada archivo abundance de cada SRA
+Hs_files   <- file.path("./SRA_experiments", Hs_samples$SRA,"abundance.h5") # Crear ruta a cada archivo abundance de cada SRA
 names(Hs_files) <- Hs_samples$SRA # Nombrar las rutas con el nombre de su correspondiente SRA
 all(file.exists(Hs_files))
 ```
