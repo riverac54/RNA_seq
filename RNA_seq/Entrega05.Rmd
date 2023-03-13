@@ -190,7 +190,7 @@ cd ./Kallisto_down_data.sge
 cat Kallisto_down_data.e276381 
 ```
 --------------------------------------------------------------------------------
-# Caractersticas de las muestras
+# Descripcion de los datos
 
 - Tipo de bibliotecas: Paired-end
 
@@ -212,7 +212,7 @@ cat Kallisto_down_data.e276381
 
 --------------------------------------------------------------------------------
 
-# Abstract o resumen de mi trabajo
+# Abstract
 
 ¿Qué comparamos?
 
@@ -226,34 +226,53 @@ Máximo 200 palabras
 
 --------------------------------------------------------------------------------
 
-# Buenas practicas de bioinformatica
+# Resultados 
 
-```{r}
+## Calidad de secuencias (FastQC y multiQC), tanto de raw data como después de la limpieza de adaptadores.
+
+## Limpieza de adaptadores
+
+## Alineacion 
+
+## Programa de predicción de cuentas
+
+## Análisis de expresión diferencial 
+
+El objetivo del análisis diferencial de expresión es realizar análisis estadísticos para tratar de descubrir cambios en los niveles de expresión de características definidas (genes, transcripciones, exones) entre grupos experimentales con muestras replicadas.
+
+### Instalaciones 
+
+La mayoría de las herramientas populares para el análisis de expresión diferencial están disponibles como paquetes de R / Bioconductor. Bioconductor es un proyecto R y repositorio que proporciona un conjunto de paquetes y métodos para el análisis de datos *omicos*.
+
+Para este proyecto, serán necesarias las siguientes paqueterías:
+
+```{r Librerias, results='hide', message=FALSE}
 library(tximport)
 library(tidyverse)
 library(DESeq2)
 library(ggplot2)
 library(ggrepel)
 library(rhdf5)
-library(GenomicFeatures)
 ```
 
-## Importacion de datos de kallisto en R
+- `tximport` proporciona una manera de importar y resumir datos a nivel de transcripción generados a partir de herramientas de cuantificación (como `salmon`, `kallisto` y `STAR`) en un formato común que se puede utilizar para el análisis posterior.
+- El paquete `tidyverse` es una colección de paquetes en R diseñados para trabajar juntos para hacer más fácil y eficiente la manipulación, visualización y análisis de datos. Su función principal es proporcionar un conjunto coherente e intuitivo de herramientas para la limpieza, transformación y visualización de datos.
+- La función principal del paquete `DESeq2` es identificar genes que se expresan diferencialmente entre dos o más condiciones experimentales, basándose en datos de recuento de experimentos de secuenciación de alto rendimiento. DESeq2 is based on the hypothesis that most genes are not differentially expressed. 
+- El paquete `ggplot2` proporciona una amplia gama de funciones para crear varios tipos de gráficos, que permite a los usuarios describir y crear *plots* complejos utilizando un conjunto simple y coherente de sintaxis y principios.
+- El paquete `ggrepel` en R es un paquete para crear etiquetas de texto que se ajustan automáticamente para evitar solaparse con otras etiquetas o puntos de datos en un gráfico. Su función principal es proporcionar una solución flexible y fácil de usar para etiquetar puntos, líneas u otros elementos gráficos en *plots* complejos creados con `ggplot2` u otros paquetes.
 
-Antes de comenzar, se requiere de la creación de una tabla tx2gene. Para ello, se implementa el siguiente código:
+#### Importacion de datos de kallisto en R (*Import transcript-level estimates*)
 
-```{r eval=FALSE, include=FALSE}
-txdb <- makeTxDbFromGFF(file="gencode.v43.annotation.gtf")
-saveDb(x=txdb, file = "gencode.v43.annotation.TxDb")
-k <- keys(txdb, keytype = "TXNAME")
-tx2gene <- select(txdb, k, "GENEID", "TXNAME")
-head(tx2gene)
-write.table(tx2gene, "tx2gene.gencode.v43.csv", sep = ",", row.names = FALSE)
+```{r Intalacion GenomicFeatures, eval=FALSE, include=FALSE}
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("GenomicFeatures")
 ```
 
-Lo cual genera el archivo 'tx2gene.gencode.v43.csv'. 
+Primero, we create a named vector pointing to the quantification files (los abundance.tsv). We will create a vector of filenames first by reading in a table that contains the SRR, and then combining this with "." and "abundance.tsv".
 
-```{r}
+```{r Metadatos}
 # > H. sapiens
 # generar tabla de metadatos
 Hs_metadata.tsv <- data.frame("SRA" =c("SRR18745765","SRR18745766",  # Control R1
@@ -269,24 +288,90 @@ Hs_metadata.tsv <- data.frame("SRA" =c("SRR18745765","SRR18745766",  # Control R
                               "species" = "Homo_sapiens")
 ```
 
+```{r Samples and Files}
+# Anotacion articulo
+Hs_samples <- Hs_metadata.tsv
+Hs_samples
+Hs_files   <- file.path(".", Hs_samples$SRA,"abundance.h5") # Crear ruta a cada archivo abundance de cada SRA
+names(Hs_files) <- Hs_samples$SRA # Nombrar las rutas con el nombre de su correspondiente SRA
+all(file.exists(Hs_files))
+```
 
---------------------------------------------------------------------------------
+- `file.path` te permite crear una ruta a un archivo específico en un directorio de trabajo. En este caso, una ruta para cada archivo `abundance.tsv`
 
-# Resultados y discusión
+Las transcripciones deben asociarse con identificadores genéticos (*gene IDs*) para el resumen a nivel genético (*gene-level summarization*). Si esa información está presente en los archivos, podemos omitir este paso. Para Salmon, Sailfish, y kallisto los archivos sólo proporcionan el ID de la transcripción. 
+
+Primero hacemos un *data-frame* llamado `tx2gene` con dos columnas: 
+  1) ID de la transcripción y 
+  2) ID del gen. 
+Los nombres de las columnas no importan, pero este orden de columnas debe ser utilizado. El ID de la transcripción debe ser el mismo utilizado en los archivos
+`abundance.tsv`. 
+
+```{r creacion archivo csv, eval=FALSE, include=FALSE}
+library(GenomicFeatures)
+txdb <- makeTxDbFromGFF(file="gencode.v43.annotation.gtf")
+saveDb(x=txdb, file = "gencode.v43.annotation.TxDb")
+k <- keys(txdb, keytype = "TXNAME")
+tx2gene <- select(txdb, k, "GENEID", "TXNAME")
+write.table(tx2gene, "tx2gene.gencode.v43.csv", sep = "\t", row.names = FALSE)
+```
+
+Luego leemos en una tabla `tx2gene` preconstruida:
+
+```{r tabla tx2gene Hs}
+Hs_tx2gene   <- read.csv("tx2gene.gencode.v43.csv", sep=",",header=TRUE) 
+head(Hs_tx2gene)
+```
+
+- `read.csv` lee un archivo en formato tabla y crea un *data frame* a partir de él, con casos correspondientes a líneas y variables a campos del archivo.
+
+El paquete `tximport` tiene una sola función para importar estimaciones a nivel de transcripción. 
+- El argumento `type` se utiliza para especificar qué software se utilizó para la estimación, en este caso fue `kallisto`.   
+Se devuelve una lista simple con matrices, `"abundance"`,  `"counts"` y     `"length"` , donde la información del nivel de transcripción se resume al nivel genético.   
+Típicamente, la abundancia es proporcionada por las herramientas de cuantificación como TPM (transcripciones-por-millón), mientras que los recuentos son recuentos estimados (posiblemente fraccionales), y la matriz de "longitud" contiene las longitudes efectivas del gen.   
+La matriz `"length"` se puede utilizar para generar una matriz de desplazamiento para el análisis diferencial a nivel genético de matrices de conteo (*offset matrix for downstream gene-level differential analysis*), como se muestra abajo.
+
+```{r tximport kallisto}
+Hs_txi_kallisto <- tximport(Hs_files, type = "kallisto", tx2gene=Hs_tx2gene, ignoreAfterBar=TRUE)
+names(Hs_txi_kallisto)
+head(Hs_txi_kallisto$counts)
+```
+
+Note que añadimos un argumento adicional en este fragmento de código, `ignoreAfterBar=TRUE`. Esto se debe a que las transcripciones del código genético tienen nombres como “ENST00000456328. 2|ENSG00000223972. 5|. . . ”, aunque nuestra tabla tx2gene solo incluye el primer identificador “ENST”. Por lo tanto, queremos dividir los nombres de las filas de la matriz de cuantificación entrante en la primera barra “|”, y solo usar esto como identificador.
+
+El usuario debe asegurarse de que los nombres de fila de la tabla `Hs_samples` se alineen con los nombres de columna de `Hs_txi_kallisto$counts`, si hay nombres de fila.
+
+```{r Nombre transcriptomas}
+# nombre de los transcriptomas
+rownames(Hs_samples) <- Hs_samples$sample # Nombre de cada fila como nombre de la muestra
+colnames(Hs_txi_kallisto$counts) <-rownames(Hs_samples) # Nombre de cada columna como nombre de cada muestra
+head(rownames(Hs_samples))
+head(colnames(Hs_txi_kallisto$counts))
+```
 
 
+```{r DESeqDataSetFromTximport, warning=FALSE}
+# Importacion de los datos convirtiendolos en un objeto que puede leer Deseq.
+Hs_ddsTxi_all <- DESeqDataSetFromTximport(Hs_txi_kallisto, Hs_samples, design = ~ dex) # Create a DESeq object from the tximport data
+```
 
 
---------------------------------------------------------------------------------
-# DESEQ2 
+```{r Prefiltrado, message=FALSE}
+# Prefiltrado, eliminacion de genes con bajas cuentas
+keep <- rowSums(counts(Hs_ddsTxi_all)) >= 10 # Si en una fila solo hay 10 cuentas (mapeo 10 veces)
+Hs_ddsTxi_all <- Hs_ddsTxi_all[keep,] 
+Hs_dds_all <- DESeq(Hs_ddsTxi_all) # run Differential expression analysis
+```
 
-## Instalaciones 
+#### Fuentes
+http://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#Downstream_DGE_in_Bioconductor
+https://f1000research.com/articles/4-1070/v2#s2
+http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#the-deseqdataset
+https://bioconductor.org/packages/devel/bioc/vignettes/GenomicFeatures/inst/doc/GenomicFeatures.html
 
 
+## Análisis de términos GO (Manuel)
 
-
---------------------------------------------------------------------------------
-# Graficas GO (Manuel)
-
+# Discusión
 
 
