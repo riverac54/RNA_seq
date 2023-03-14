@@ -315,7 +315,7 @@ tx2gene <- select(txdb, k, "GENEID", "TXNAME")
 write.table(tx2gene, "tx2gene.gencode.v43.csv", sep = "\t", row.names = FALSE)
 ```
 
-Luego leemos en una tabla `tx2gene` preconstruida:
+Luego leemos en una tabla `tx2gene` (pre-construida), la cual vincula las transcripciones a los genes para este conjunto de datos:
 
 ```{r tabla tx2gene Hs}
 Hs_tx2gene   <- read.csv("tx2gene.gencode.v43.csv", sep=",",header=TRUE) 
@@ -324,9 +324,10 @@ head(Hs_tx2gene)
 
 - `read.csv` lee un archivo en formato tabla y crea un *data frame* a partir de él, con casos correspondientes a líneas y variables a campos del archivo.
 
-El paquete `tximport` tiene una sola función para importar estimaciones a nivel de transcripción. 
+El paquete `tximport` tiene una sola función para importar estimaciones a nivel de transcripción, es decir los datos de cuantificación necesarios para DESeq2.
 - El argumento `type` se utiliza para especificar qué software se utilizó para la estimación, en este caso fue `kallisto`.   
-Se devuelve una lista simple con matrices, `"abundance"`,  `"counts"` y     `"length"` , donde la información del nivel de transcripción se resume al nivel genético.   
+- Se devuelve una lista simple con matrices, `"abundance"`,  `"counts"` y     `"length"` , donde la información del nivel de transcripción se resume al nivel genético.   
+
 Típicamente, la abundancia es proporcionada por las herramientas de cuantificación como TPM (transcripciones-por-millón), mientras que los recuentos son recuentos estimados (posiblemente fraccionales), y la matriz de "longitud" contiene las longitudes efectivas del gen.   
 La matriz `"length"` se puede utilizar para generar una matriz de desplazamiento para el análisis diferencial a nivel genético de matrices de conteo (*offset matrix for downstream gene-level differential analysis*), como se muestra abajo.
 
@@ -348,12 +349,20 @@ head(rownames(Hs_samples))
 head(colnames(Hs_txi_kallisto$counts))
 ```
 
+Posteriormente, podemos construir un _DESeqDataSet_ (`Hs_ddsTxi_all`), un objeto utilizado para almacenar las _read counts_ y las cantidades intermedias estimadas (*intermediate estimated quantities*) duarnte el análisis estadístico, a partir del objeto `Hs_txi_kallisto` y mostrar información en muestras.
 
-```{r DESeqDataSetFromTximport, warning=FALSE}
+```{r Importacion de datos DESeqDataSetFromTximport, warning=FALSE}
 # Importacion de los datos convirtiendolos en un objeto que puede leer Deseq.
 Hs_ddsTxi_all <- DESeqDataSetFromTximport(Hs_txi_kallisto, Hs_samples, design = ~ dex) # Create a DESeq object from the tximport data
 ```
 
+### Prefiltrado
+
+Si bien no es necesario prefiltrar genes de bajo conteo antes de ejecutar las funciones DESeq2, hay dos razones que hacen útil el prefiltrado: 
+1. al eliminar filas en las que hay muy pocas lecturas, reducimos el tamaño de la memoria del objeto de datos dds (`Hs_ddsTxi_all`), y aumentamos la velocidad de las funciones de transformación y _testing__ dentro de DESeq2. 
+2. También puede mejorar las visualizaciones, ya que las características sin información para la expresión diferencial no se trazan.
+
+Aquí realizamos un pre-filtrado mínimo para mantener sólo las filas que tienen al menos 10 lecturas en total.
 
 ```{r Prefiltrado, message=FALSE}
 # Prefiltrado, eliminacion de genes con bajas cuentas
@@ -362,11 +371,14 @@ Hs_ddsTxi_all <- Hs_ddsTxi_all[keep,]
 Hs_dds_all <- DESeq(Hs_ddsTxi_all) # run Differential expression analysis
 ```
 
+
+
 #### Fuentes
 http://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#Downstream_DGE_in_Bioconductor
 https://f1000research.com/articles/4-1070/v2#s2
 http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#the-deseqdataset
 https://bioconductor.org/packages/devel/bioc/vignettes/GenomicFeatures/inst/doc/GenomicFeatures.html
+https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html
 
 
 <<<<<<< HEAD
