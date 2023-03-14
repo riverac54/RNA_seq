@@ -246,5 +246,46 @@ Máximo 200 palabras
 --------------------------------------------------------------------------------
 # Graficas GO (Manuel)
 
+- Extraer informacion de BD
+```{r}
+#Bases de datos contenidas en ensembl Homo Sapiens
+library(biomaRt)
+listMarts(host="https://ensembl.org")
+
+
+#Lista de especies contenidas
+HS_ensembl <- useEnsembl(biomart="ENSEMBL_MART_ENSEMBL", host ="ensembl.org")
+head(listDatasets(HS_ensembl))
+
+# Codigo Homo Sapiens
+hsapiens_database <- useMart(biomart = "ENSEMBL_MART_ENSEMBL", host = "ensembl.org", dataset = "hsapiens_gene_ensembl")
+
+# todos lo que contiene enssembl
+all_ensembl <- useEnsembl(biomart="ensembl")
+head(listDatasets(all_ensembl))
+
+# Para ver todas las bases de datos contenidas en Ensembl
+View(listDatasets(all_ensembl))
+```
+
+
+```{r}
+athaliana_database <- useMart(biomart = "p", host = "ensembl.org", dataset = "hsapiens_gene_ensembl")
+head(listFilters(athaliana_database))
+head(listAttributes(athaliana_database))
+```
+
+- Extraer biotipos de genes
+```bash
+# Arabidopsis thaliana
+athaliana_biotype_genes <- getBM(c("ensembl_gene_id","gene_biotype"), mart=athaliana_database)
+
+# Homo sapiens
+hsapiens_database <- useMart(biomart = "ENSEMBL_MART_ENSEMBL", host = "ensembl.org", dataset = "hsapiens_gene_ensembl")
+
+unique(athaliana_biotype_genes$gene_biotype)
+```
+
+
 
 
