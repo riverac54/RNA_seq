@@ -52,7 +52,7 @@ cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens
 rsync -rptuvl mrivera@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_rawData ./Documents
 ```
 
-## Limpieza de adaptadores
+## Limpieza de adaptadores.
 
 - Limpieza de adaptadores con el JOB 'Trimmed_run.sge'
 ```bash
