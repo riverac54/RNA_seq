@@ -550,6 +550,7 @@ BiocManager::install("genefilter")
 
 ```{r heatmap}
 library("genefilter")
+library("pheatmap")
 topVarGenes <- head(order(rowVars(assay(Hs_all_normalized)), decreasing = TRUE), 20)  # Seleccion de mayores genes
 mat  <- assay(Hs_all_normalized)[ topVarGenes, ]  # Matriz con mayores genes
 mat  <- mat - rowMeans(mat)
