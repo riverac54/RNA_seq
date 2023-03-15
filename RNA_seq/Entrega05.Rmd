@@ -372,6 +372,10 @@ Hs_ddsTxi_all <- Hs_ddsTxi_all[keep,]
 Hs_dds_all <- DESeq(Hs_ddsTxi_all) # run Differential expression analysis
 ```
 
+Los pasos de análisis de expresión diferencial estándar están envueltos en una sola función, `DESeq`.
+
+### Cuentas normalizadas para graficas (rlog)
+
 
 
 #### Fuentes
