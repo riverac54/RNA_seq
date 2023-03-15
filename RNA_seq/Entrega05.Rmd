@@ -379,7 +379,7 @@ Muchos métodos estadísticos comunes para el análisis exploratorio de datos mu
 
 DESeq2 ofrece dos transformaciones para datos de conteo que estabilizan la varianza a través de la media: la __*transformación estabilizadora de varianza (VST)*__, y la transformación _regularizada de logaritmos_ o _rlog_.
 
-En este caso, utilizaremos rlog. A pesar de que VST es mucho más rápido de computar y es menos sensible a los valores atípicos con conteos altos que el rlog, este último tiende a funcionar bien en conjuntos de datos pequeños ($n$ < 30), .
+En este caso, utilizaremos rlog. A pesar de que VST es mucho más rápido de computar y es menos sensible a los valores atípicos con conteos altos que el rlog, este último tiende a funcionar bien en conjuntos de datos pequeños ($n$ < 30).
 
 ```{r Normalizacion rlog}
 Hs_all_normalized <- rlog(Hs_dds_all, blind=FALSE) # result rld, vst
