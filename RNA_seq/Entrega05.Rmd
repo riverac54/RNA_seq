@@ -508,15 +508,10 @@ class(data)
 
 #Eliminar NAs
 data2 = na.omit(data)
-class(data2)
 
 # Tomar solo los genes posiblemente diferentemente expresados significativoas
-data2[data2$pvalue < 0.5, ]
-data2[data2$log2FoldChange > 0.5, ]
-
 # Solamente requerimos los nombres de lo anterior, por lo que:
-genes_to_test = rownames(data2)
-is.character(genes_to_test)
+genes_to_test = rownames(data2[data2$log2FoldChange > 0.5 & data2$padj < 0.5, ])
 
 # Convertirlo en matriz y utilizar solo los primeros 100 IDs, ya que son un total de 12,999
 genes_to_test = as.matrix(genes_to_test)
@@ -525,13 +520,9 @@ genes_to_test = genes_to_test[1:100,]
 # Modificar nombres, solo quiero los primeros 15 caracteres
 #test<-matrix(,nrow=100,ncol=1) # Generar matriz
 genes_to_test = as.matrix(genes_to_test) #convertir a matriz
-
 for (i in 1:100) {
 genes_to_test[i,]=substr(genes_to_test[i,], start=1, stop=15)                           
 }
-
-#convertir caracter
-genes_to_test = as.character(genes_to_test)
 
 # Analisis terminos GO de lor primero 100 terminos, ya que en total son 12,999 y son muchos terminos
 Go_results <- enrichGO(gene=genes_to_test, OrgDb="org.Hs.eg.db", keyType = "ENSEMBL", ont = "BP")
@@ -539,6 +530,7 @@ Go_results <- enrichGO(gene=genes_to_test, OrgDb="org.Hs.eg.db", keyType = "ENSE
 
 
 ```{r}
+# Convwertir en data-frame
 as.data.frame(Go_results)
 ```
 
