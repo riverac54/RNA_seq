@@ -20,57 +20,6 @@ output:
 ---
 
 
-# Informacion de los datos
-
-- Nombre del proyecto: PRJNA826506
-
-- Link: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE200762
-
-- Especie: Homo_Sapiens
-
-- Descargar los archivos de Bioproject
-```bash 
-# Nombres de los SRA
-cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/human_fastq.txt
-
-# Instrucciones para descarga y cambio a Fastq
-cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/SRAData_dow.sh
-
-# Donde se descargan los archivos
-cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/data
-
-# Ruta del JOB
-cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/SRA_run.sge
-```
-
-- Para el analisis de calidad de la 'rawdata' se creo el job "Trimmed_run.sge"
-```bash
-# Ubicacion del JOB
-cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens
-
-# Descargar analisis FastQC --> computadora
-rsync -rptuvl mrivera@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_rawData ./Documents
-```
-
-## Limpieza de adaptadores.
-
-- Limpieza de adaptadores con el JOB 'Trimmed_run.sge'
-```bash
-
-# Ubicacion de adaptadores para paired-end
-cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/TruSeq3-PE.fa
-
-# Ubicacion de los datos sin adaptadores
-cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/data_trimmed
-
-# Analisis MultiQC de datos sin adaptadores
-cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_trimmed/multiqc_report.html
-
-# Descargar MultiQC de datos sin adaptadores a mi computadora
-rsync -rptuvl mrivera@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_trimmed ./Documents
-```
---------------------------------------------------------------------------------
-
 # Analisis MultiQC rawdata
 
 - Todas son de 150 bp.
@@ -188,26 +137,29 @@ cd ./Kallisto_down_data.sge
 # Se encuentran en el archivo de errores del JOB
 cat Kallisto_down_data.e276381 
 ```
+
+
+#################################################################################
 --------------------------------------------------------------------------------
 # Descripcion de los datos
 
 - Tipo de bibliotecas: Paired-end
 
-- Método de selección: ARN Total, cDNA
+- Método de selección: ARN Total, cDNA ****************** PREGUNTA A EVELIA: cDNA ¿es complementary DNA?
 
 - Número de transcriptomas: 6 transcriptomas 
 
-- Número de réplicas biológicas: 3 con un total de 11 corridas
+- Número de réplicas biológicas: 3 con un total de 11 corridas ***************** PREGUNTA A EVELIA: Las muestras las obtuvimos de NCBI y son 6. Cabe destacar que la muestra #4 tiene 2 corridas, la #5 y #6 tienen 3 corridas, así que el número real de archivos que vamos a descargar en el cluster son 11.
 
 - Secuenciador: Illumina NovaSeq 6000
 
 - Distribución de las muestras: 
 
-  Tratamiento con DMSO (hTSC, DMSO) - SRR18745765 (repbio1), SRR18745766 (repbio1), SRR18745770 (repbio2), SRR18745771 (repbio2), SRR18745772 (repbio2), SRR18745767 (repbio3), SRR18745768 (repbio3), SRR18745769 (repbio3) #Cells were treated with either 10 µM SP60015 or DMSO control for 96 hours.
+  Control: tratamiento con DMSO (hTSC, DMSO) - SRR18745765 (repbio1), SRR18745766 (repbio1), SRR18745770 (repbio2), SRR18745771 (repbio2), SRR18745772 (repbio2), SRR18745767 (repbio3), SRR18745768 (repbio3), SRR18745769 (repbio3) #Cells were treated with either 10 µM SP60015 or DMSO control for 96 hours.
 
   Tratamiento con SP600125 (hTSC, SP600125) - SRR18745764 (repbio1), SRR18745763 (repbio2) y SRR18745762 (repbio3)
 
-- Profundidad de secuenciación de cada transcriptoma:
+- Profundidad de secuenciación de cada transcriptoma: ************************** PREGUNTA ¿DÓNDE VEO ESTO? 
 
 --------------------------------------------------------------------------------
 
@@ -217,7 +169,7 @@ cat Kallisto_down_data.e276381
 
 ¿Qué tipo de datos analizaste? RNA-seq
 
-¿Qué programas usaste y por qué?
+¿Qué programas usaste y por qué? Kllisto quant, FastQC, trimm... 
 
 Información breve de que obtuviste
 
@@ -225,17 +177,110 @@ Máximo 200 palabras
 
 --------------------------------------------------------------------------------
 
-# Resultados 
+# Rutas de trabajo generadas en el proyecto
+
+1. Contiene los nombres de los SRA
+
+```{bash}
+/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/human_fastq.txt
+```
+
+2. Contiene las instrucciones de descarga de los datos (SRA) y el cambio a Fastq de los mismos ****** MANUEL: Instrucciones para descarga y cambio a Fastqs
+
+```{bash}
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/SRAData_dow.sh
+```
+
+3. Contiene el JOB de descarga de los SRA
+
+```{bash}
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/SRA_run.sge
+```
+
+4. Contiene los FastQC generados de las muestras (SRA) **** MANUEL: Donde se descargan los archivos
+
+```{bash}
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/data
+```
+
+5. Contiene el JOB para realizar la limpieza de adaptadores **** MANUEL Contiene el JOB generado para realizar el análisis de calidad de la 'rawdata'
+
+```{bash}
+ /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/Trimmed_run.sge
+```
+
+6. Contiene los adaptadores para paired-end *****NO ESTOY SEGURA, VIVALDO LO PUSO. CHECAR.
+
+```{bash}
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/TruSeq3-PE.fa
+```
+
+7. Contiene las muestras (SRA) sin adaptadores
+
+```{bash}
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/data_trimmed
+```
+
+8. Contiene el analisis MultiQC de datos sin adaptadores
+
+```{bash}
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_trimmed/multiqc_report.html
+```
+
+
+#Comandos de descarga del Vivaldo. SE OCUPAN + TARDE. **********************
+
+```{bash}
+# Descargar analisis FastQC --> computadora
+rsync -rptuvl mrivera@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_rawData ./Documents
+
+# Descargar analisis FastQC --> computadora
+rsync -rptuvl mrivera@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_rawData ./Documents
+
+```
+
+
+# Resultados y discusión 
 
 ## Calidad de secuencias (FastQC y multiQC), tanto de raw data como después de la limpieza de adaptadores.
 
+Auí van las imagenes que quiero poner. 
+
 ## Limpieza de adaptadores
+
+En una carpeta creada llamada data_trimmed vamos a almacenar las secuencias limpias mediante un job llamado Trimmed_run.sge
+
+```{bash}
+module load trimmomatic/0.33
+mkdir data_trimmed
+
+# Crear symlink
+ln -s /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/adapters/TruSeq3-PE.fa .
+ln -s /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/adapters/TruSeq-SE.fa .
+
+# paired-end
+cd data
+for i in *_1.fastq.gz;
+do echo
+trimmomatic PE -threads 8 -phred33 $i "${i%_1.fastq.gz}_2.fastq.gz" \
+../data_trimmed/"${i%_1.fastq.gz}_1_trimmed.fastq.gz" ../data_trimmed/"${i%_1.fastq.gz}_1_unpaired.fastq.gz" \
+../data_trimmed/"${i%_1.fastq.gz}_2_trimmed.fastq.gz" ../data_trimmed/"${i%_1.fastq.gz}_2_unpaired.fastq.gz" \
+ILLUMINACLIP:../TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:5:20 MINLEN:60
+done
+
+# Regresar
+cd ../
+```
+
+
 
 ## Alineacion 
 
 ## Programa de predicción de cuentas
 
-## Análisis de expresión diferencial 
+# Expresión diferencial
+
+## Análisis (de expresión diferencial) funcional 
 
 El objetivo del análisis diferencial de expresión es realizar análisis estadísticos para tratar de descubrir cambios en los niveles de expresión de características definidas (genes, transcripciones, exones) entre grupos experimentales con muestras replicadas.
 
