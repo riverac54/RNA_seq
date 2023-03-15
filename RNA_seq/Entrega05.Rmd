@@ -306,7 +306,7 @@ Primero hacemos un *data-frame* llamado `tx2gene` con dos columnas:
 Los nombres de las columnas no importan, pero este orden de columnas debe ser utilizado. El ID de la transcripción debe ser el mismo utilizado en los archivos
 `abundance.tsv`. 
 
-```{r creacion archivo csv, eval=FALSE, include=FALSE}
+```{r creacion archivo csv, eval=FALSE, echo=T}
 library(GenomicFeatures)
 txdb <- makeTxDbFromGFF(file="gencode.v43.annotation.gtf")
 saveDb(x=txdb, file = "gencode.v43.annotation.TxDb")
@@ -480,17 +480,10 @@ https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.ht
 
 <<<<<<< HEAD
 
-
---------------------------------------------------------------------------------
-# DESEQ2 
-# Jessica 'Volcano plot'
-# Axel 'Heatmap'
-
-
 --------------------------------------------------------------------------------
 # Graficas GO (Manuel)
 
-- Instalar 'gprofiler2'
+- Instalar 'clusterProfiler', 'AnnotationDbi' y Base de Datos de homo_sapiens 'org.Hs.eg.db'
 ```{r, echo=FALSE}
 # Comando
 install.packages('AnnotationDbi')
@@ -511,15 +504,37 @@ library(org.Hs.eg.db) # Human DB
 
 # Tomar tabla de datos de DESEQ2
 data = Hs_res_all
+class(data)
 
-# Tomar solo los genes posiblemente diferentemente expresados
-data[data$log2FoldChange > 0.5, ]
+#Eliminar NAs
+data2 = na.omit(data)
+class(data2)
+
+# Tomar solo los genes posiblemente diferentemente expresados significativoas
+data2[data2$pvalue < 0.5, ]
+data2[data2$log2FoldChange > 0.5, ]
 
 # Solamente requerimos los nombres de lo anterior, por lo que:
-genes_to_test = rownames(data[data$log2FoldChange > 0.5, ])
+genes_to_test = rownames(data2)
+is.character(genes_to_test)
 
-# Analisis terminos GO
-Go_results <- enrichGO(gene=genes_to_test, Orgdb="org.Hs.eg.db", keyType = "ENSEMBL", ont = "BP")
+# Convertirlo en matriz y utilizar solo los primeros 100 IDs, ya que son un total de 12,999
+genes_to_test = as.matrix(genes_to_test)
+genes_to_test = genes_to_test[1:100,]
+
+# Modificar nombres, solo quiero los primeros 15 caracteres
+#test<-matrix(,nrow=100,ncol=1) # Generar matriz
+genes_to_test = as.matrix(genes_to_test) #convertir a matriz
+
+for (i in 1:100) {
+genes_to_test[i,]=substr(genes_to_test[i,], start=1, stop=15)                           
+}
+
+#convertir caracter
+genes_to_test = as.character(genes_to_test)
+
+# Analisis terminos GO de lor primero 100 terminos, ya que en total son 12,999 y son muchos terminos
+Go_results <- enrichGO(gene=genes_to_test, OrgDb="org.Hs.eg.db", keyType = "ENSEMBL", ont = "BP")
 ```
 
 
@@ -530,8 +545,7 @@ as.data.frame(Go_results)
 
 ```{r}
  # Generar la plot de los primeros 20 genes
-fit <- plot(GO_results, showCategory = 20)
-view(fit)
+plot(barplot(Go_results, showCategory = 20))
 ```
 
 >>>>>>> 0220df6d942e339d6e75704006e4138c2428516d
