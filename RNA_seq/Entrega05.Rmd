@@ -189,6 +189,9 @@ cd ./Kallisto_down_data.sge
 # Se encuentran en el archivo de errores del JOB
 cat Kallisto_down_data.e276381 
 ```
+
+
+################################################################################
 --------------------------------------------------------------------------------
 # Descripcion de los datos
 
