@@ -452,44 +452,69 @@ En las llamadas a funciones anteriores, especificamos `blind = FALSE`, lo que si
 
 ## PCA
 
-```{r}
+Un primer paso útil en un análisis de ARN-seq es a menudo evaluar la similitud general entre las muestras. Un gráfico PCA muestra las muestras en el plano 2D abarcadas por sus dos primeros componentes principales. Este tipo de gráfico es útil para visualizar el efecto general de las covariadas experimentales y los efectos _batch_.
+
+```{r PCA}
 plotPCA(Hs_all_normalized, intgroup=c("dex"))
 ```
 
+Aquí, hemos utilizado la función `plotPCA` que viene con `DESeq2`. El término especificado por `intgroup` es el grupos de interés para etiquetar las muestras; le dicen a la función que debe usarlos para elegir colores.
+
+En esta gráfica, lo que observamos es que las muestras control (solo tratadas con dimetilsulfóxido, DMSO) muestran diferencia significativa con respecto a las células inhibidas de la kinasa JNK, lo cual, de hecho, es lo esperado.
+
 # Expresion diferencial (TODOS LOS TRANSCRITOS)
 
-```{r}
+Como se mencionó antes, los pasos de análisis de expresión diferencial estándar están envueltos en una sola función, `DESeq`. Las tablas de resultados se generan utilizando la función `results()`, que extrae una tabla de resultados con cambios de _log2 fold_, valores p y valores p ajustados.
+
+```{r Tabla resultados}
 Hs_res_all <- results(Hs_dds_all)  # Save the results
-mcols(Hs_res_all)$description # contraste shoot vs root
-#https://github.com/COMBINE-lab/salmon/issues/581
+Hs_res_all
 ```
 
-```{r}
+- La primera columna, `baseMean`, es una media de los valores normalizados de conteo, divididos por los factores de tamaño (*size factors*), tomada sobre todas las muestras del DESeqDataSet (`Hs_dds_all`).
+- La columna `log2FoldChange` es la estimación del tamaño del efecto (*effect size estimate.*). Nos dice cuánto parece haber cambiado la expresión del gen debido al tratamiento con SP6000125 (inhibidas de JKN) en comparación con las muestras tratadas con DMSO (control).
+- Por supuesto, esta estimación tiene una incertidumbre asociada con ella, que está disponible en la columna `lfcSE`, la estimación de error estándar para la estimación del _log2 fold change_.
+- La columna `pvalue` es el resultado de una prueba estadística que DESeq2 realiza para cada gen, en el que la hipotesis nula es que no hay efecto del tratamiento en el gen y que la diferencia observada entre el tratamiento y el control fue causada meramente por la variabilidad experimental (es decir, el tipo de variabilidad que se puede esperar entre diferentes muestras en el mismo grupo de tratamiento). 
+
+También podemos resumir los resultados con la siguiente línea de código, que reporta alguna información adicional.
+
+```{r summary tabla de resultados}
+summary(Hs_res_all)
+```
+
+Nótese que hay muchos genes con expresión diferencial (5112 up y 4012 down) debido al tratamiento con SP600125 (inhibidor de enzimas JNK). Sin embargo, hay dos maneras de ser más estrictos acerca de qué conjunto de genes se consideran importantes:
+
+1. reducir el umbral de falsos detectados (el umbral del `padj` en el cuadro de resultados)
+2. elevar el umbral de _log2 fold change_ desde 0 usando el argumento `log2FoldChange` de los resultados. 
+
+En este caso, tanto para extrer los genes sobreexpresados (Up) como para los subexpresados, reducimos el umbral de `padj` a menor a 0.5 y pedimos que el log2 fold change sea mayor o igual a 0.5.
+
+```{r UP and DOWN genes}
 # extraer UP
 Hs_all_de_gene_matrix_UP  <- subset(Hs_res_all, padj < 0.05 & log2FoldChange >= 0.5)
 write.table(Hs_all_de_gene_matrix_UP,file ="./Hs_all_DEG_kallisto_JNK_inh.tsv", quote=FALSE, sep="\t")
 # Extraer nombres
 Hs_all_de_gene_names_UP <- rownames(Hs_all_de_gene_matrix_UP)
-```
 
-
-```{r}
 # extraer down genes
 Hs_all_de_gene_matrix_DOWN  <- subset(Hs_res_all, padj < 0.05 & log2FoldChange < -0.5)
 write.table(Hs_all_de_gene_matrix_DOWN,file ="./Hs_all_DEG_kallisto_Control.tsv", quote=FALSE, sep="\t")
 # Extraer nombres
 Hs_all_de_gene_names_DOWN <- rownames(Hs_all_de_gene_matrix_DOWN)
-```
 
-```{r}
 # Numero de genes expresados
 length(Hs_all_de_gene_names_UP)
 length(Hs_all_de_gene_names_DOWN)
 ```
 
+Tras este filtrado, encontramos que existen 3612 genes sobreexpresados y 2646 genes subexpresados.
+
 # Volcano plot
 
+En este caso, para visualizar los datos normalizados podemos hacer uso de un _volcano plot_ De esta manera, podremos dar cuenta fácilmente de los genes que tienen un valor $p$ de mayor significacia.
+
 ```{r}
+
 Hs_de <- as.data.frame(Hs_res_all)
 # add a column of NAs
 Hs_de$diffexpressed <- "NO"
@@ -517,17 +542,22 @@ dev.off()
 
 # Heatmap 
 
-```{r}
-library("pheatmap")
-# los primeros 20 genes
-select <- order(rowMeans(counts(Hs_dds_all,normalized=TRUE)),
-                decreasing=TRUE)[1:20]
-df <- as.data.frame(colData(Hs_dds_all)[,c("dex", "sample")])
+Utilizamos un mapa de calor para visualizar la agrupación de genes que llevan una señal. En este caso, seleccionamos los 20 genes con la mayor varianza entre las muestras.  Proporcionamos el _dataframe_ `` que indica a la función pheatmap cómo etiquetar las columnas.
 
-#heatmap
-pheatmap(assay(Hs_all_normalized)[select,], cluster_rows=FALSE, show_rownames=FALSE,
-         cluster_cols=FALSE, annotation_col=df)
+```{r instalacion genefilter, eval=FALSE, include=FALSE}
+BiocManager::install("genefilter")
 ```
+
+```{r heatmap}
+library("genefilter")
+topVarGenes <- head(order(rowVars(assay(Hs_all_normalized)), decreasing = TRUE), 20)  # Seleccion de mayores genes
+mat  <- assay(Hs_all_normalized)[ topVarGenes, ]  # Matriz con mayores genes
+mat  <- mat - rowMeans(mat)
+anno <- as.data.frame(colData(Hs_all_normalized)[, c("sample","dex")]) # Anotaciones
+pheatmap(mat, annotation_col = anno) # Grafica
+```
+
+Lo que podemos observar es que, para un conjunto de genes para los cuales las muestras tratadas con SP600125 (inhibidor de enzimas JNK) tienen mayor (en rojo) o menor (en azul) expresión génica.
 
 #### Fuentes
 http://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#Downstream_DGE_in_Bioconductor
