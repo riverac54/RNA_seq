@@ -450,7 +450,7 @@ Tanto `vst` como `rlog` devuelven un objeto *DESeqTransform* basado en la clase 
 
 En las llamadas a funciones anteriores, especificamos `blind = FALSE`, lo que significa que las diferencias entre las líneas celulares y el tratamiento (las variables en el diseño) no contribuirán a la tendencia esperada de varianza-media del experimento. 
 
-## PCA
+### PCA
 
 Un primer paso útil en un análisis de ARN-seq es a menudo evaluar la similitud general entre las muestras. Un gráfico PCA muestra las muestras en el plano 2D abarcadas por sus dos primeros componentes principales. Este tipo de gráfico es útil para visualizar el efecto general de las covariadas experimentales y los efectos _batch_.
 
@@ -462,7 +462,7 @@ Aquí, hemos utilizado la función `plotPCA` que viene con `DESeq2`. El término
 
 En esta gráfica, lo que observamos es que las muestras control (solo tratadas con dimetilsulfóxido, DMSO) muestran diferencia significativa con respecto a las células inhibidas de la kinasa JNK, lo cual, de hecho, es lo esperado.
 
-# Expresion diferencial (TODOS LOS TRANSCRITOS)
+### Expresion diferencial
 
 Como se mencionó antes, los pasos de análisis de expresión diferencial estándar están envueltos en una sola función, `DESeq`. Las tablas de resultados se generan utilizando la función `results()`, que extrae una tabla de resultados con cambios de _log2 fold_, valores p y valores p ajustados.
 
@@ -509,7 +509,7 @@ length(Hs_all_de_gene_names_DOWN)
 
 Tras este filtrado, encontramos que existen 3612 genes sobreexpresados y 2646 genes subexpresados.
 
-# Volcano plot
+### Volcano plot
 
 En este caso, para visualizar los datos normalizados podemos hacer uso de un _volcano plot_ De esta manera, podremos dar cuenta fácilmente de los genes que tienen un valor $p$ de mayor significacia.
 
@@ -540,7 +540,7 @@ ggplot(data=Hs_de, aes(x=log2FoldChange, y=-log10(pvalue), col=diffexpressed, la
 dev.off()
 ```
 
-# Heatmap 
+### Heatmap 
 
 Utilizamos un mapa de calor para visualizar la agrupación de genes que llevan una señal. En este caso, seleccionamos los 20 genes con la mayor varianza entre las muestras.  Proporcionamos el _dataframe_ `` que indica a la función pheatmap cómo etiquetar las columnas.
 
