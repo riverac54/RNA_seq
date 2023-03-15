@@ -78,7 +78,7 @@
 \maketitle
 
 {
-\setcounter{tocdepth}{3}
+\setcounter{tocdepth}{2}
 \tableofcontents
 }
 \hypertarget{crear-plot-de-h3k36me3-visualization-of-human-h3k36me3-chip-data}{%
@@ -300,7 +300,7 @@ plotHeatmap -m ./matrix_M_CEBPA_ChIP.tab.gz -out CEBPA_genes2.png --refPointLabe
 rsync -rptuvl arodriguez@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/arodriguez/Visualization/CEBPA_genes2.png .
 \end{lstlisting}
 
-\includegraphics{./T04_images/CEBPA_genes2.png}
+\begin{center}\includegraphics[width=300px]{./T04_images/CEBPA_genes2} \end{center}
 
 Los datos se trazaron utilizando una matriz basada en puntos de
 referencia centrada con una ventana de ± 2 kbp. Como se muestra en la
@@ -379,7 +379,7 @@ plotHeatmap -m matrix.mat.gz -out HistonesHeatmap.png --plotTitle 'Visualization
 rsync -rptuvl arodriguez@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/arodriguez/Visualization/HistonesHeatmap.png .
 \end{lstlisting}
 
-\includegraphics{./T04_images/HistonesHeatmap.png}
+\begin{center}\includegraphics[width=600px]{./T04_images/HistonesHeatmap} \end{center}
 
 Se produjo un gráfico comparativo entre los mapas térmicos de 3 histonas
 diferentes, en este caso H3K36me del primer ejercicio, H3K27me que se
@@ -403,7 +403,6 @@ TidyTuesday plot. Elegir datos que le interesen y hacer una gráfica con
 ellos
 
 \begin{lstlisting}
-## `curl` package not installed, falling back to using `url()`
 ## Rows: 195 Columns: 17
 ## -- Column specification --------------------------------------------------------
 ## Delimiter: ","
@@ -412,7 +411,6 @@ ellos
 ## 
 ## i Use `spec()` to retrieve the full column specification for this data.
 ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
-## `curl` package not installed, falling back to using `url()`
 ## Rows: 195 Columns: 11
 ## -- Column specification --------------------------------------------------------
 ## Delimiter: ","
@@ -488,10 +486,9 @@ library(ggplot2)
 ggplot(mapping= aes(x=bt$`Coat Grooming Frequency`, y=br$`2020 Rank`, colour= bt$`Coat Type`))+ geom_point() + labs (y= "Ranking 2020", x = "Frecuencia de cepillado") + labs(color = "Tipo de pelo")
 \end{lstlisting}
 
-\includegraphics{Entrega04_files/figure-latex/unnamed-chunk-4-1.pdf}
+\includegraphics{Entrega04_files/figure-latex/unnamed-chunk-6-1.pdf}
 
-\hypertarget{referencias}{%
-\section{Referencias}\label{referencias}}
+\#Referencias
 
 computeMatrix --- deepTools 3.5.0 documentation. (n.d.). Readthedocs.Io.
 Recuperado Marzo 4, 2023, de
@@ -503,15 +500,5 @@ Recuperado Marzo 4, 2023, de
 
 (N.d.). Nih.gov. Recuperado Marzo 4, 2023, de
 \url{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6153486/}
-
-BW File: How to open BW file (and what it is). (s/f). File.Org.
-Recuperado el 4 de marzo de 2023, de \url{https://file.org/extension/bw}
-computeMatrix---DeepTools 3.5.0 documentation. (s/f). Recuperado el 4 de
-marzo de 2023, de
-\url{https://deeptools.readthedocs.io/en/develop/content/tools/computeMatrix.html}
-
-DeepTools. (2023). {[}Python{]}. The deepTools ecosystem.
-\url{https://github.com/deeptools/deepTools/blob/300538057435bcef1edf6e09a31bc1e035f44e6c/docs/content/tools/computeMatrix.rst}
-(Original work published 2013)
 
 \end{document}

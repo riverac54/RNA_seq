@@ -1,0 +1,12 @@
+PASS	Basic Statistics	SRX189773_FNR_ChIP.fastq
+WARN	Per base sequence quality	SRX189773_FNR_ChIP.fastq
+FAIL	Per tile sequence quality	SRX189773_FNR_ChIP.fastq
+PASS	Per sequence quality scores	SRX189773_FNR_ChIP.fastq
+FAIL	Per base sequence content	SRX189773_FNR_ChIP.fastq
+FAIL	Per sequence GC content	SRX189773_FNR_ChIP.fastq
+PASS	Per base N content	SRX189773_FNR_ChIP.fastq
+PASS	Sequence Length Distribution	SRX189773_FNR_ChIP.fastq
+FAIL	Sequence Duplication Levels	SRX189773_FNR_ChIP.fastq
+FAIL	Overrepresented sequences	SRX189773_FNR_ChIP.fastq
+PASS	Adapter Content	SRX189773_FNR_ChIP.fastq
+FAIL	Kmer Content	SRX189773_FNR_ChIP.fastq

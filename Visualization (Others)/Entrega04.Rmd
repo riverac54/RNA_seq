@@ -3,6 +3,13 @@ title: "Reporte_04"
 author: "Jessica Garcia, Manuel Rivera, Axel Rodriguez"
 date: "2023-03-03"
 output:
+  pdf_document: 
+    toc: yes
+    number_sections: yes
+    pandoc_args: "--listings"
+    includes:
+      in_header: preamble.tex
+    keep_tex: yes
   html_document:
     toc: true # table of content true
     toc_float: yes
@@ -10,13 +17,6 @@ output:
     number_sections: true  ## if you want number sections at each table header
     theme: united  # many options for theme, this one is my favorite.
     highlight: tango  # specifies the syntax highlighting style
-  pdf_document: 
-    toc: true
-    toc_depth: 3
-    number_sections: true
-    pandoc_args: --listings # Para que no se salga el codigo del margen
-    includes:
-      in_header: preamble.tex
 ---
 
 # Crear plot de H3K36me3 (*visualization of Human H3K36me3 ChIP data*)
