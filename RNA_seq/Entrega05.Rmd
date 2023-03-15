@@ -155,7 +155,7 @@ cat Kallisto_down_data.e276381
 
 - Distribución de las muestras: 
 
-  Control: tratamiento con DMSO (hTSC, DMSO) - SRR18745765 (repbio1), SRR18745766 (repbio1), SRR18745770 (repbio2), SRR18745771 (repbio2), SRR18745772 (repbio2), SRR18745767 (repbio3), SRR18745768 (repbio3), SRR18745769 (repbio3) #Cells were treated with either 10 µM SP60015 or DMSO control for 96 hours.
+  Control: tratamiento con DMSO (hTSC, DMSO) - SRR18745765 (repbio1), SRR18745766 (repbio1), SRR18745770 (repbio2), SRR18745771 (repbio2), SRR18745772 (repbio2), SRR18745767 (repbio3), SRR18745768 (repbio3), SRR18745769 (repbio3) 
 
   Tratamiento con SP600125 (hTSC, SP600125) - SRR18745764 (repbio1), SRR18745763 (repbio2) y SRR18745762 (repbio3)
 
@@ -179,13 +179,19 @@ Máximo 200 palabras
 
 # Rutas de trabajo generadas en el proyecto
 
+0. Carpeta de trabajo del equipo 
+
+```{bash}
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens 
+```
+
 1. Contiene los nombres de los SRA
 
 ```{bash}
-/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/human_fastq.txt
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/human_fastq.txt
 ```
 
-2. Contiene las instrucciones de descarga de los datos (SRA) y el cambio a Fastq de los mismos ****** MANUEL: Instrucciones para descarga y cambio a Fastqs
+2. Contiene las instrucciones de descarga de los datos (SRA) y el cambio a Fastq de los mismos.
 
 ```{bash}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/SRAData_dow.sh
@@ -197,19 +203,27 @@ cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/SRAData_dow
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/SRA_run.sge
 ```
 
-4. Contiene los FastQC generados de las muestras (SRA) **** MANUEL: Donde se descargan los archivos
+4. Contiene los datos crudos y sus fastqc.gz que se enviaron a la carpeta FastQC_rawData para su análisis.
 
 ```{bash}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/data
 ```
 
-5. Contiene el JOB para realizar la limpieza de adaptadores **** MANUEL Contiene el JOB generado para realizar el análisis de calidad de la 'rawdata'
+5. Contiene el análisis de calidad fastqc de los datos crudos
+
+```{bash}
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_rawData
+```
+
+#####################################
+
+6. Contiene el JOB para realizar la limpieza de adaptadores **** MANUEL Contiene el JOB generado para realizar el análisis de calidad de la 'rawdata'
 
 ```{bash}
  /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/Trimmed_run.sge
 ```
 
-6. Contiene los adaptadores para paired-end *****NO ESTOY SEGURA, VIVALDO LO PUSO. CHECAR.
+7. Contiene los adaptadores para paired-end *****NO ESTOY SEGURA, VIVALDO LO PUSO. CHECAR.
 
 ```{bash}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/TruSeq3-PE.fa
