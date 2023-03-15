@@ -20,7 +20,7 @@ output:
 ---
 
 
-# Informacion de los datos
+# Informacion de los datos.
 
 - Nombre del proyecto: PRJNA826506
 
