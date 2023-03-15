@@ -69,7 +69,6 @@ cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_trim
 # Descargar MultiQC de datos sin adaptadores a mi computadora
 rsync -rptuvl mrivera@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_trimmed ./Documents
 ```
-Hs_Kall_Ass_3.sge ---> KALLISTOOOO
 --------------------------------------------------------------------------------
 
 # Analisis MultiQC rawdata
@@ -310,7 +309,7 @@ Primero hacemos un *data-frame* llamado `tx2gene` con dos columnas:
 Los nombres de las columnas no importan, pero este orden de columnas debe ser utilizado. El ID de la transcripción debe ser el mismo utilizado en los archivos
 `abundance.tsv`. 
 
-```{r creacion archivo csv, eval=FALSE, include=FALSE}
+```{r creacion archivo csv, eval=FALSE, echo=T}
 library(GenomicFeatures)
 txdb <- makeTxDbFromGFF(file="gencode.v43.annotation.gtf")
 saveDb(x=txdb, file = "gencode.v43.annotation.TxDb")
@@ -375,7 +374,104 @@ Hs_ddsTxi_all <- Hs_ddsTxi_all[keep,]
 Hs_dds_all <- DESeq(Hs_ddsTxi_all) # run Differential expression analysis
 ```
 
+Los pasos de análisis de expresión diferencial estándar están envueltos en una sola función, `DESeq`.
 
+### Cuentas normalizadas para graficas (rlog)
+
+Muchos métodos estadísticos comunes para el análisis exploratorio de datos multidimensionales, como el análisis de agrupación y componentes principales (PCA), funcionan mejor para datos que generalmente tienen el mismo rango de varianza en diferentes rangos de los valores de la media.
+
+DESeq2 ofrece dos transformaciones para datos de conteo que estabilizan la varianza a través de la media: la __*transformación estabilizadora de varianza (VST)*__, y la transformación _regularizada de logaritmos_ o _rlog_.
+
+En este caso, utilizaremos rlog. A pesar de que VST es mucho más rápido de computar y es menos sensible a los valores atípicos con conteos altos que el rlog, este último tiende a funcionar bien en conjuntos de datos pequeños ($n$ < 30).
+
+```{r Normalizacion rlog}
+Hs_all_normalized <- rlog(Hs_dds_all, blind=FALSE) # result rld, vst
+Hs_all_normalized_db <- as.data.frame(assay(Hs_all_normalized))
+head(Hs_all_normalized_db)
+```
+
+Tanto `vst` como `rlog` devuelven un objeto *DESeqTransform* basado en la clase *SummarizedExperiment*, es decir los valores transformados ya no son conteos.
+
+En las llamadas a funciones anteriores, especificamos `blind = FALSE`, lo que significa que las diferencias entre las líneas celulares y el tratamiento (las variables en el diseño) no contribuirán a la tendencia esperada de varianza-media del experimento. 
+
+## PCA
+
+```{r}
+plotPCA(Hs_all_normalized, intgroup=c("dex"))
+```
+
+# Expresion diferencial (TODOS LOS TRANSCRITOS)
+
+```{r}
+Hs_res_all <- results(Hs_dds_all)  # Save the results
+mcols(Hs_res_all)$description # contraste shoot vs root
+#https://github.com/COMBINE-lab/salmon/issues/581
+```
+
+```{r}
+# extraer UP
+Hs_all_de_gene_matrix_UP  <- subset(Hs_res_all, padj < 0.05 & log2FoldChange >= 0.5)
+write.table(Hs_all_de_gene_matrix_UP,file ="./Hs_all_DEG_kallisto_JNK_inh.tsv", quote=FALSE, sep="\t")
+# Extraer nombres
+Hs_all_de_gene_names_UP <- rownames(Hs_all_de_gene_matrix_UP)
+```
+
+
+```{r}
+# extraer down genes
+Hs_all_de_gene_matrix_DOWN  <- subset(Hs_res_all, padj < 0.05 & log2FoldChange < -0.5)
+write.table(Hs_all_de_gene_matrix_DOWN,file ="./Hs_all_DEG_kallisto_Control.tsv", quote=FALSE, sep="\t")
+# Extraer nombres
+Hs_all_de_gene_names_DOWN <- rownames(Hs_all_de_gene_matrix_DOWN)
+```
+
+```{r}
+# Numero de genes expresados
+length(Hs_all_de_gene_names_UP)
+length(Hs_all_de_gene_names_DOWN)
+```
+
+# Volcano plot
+
+```{r}
+Hs_de <- as.data.frame(Hs_res_all)
+# add a column of NAs
+Hs_de$diffexpressed <- "NO"
+# if log2Foldchange > 0.6 and pvalue < 0.05, set as "UP" 
+Hs_de$diffexpressed[Hs_de$log2FoldChange > 0.6 & Hs_de$pvalue < 0.05] <- "UP"
+# if log2Foldchange < -0.6 and pvalue < 0.05, set as "DOWN"
+Hs_de$diffexpressed[Hs_de$log2FoldChange < -0.6 & Hs_de$pvalue < 0.05] <- "DOWN"
+# Create a new column "names" to de, that will contain the name of a subset if genes differentially expressed (NA in case they are not)
+Hs_de$names <- NA
+# filter for a subset of interesting genes
+filter <- which(Hs_de$diffexpressed != "NO" & Hs_de$padj < 0.05 & (Hs_de$log2FoldChange >= 5  | Hs_de$log2FoldChange <= -5))
+Hs_de$names[filter] <- rownames(Hs_de)[filter]
+# grafica
+png(file = "volcano05-res.png",
+    width = 800, height = 800) # guardar el plot en formato png
+ggplot(data=Hs_de, aes(x=log2FoldChange, y=-log10(pvalue), col=diffexpressed, label=names)) +
+    geom_point() +
+    scale_color_manual(values=c("blue", "black", "red")) + # cambiar colores de puntos
+    theme_minimal() +
+    geom_text_repel() +
+    xlim(-15,15)
+
+dev.off()
+```
+
+# Heatmap 
+
+```{r}
+library("pheatmap")
+# los primeros 20 genes
+select <- order(rowMeans(counts(Hs_dds_all,normalized=TRUE)),
+                decreasing=TRUE)[1:20]
+df <- as.data.frame(colData(Hs_dds_all)[,c("dex", "sample")])
+
+#heatmap
+pheatmap(assay(Hs_all_normalized)[select,], cluster_rows=FALSE, show_rownames=FALSE,
+         cluster_cols=FALSE, annotation_col=df)
+```
 
 #### Fuentes
 http://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#Downstream_DGE_in_Bioconductor
@@ -385,8 +481,68 @@ https://bioconductor.org/packages/devel/bioc/vignettes/GenomicFeatures/inst/doc/
 https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html
 
 
-## Análisis de términos GO (Manuel)
+<<<<<<< HEAD
 
-# Discusión
+--------------------------------------------------------------------------------
+# Graficas GO (Manuel)
+
+- Instalar 'clusterProfiler', 'AnnotationDbi' y Base de Datos de homo_sapiens 'org.Hs.eg.db'
+```{r, echo=FALSE}
+# Comando
+install.packages('AnnotationDbi')
+
+# Programa de enrichment analysis
+BiocManager::install("clusterProfiler")
+
+# Instalar BD
+BiocManager::install("org.Hs.eg.db")
+```
+
+- Extraer informacion de BD
+```{r, eval=FALSE}
+#Importar libreria
+library(clusterProfiler) #Enrichment analysis
+library (AnnotationDbi)
+library(org.Hs.eg.db) # Human DB
+
+# Tomar tabla de datos de DESEQ2
+data = Hs_res_all
+class(data)
+
+#Eliminar NAs
+data2 = na.omit(data)
+
+# Tomar solo los genes posiblemente diferentemente expresados significativoas
+# Solamente requerimos los nombres de lo anterior, por lo que:
+genes_to_test = rownames(data2[data2$log2FoldChange > 0.5 & data2$padj < 0.5, ])
+
+# Convertirlo en matriz y utilizar solo los primeros 100 IDs, ya que son un total de 12,999
+genes_to_test = as.matrix(genes_to_test)
+genes_to_test = genes_to_test[1:100,]
+
+# Modificar nombres, solo quiero los primeros 15 caracteres
+#test<-matrix(,nrow=100,ncol=1) # Generar matriz
+genes_to_test = as.matrix(genes_to_test) #convertir a matriz
+for (i in 1:100) {
+genes_to_test[i,]=substr(genes_to_test[i,], start=1, stop=15)                           
+}
+
+# Analisis terminos GO de lor primero 100 terminos, ya que en total son 12,999 y son muchos terminos
+Go_results <- enrichGO(gene=genes_to_test, OrgDb="org.Hs.eg.db", keyType = "ENSEMBL", ont = "BP")
+```
+
+
+```{r}
+# Convwertir en data-frame
+as.data.frame(Go_results)
+```
+
+
+```{r}
+ # Generar la plot de los primeros 20 genes
+plot(barplot(Go_results, showCategory = 20))
+```
+
+>>>>>>> 0220df6d942e339d6e75704006e4138c2428516d
 
 
