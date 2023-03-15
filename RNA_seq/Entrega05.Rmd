@@ -393,30 +393,50 @@ https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.ht
 --------------------------------------------------------------------------------
 # Graficas GO (Manuel)
 
+- Instalar 'gprofiler2'
+```{r, echo=FALSE}
+# Comando
+install.packages('AnnotationDbi')
+
+# Programa de enrichment analysis
+BiocManager::install("clusterProfiler")
+
+# Instalar BD
+BiocManager::install("org.Hs.eg.db")
+
+```
+
 - Extraer informacion de BD
-```{r, eval=false}
-# Importar libreria
-library(biomaRt)
+```{r, eval=FALSE}
+#Importar libreria
+library(clusterProfiler) #Enrichment analysis
+library (AnnotationDbi)
+library(org.Hs.eg.db) # Human DB
 
-# Extraer database homosapiens 
-# dataset --> Especificar la especie 
-# Host --> URL
-HS_database = useMart(biomart = "ENSEMBL_MART_ENSEMBL", host = "https://ensembl.org", dataset = "hsapiens_gene_ensembl")
 
+# Tomar tabla de datos de DESEQ2
+data = read.csv()
+# Tomar solo los genes posiblemente diferentemente expresados
+data[data$log2FoldChange > 0.5, ]
+
+# Solamente requerimos los nombres de lo anterior, por lo que:
+genes_to_test = rownames(data[data$log2FoldChange > 0.5, ])
+
+# Analisis terminos GO
+Go_results <- enrichGO(gene=genes_to_test, Orgdb="org.Hs.eg.db", keyType = "ENSEMBL", ont = "BP")
 ```
 
-- Extraer genes de terminos GO
+
 ```{r}
-# Importar libreria
-library(topGO)
-
-# Extraer genes de terminos GO
-Hs_GOgenes <- getBM(c("ensembl_gene_id","go_id"), mart=HS_database)
-head(Hs_GOgenes)
-
+as.data.frame(Go_results)
 ```
 
 
+```{r}
+ # Generar la plot de los primeros 20 genes
+fit <- plot(GO_results, showCategory = 20)
+
+```
 
 >>>>>>> 0220df6d942e339d6e75704006e4138c2428516d
 
