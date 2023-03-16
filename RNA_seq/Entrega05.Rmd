@@ -689,7 +689,7 @@ https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.ht
 # Graficas GO (Manuel)
 
 - Instalar 'clusterProfiler', 'AnnotationDbi' y Base de Datos de homo_sapiens 'org.Hs.eg.db'
-```{r, echo=FALSE}
+```{r, eval=FALSE}
 # Comando
 install.packages('AnnotationDbi')
 
@@ -709,7 +709,6 @@ library(org.Hs.eg.db) # Human DB
 
 # Tomar tabla de datos de DESEQ2
 data = Hs_res_all
-class(data)
 
 #Eliminar NAs
 data2 = na.omit(data)
@@ -733,23 +732,24 @@ Go_results <- enrichGO(gene=genes_to_test, OrgDb="org.Hs.eg.db", keyType = "ENSE
 ```
 
 - Convertir en data frame
-```{r}
+```{r , eval=FALSE}
 # Convwertir en data-frame
 as.data.frame(Go_results)
 ```
 
 - Generar la grafica
-```{r}
+```{r, eval=FALSE}
  # Generar la plot de los primeros 20 genes
 plot(barplot(Go_results, showCategory = 20))
 ```
+![](./Imagenes/HS_all.png)
 
 - Interpretacion de la grafica
 
 
-## Generar con subgrupos UP
+## Generar con subgrupos 
 
-- Con subgrupo UP
+- Con subgrupo 
 ```{r, eval=FALSE}
 #Importar libreria
 library(clusterProfiler) #Enrichment analysis
@@ -786,21 +786,22 @@ genes_up[i,]=substr(genes_up[i,], start=1, stop=15)
 
 # Analisis terminos GO de lor primero 100 terminos, ya que en total son 12,999 y son muchos terminos
 Go_results <- enrichGO(gene=genes_up, OrgDb="org.Hs.eg.db", keyType = "ENSEMBL", ont = "BP")
-
 ```
 
-
 - Convertir en data frame
-```{r}
+```{r, eval=FALSE}
 # Convwertir en data-frame
 as.data.frame(Go_results)
 ```
 
 - Generar la grafica
-```{r}
+```{r, eval= FALSE}
  # Generar la plot de los primeros 20 genes
 plot(barplot(Go_results, showCategory = 20))
 ```
+
+![](./Imagenes/HS_groups.png)
+
 - Interpretacion de la grafica
 
 
