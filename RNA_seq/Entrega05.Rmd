@@ -690,17 +690,11 @@ rsync -rptuvl jgarcia@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_
 
 Podemos observar que...
 
-
-<<<<<<< HEAD
-=======
-
-
+--------------------------------------------------------------------------------
 ```{bash, eval = FALSE}
->>>>>>> 65067f72925dd5e8f40d776f01e07af01ef1a9e8
 ## Programa de predicción de cuentas
 ```
 
-<<<<<<< HEAD
 Continuando con los pasos del pipeline, haremos uso de Kallisto quant el cual es una herramienta de pseudoalineamiento para datos de transcriptoma la cual se basa en la probabilidad de asignación correcta de las lecturas a un transcrito. 
 
 Para ello, creamos una nueva carpeta llamada `kallisto_quant_test` y un JOB llamado `Kallisto_down_data.sge` que contiene las intrucciones para realizar el pseudoalineamiento con ayuda de un transcrito de referencia que obtuvimos con las siguientes líneas de código.
@@ -746,7 +740,6 @@ mkdir kallisto_quant_test
 
 - Generar un JOB 'Kallisto_down_data.sge'.
 ```{bash, eval = FALSE}
->>>>>>> 65067f72925dd5e8f40d776f01e07af01ef1a9e8
 #!/bin/bash
 #
 # Use Current working directory
@@ -1110,10 +1103,10 @@ https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.ht
 
 
 --------------------------------------------------------------------------------
-# Graficas GO (Manuel)
+# Graficas GO 
 
 - Instalar 'clusterProfiler', 'AnnotationDbi' y Base de Datos de homo_sapiens 'org.Hs.eg.db'
-```{r, eval=FALSE}
+```{r instalaciones, eval=FALSE}
 # Comando
 install.packages('AnnotationDbi')
 
@@ -1125,7 +1118,7 @@ BiocManager::install("org.Hs.eg.db")
 ```
 
 - Extraer informacion de BD
-```{r, eval=FALSE}
+```{r Codigo, eval=FALSE}
 #Importar libreria
 library(clusterProfiler) #Enrichment analysis
 library (AnnotationDbi)
@@ -1135,11 +1128,13 @@ library(org.Hs.eg.db) # Human DB
 data = Hs_res_all
 
 #Eliminar NAs
-data2 = na.omit(data)
+data = na.omit(data)
 
 # Tomar solo los genes posiblemente diferentemente expresados significativoas
 # Solamente requerimos los nombres de lo anterior, por lo que:
-genes_to_test = rownames(data2[data2$log2FoldChange > 1.5 & data2$padj < 0.05, ])
+data = data[data$log2FoldChange >= 0.05, ]
+data = data[data$padj < 0.05, ]
+genes_to_test = rownames(data)
 
 # Convertirlo en matriz y utilizar solo los primeros 100 IDs, ya que son un total de 12,999
 genes_to_test = as.matrix(genes_to_test)
@@ -1147,36 +1142,47 @@ genes_to_test = genes_to_test[1:100,]
 
 # Modificar nombres, solo quiero los primeros 15 caracteres
 genes_to_test = as.matrix(genes_to_test) #convertir a matriz
-for (i in 100) {
-genes_to_test[i,]=substr(genes_to_test[i,], start=1, stop=15)                           
+for (i in 1:100) {
+genes_to_test[i,] = substr(genes_to_test[i,], start=1, stop=15)                           
 }
 
 # Analisis terminos GO de lor primero 100 terminos, ya que en total son 12,999 y son muchos terminos
-Go_results <- enrichGO(gene=genes_to_test, OrgDb="org.Hs.eg.db", keyType = "ENSEMBL", ont = "BP")
+Go_results1 <- enrichGO(gene=genes_to_test, OrgDb="org.Hs.eg.db", keyType = "ENSEMBL", ont = "BP")
 ```
 
 - Convertir en data frame
-```{r , eval=FALSE}
+```{r Data frame, eval=FALSE}
 # Convwertir en data-frame
-as.data.frame(Go_results)
+as.data.frame(Go_results1)
 ```
 
 - Generar la grafica
-```{r, eval=FALSE}
+```{r plot, eval=FALSE}
  # Generar la plot de los primeros 20 genes
-plot(barplot(Go_results, showCategory = 20))
+plot(barplot(Go_results1, showCategory = 20))
 ```
 
-![](./Imagenes/HS_all.png)
+![](./Imagenes/Hs_all.png)
 
 - Interpretacion de la grafica
+Para el plot solo se tomaron en cuenta los primeros 20 genes, los cuales tuvieran un $log2FoldChange > 1.5$, el valor de log2FoldChange es arbitrario. Utilizamos $padj$ para obtener los genes que son mas significativos, padj utiliza el matodo de ' Benjamini-Hochberg Procedure'. 
 
+El metodo Benjamini-Hochberg disminuye el numero de errores tipo 1 (falsos positivos). Rankea todos los pvalores de menor a mayor y les asigna una posicion en el ranking, siendo el numero 1 el que tenga el pvalor mas pequeño, despues divide la posicion en el rankeo entre el numero de muestras para obtener $posicion-ranking/muestras=p-adjusted$
 
+Con $padj < 0.05$, esperamos que $5 \%$ de los genes sean falsos positivosesto, obteniendo solo los genes mas significativos.
+
+Tenemos mas de 9 genes que pertencen a la regulacion del desarrollo neuronal, su p.adjust es menor a 0.2, lo que indica su significancia, es decir, podemos afirmar que presenta esa funcion.
+
+Asi mismo, contamos con menos de 6 genes que pertenecen a la 'negative regulation of response to wounding', la cual se encarga de disminuir la frecuencia de eventos en la restauracion de tejidos dañados posterior a una lesion. 
+
+## Referencias
+- https://www.statisticshowto.com/benjamini-hochberg-procedure/ 
+-
 ----------------------------------------------------------------
 # Generar con subgrupos 
 
 - Cargar librerias
-```{r, eval=FALSE}
+```{r librerias, eval=FALSE}
 
 #Importar libreria
 library(clusterProfiler) #Enrichment analysis
@@ -1185,7 +1191,7 @@ library(org.Hs.eg.db) # Human DB
 ```
 
 - Con subgrupo UP
-```{r, eval=FALSE}
+```{r Grupo UP, eval=FALSE}
 library(forcats)
 library(ggrepel)
 library(gprofiler2)
@@ -1214,7 +1220,7 @@ Go_results_UP <- enrichGO(gene=genes_up, OrgDb="org.Hs.eg.db", keyType = "ENSEMB
 ```
 
 - Con subgrupo DOWN
-```{r, eval=FALSE}
+```{r Grupo DOWN, eval=FALSE}
 data_down= Hs_all_de_gene_matrix_DOWN # Grupo DOWN
 
 #Eliminar NAs
@@ -1239,14 +1245,14 @@ Go_results_DOWN <- enrichGO(gene=genes_down, OrgDb="org.Hs.eg.db", keyType = "EN
 ```
 
 - Convertir en data frame ambos subgrupos
-```{r, eval=FALSE}
+```{r data frame, eval=FALSE}
 # Convwertir en data-frame
 as.data.frame(Go_results_UP)
 as.data.frame(Go_results_DOWN)
 ```
 
 - Generar la grafica de ambos subgrupos (UP &  DOWN)
-```{r, eval= FALSE}
+```{r plot, eval= FALSE}
  # Generar la plot de los primeros 20 genes
 plot(barplot(Go_results_UP, showCategory = 15, horiz=TRUE)) + barplot(Go_results_DOWN, showCategory = 15, horiz=TRUE) 
 ```
