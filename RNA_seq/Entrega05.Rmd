@@ -574,7 +574,7 @@ https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.ht
 # Graficas GO (Manuel)
 
 - Instalar 'clusterProfiler', 'AnnotationDbi' y Base de Datos de homo_sapiens 'org.Hs.eg.db'
-```{r, echo=FALSE}
+```{r eval=FALSE}
 # Comando
 install.packages('AnnotationDbi')
 
@@ -631,7 +631,7 @@ plot(barplot(Go_results, showCategory = 20))
 
 - Interpretacion de la grafica
 
-```{r}
+```{r libraries installation, message=FALSE}
 #Importar libreria
 library(clusterProfiler) #Enrichment analysis
 library (AnnotationDbi)
@@ -682,6 +682,8 @@ as.data.frame(Go_results_UP)
  # Generar la plot de los primeros 20 genes
 plot(barplot(Go_results_UP, showCategory = 20))
 ```
+
+
 - Con subgrupo DOWN
 
 ```{r}
@@ -711,8 +713,9 @@ Go_results_DOWN <- enrichGO(gene=genes_down, OrgDb="org.Hs.eg.db", keyType = "EN
 - Generar la grafica
 ```{r}
  # Generar la plot de los primeros 20 genes
-plot(barplot(Go_results_DOWN, showCategory = 20))
+plot(barplot(Go_results_DOWN, showCategory = 30))
 ```
+
 
 - Interpretacion de la grafica
 
