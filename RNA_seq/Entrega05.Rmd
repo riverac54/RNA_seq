@@ -21,7 +21,7 @@ output:
 
 # Objetivo: 
 
-Realizar el análisis de datos de RNA-Seq (pipeline completa) obtenidos de trofoblasto humano.
+Realizar el análisis de datos de RNA-Seq (pipeline completa) obtenidos de células madre de trofoblasto humano tratadas con un inhibidor de JNK (SP600125) y con control DMSO.
 
 --------------------------------------------------------------------------------
 
@@ -29,7 +29,7 @@ Realizar el análisis de datos de RNA-Seq (pipeline completa) obtenidos de trofo
 
 - Tipo de bibliotecas: Paired-end
 
-- Método de selección: ARN Total, cDNA **** PREGUNTA A EVELIA: ¿es necesario escribir cDNA?
+- Método de selección: ARN Total, cDNA
 
 - Número de transcriptomas: 6 transcriptomas 
 
@@ -49,15 +49,7 @@ Realizar el análisis de datos de RNA-Seq (pipeline completa) obtenidos de trofo
 
 # Abstract
 
-¿Qué comparamos?
-
-¿Qué tipo de datos analizaste? RNA-seq
-
-¿Qué programas usaste y por qué? Kllisto quant, FastQC, trimm... 
-
-Información breve de que obtuviste
-
-Máximo 200 palabras
+Células hTSC CT27 (células madre de trofoblasto humano) fueron tratadas con SP60015 y con DMSO para evaluar la contribución de los elementos transponibles en la expresión génica como promotores o potencializadores en células de trofoblasto humano. Utilizando los datos epigenéticos del proyecto realizamos un pipeline haciendo uso de varias herramientas y paqueterías como Kallisto quant (pseudoalineamiento), fastqc (análisis de calidad de las lecturas crudas), Trimmomatic (recortar y curar datos), tximport (importar y resumir datos a nivel de transcripción), tidyverse (manipulación, visualización y análisis de datos), DESeq2 (identificar genes que se expresan diferencialmente entre dos o más condiciones experimentales), etc. en donde obtuvimos como resultados que efectivamente los transposones han contribuido de forma importante a la regulación génica del trofoblasto humano.
 
 --------------------------------------------------------------------------------
 
@@ -753,8 +745,6 @@ https://bioconductor.org/packages/devel/bioc/vignettes/GenomicFeatures/inst/doc/
 https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html
 
 
-<<<<<<< HEAD
-
 --------------------------------------------------------------------------------
 # Graficas GO (Manuel)
 
@@ -875,13 +865,11 @@ plot(barplot(Go_results, showCategory = 20))
 
 
 
->>>>>>> 0220df6d942e339d6e75704006e4138c2428516d
-
 --------------------------------------------------------------------------------
 
 ## Discusión
 
-Los resultados obtenidos de todo el pipeline realizado por nosotros concuerdan con los resultados que reportan en el paper ya que los genes encontrados... sin embargo...
+Los resultados obtenidos del pipeline dan evidencia a que los transposones han contribuido de forma importante a la regulación génica del trofoblasto humano ya que hay genes de elementos transponibles que tienen mayor expresión génica. Resultado también reportado en el paper correspondiente al proyecto. 
 
 --------------------------------------------------------------------------------
 
@@ -894,6 +882,10 @@ Should I remove PCR duplicates from my RNA-seq data? (n.d.). Ucdavis.edu. Retrie
 (N.d.-a). Biostars.org. Retrieved March 16, 2023, from https://www.biostars.org/p/14283/
 
 (N.d.-b). Ridom.de. Retrieved March 16, 2023, from https://www.ridom.de/seqsphere/u/FASTQ_Quality_Control_(FastQC).html
+
+GEO Accession viewer. (n.d.-a). Nih.gov. Retrieved March 16, 2023, from https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE200762
+
+GEO Accession viewer. (n.d.-b). Nih.gov. Retrieved March 16, 2023, from https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM6043329
 
 
 
