@@ -153,6 +153,97 @@ cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/Transcript
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/kallisto_quant_test
 ```
 
+## Códigos previos antes de iniciar el análisis
+
+Antes de comenzar todo el proyecto, dentro del cluster guardamos una sesión en screen con la finalidad de poder tener un registro de los comando utilizados durante la práctica 
+
+```{bash}
+# Trabajando en el nodo principal generamos un screen
+screen -S SRAdata
+# Ingresar a un nodo de computo 
+qlogin 
+```
+
+- screen -S nombre : Guardar tu sesión actual 
+- screen -ls : Ver el ID de tus sesiones 
+- screen -ls : Ver el ID de tus sesiones 
+- Ctrl + a + d : Salir del screen
+- Ctrl + a + esc : scroll
+
+```{bash}
+# Ingresar a la carpeta de trabajo 
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens 
+# Crear una carpeta donde colocaremos los SRA correspondientes a nuestro proyecto que descargaremos de NCBI con ayuda de un JOB 
+mkdir data
+# Generar un JOB el cual tiene las instrucciones para descargar los SRA del proyecto
+nano SRA_run.sge
+# Archivo txt que contiene todos los SRA a descargar
+nano human_fastq.txt
+```
+
+El contenido del nano `human_fastq.txt` es el siguiente
+
+```{bash}
+cat human_fastq.txt # Abrir archivo txt 
+```
+
+SRR18745762
+SRR18745763
+SRR18745764	
+SRR18745765	
+SRR18745766
+SRR18745767	
+SRR18745768	
+SRR18745769	
+SRR18745770
+SRR18745771
+SRR18745772
+
+Por otra parte, el contenido del nano `SRA_run.sge` es el siguiente
+
+```{bash}
+cat SRA_run.sge # Abrir archivo JOB con instrucciones de descarga
+```
+
+```{bash}
+#!/bin/bash
+#
+# Use Current working directory
+#$ -cwd
+#
+# Join stdout and stderr
+#$ -j n
+#
+# Run job through bash shell
+#$ -S /bin/bash
+#
+# You can edit the script since this line
+#
+# Your job name
+#$ -N Project_Homo
+#
+# Send an email after the job has finished
+#$ -m Manuel
+#$ -M rivera20c3@gmail.com
+#
+#
+# If modules are needed, source modules environment (Do not delete the next line):
+. /etc/profile.d/modules.sh
+#
+# Add any modules you might require:
+module load sra/3.0.0 # módulo para descagar SRA
+#
+# Write your commands in the next line
+./SRAData_dow.sh
+
+```
+
+Finalmente para enviar el JOB de descarga y tener las muestras a trabajar usamos el siguiente comando
+
+```{bash}
+# Salir de qlogin, moverse a nodo principal para subir JOB
+qsub SRA_Hs_run.sge
+```
 
 --------------------------------------------------------------------------------
 
@@ -162,7 +253,6 @@ cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/kallisto_qu
 ## Calidad de secuencias (FastQC y multiQC) de datos crudos.
 
 Primeramente, para analizar los datos crudos creamos dos carpetas. La primera, `data` en donde vamos a almacenar los datos crudos y la segunda, `FastQC_rawData` en donde vamos a tener el análisis de calidad de los mismos. 
-
 
 ```{bash}
 # Colocarse en la carpeta de trabajo
@@ -327,29 +417,32 @@ rsync -rptuvl jgarcia@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_
 Podemos observar que...
 
 
-
 ## Programa de predicción de cuentas
 
+Continuando con los pasos del pipeline, haremos uso de Kallisto quant el cual es una herramienta de pseudoalineamiento para datos de transcriptoma la cual se basa en la probabilidad de asignación correcta de las lecturas a un transcrito. 
+
+Para ello, creamos una nueva carpeta llamada `kallisto_quant_test` y un JOB llamado `Kallisto_down_data.sge` que contiene las intrucciones para realizar el pseudoalineamiento con ayuda de un transcrito de referencia que obtuvimos con las siguientes líneas de código.
 
 ```{bash}
-
-
-# Kallisto pseudo alligment
-
-- Descargar transcriptoma de referencia
-```bash
-# Generar transcriptoma de referencia meaidnte el JOB 'Transcript_down.sge', con las instrucciones:
-wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_43/gencode.v43.transcripts.fa.gz 
-
-# Ubicacion transciptoma de referencia
-cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/gencode.v43.transcripts.fa.gz
-
 # Carpeta de archivos kallisto
 mkdir kallisto_quant_test
 
+# Para descargar transcriptoma de referencia realizamos lo siguiente:
 
-- Generar un JOB 'Kallisto_down_data.sge'.
-```bash
+# Generar transcriptoma de referencia mediante el JOB 'Transcript_down.sge', con las instrucciones:
+wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_43/gencode.v43.transcripts.fa.gz 
+
+# Creación del JOB para realizar el pseudoalineamiento
+nano Kallisto_down_data.sge
+```
+
+Información que contiene el JOB `Kallisto_down_data.sge`
+
+```{bash}
+cat Kallisto_down_data.sge
+```
+
+```{bash}
 #!/bin/bash
 #
 # Use Current working directory
@@ -364,7 +457,7 @@ mkdir kallisto_quant_test
 # You can edit the script since this line
 #
 # Your job name
-#$ -N Kallisto_down_data
+#$ -N Kallisto_downloaded
 #
 # Send an email after the job has finished
 #$ -m e
@@ -380,7 +473,7 @@ module load kallisto/0.45.0
 # Write your commands in the next line
 
 # Generar index de kallisto
-kallisto index ./gencode.v43.transcripts.fa.gz -i ./kallisto_quant_test/HS_ref.kidx 
+kallisto index ./gencode.v43.transcripts.fa.gz -i ./kallisto_quant2/HS_ref.kidx 
 
 # - i nombre del archivo de salida, i.e., indice
 #- Input =  gencode.v43.transcripts.fa.gz, transcriptoma de referencia
@@ -388,28 +481,39 @@ kallisto index ./gencode.v43.transcripts.fa.gz -i ./kallisto_quant_test/HS_ref.k
  # Paired-end  
 for file in ./data_trimmed/*_1_trimmed.fastq.gz                                                 # Read1
 do
-  clean=$(echo $file | sed 's/_trimmed//;s/\.fastq\.gz//;s/_1//')         # Nombre de la carpeta de salida, mismo nombre de SRA
+  clean=$(echo $file | sed 's/_trimmed//;s/\.fastq\.gz//;s/_1//' | sed 's/_trimmed//')         # Nombre de la carpeta de salida, mismo nombre de SRA
   file_2=$(echo ${clean}_2_trimmed.fastq.gz| sed 's/FP/RP/')                                            # Read2
-  kallisto quant --index ./kallisto_quant_test/HS_ref.kidx --output-dir ./kallisto_quant_test/${clean} --threads 12 ${file} ${file_2}
+  kallisto quant --index ./kallisto_quant2/HS_ref.kidx --output-dir ./kallisto_quant2/${clean} --threads 12 ${file} ${file_2}
 done
 
-
-
-- Mostrar resultados del alineamiento
-
-```bash
-
-# JOB 'Kallisto_down_data.sge' para generar el alineamiento
-cd ./Kallisto_down_data.sge
-
-# Se encuentran en el archivo de errores del JOB
-cat Kallisto_down_data.e276381 
 ```
 
+Ahora bien, para asegurarnos que el pseudoalineamiento se realizó correctamente deberíamos tener los archivos tipo .h5, .tsv y json de cada muestra así que realizamos las siguientes líneas de código para verificar que efectivamente se encuentran esos archivos.
 
-# Expresión diferencial
+```{bash}
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/kallisto_quant_test
+cd SRR18745762 #entrar a cada una de las muestras
+ls
+```
 
-## Análisis (de expresión diferencial) funcional 
+Observamos que en cada muestra hubo un buen alineamiento, así que procedemos a recuperar estos resultados descargando los datos a nuestro computador con la siguiente línea de comando
+
+```{bash}
+# Descagar resultados de kallisto
+rsync -rptuvl jgarcia@dna.liigh.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/kallisto_quant_test/SRR* .
+
+# tx2gene
+```
+
+Nota: Los archivos de errores del JOB de Kallisto se observan con el siguiente comando
+
+```{bash}
+cat Kallisto_down_data.e276381 #ejemplo
+```
+
+El siguiente paso que sigue el pipeline que estamos realizando es el análisis de expresión diferencial.
+
+## Análisis de expresión diferencial funcional 
 
 El objetivo del análisis diferencial de expresión es realizar análisis estadísticos para tratar de descubrir cambios en los niveles de expresión de características definidas (genes, transcripciones, exones) entre grupos experimentales con muestras replicadas.
 
@@ -806,5 +910,12 @@ plot(barplot(Go_results, showCategory = 20))
 
 
 >>>>>>> 0220df6d942e339d6e75704006e4138c2428516d
+
+
+# Referencias
+
+- 
+
+
 
 
