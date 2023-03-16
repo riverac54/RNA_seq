@@ -801,7 +801,6 @@ cd SRR18745762 #entrar a cada una de las muestras
 ls
 ```
 =======
-```
 
 - Mostrar resultados del alineamiento
 
@@ -1114,11 +1113,7 @@ https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.ht
 # Graficas GO (Manuel)
 
 - Instalar 'clusterProfiler', 'AnnotationDbi' y Base de Datos de homo_sapiens 'org.Hs.eg.db'
-<<<<<<< HEAD
 ```{r, eval=FALSE}
-=======
-```{r eval=FALSE}
->>>>>>> 14e301c1c698d2f9f2285b5f0886d5b916135c56
 # Comando
 install.packages('AnnotationDbi')
 
@@ -1178,7 +1173,7 @@ plot(barplot(Go_results, showCategory = 20))
 
 
 ----------------------------------------------------------------
-## Generar con subgrupos 
+# Generar con subgrupos 
 
 - Cargar librerias
 ```{r, eval=FALSE}
@@ -1253,7 +1248,7 @@ as.data.frame(Go_results_DOWN)
 - Generar la grafica de ambos subgrupos (UP &  DOWN)
 ```{r, eval= FALSE}
  # Generar la plot de los primeros 20 genes
-plot(barplot(Go_results_UP, showCategory = 20, horiz=TRUE)) + barplot(Go_results_DOWN, showCategory = 15, horiz=TRUE) 
+plot(barplot(Go_results_UP, showCategory = 15, horiz=TRUE)) + barplot(Go_results_DOWN, showCategory = 15, horiz=TRUE) 
 ```
 
 ![](./Imagenes/Hs_groups.png)
