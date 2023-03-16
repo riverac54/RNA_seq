@@ -65,73 +65,73 @@ Máximo 200 palabras
 
 0. Carpeta de trabajo del equipo 
 
-```{bash}
+```{bash, eval = FALSE}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens 
 ```
 
 1. Contiene los nombres de los SRA
 
-```{bash}
+```{bash, eval=FALSE}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/human_fastq.txt
 ```
 
 2. Contiene las instrucciones de descarga de los datos (SRA) y el cambio a Fastq de los mismos.
 
-```{bash}
+```{bash, eval = FALSE}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/SRAData_dow.sh
 ```
 
 3. Contiene el JOB de descarga de los SRA
 
-```{bash}
+```{bash, eval = FALSE}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/SRA_run.sge
 ```
 
 4. Contiene los datos crudos y sus fastqc.gz que se enviaron a la carpeta FastQC_rawData para su análisis.
 
-```{bash}
+```{bash, eval = FALSE}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/data
 ```
 
 5. Contiene el análisis de calidad de los datos crudos
 
-```{bash}
+```{bash, eval = FALSE}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_rawData
 ```
 
 6. Contiene el JOB para recortar y curar datos de Illumina, como eliminar adaptadores de los datos crudos
 
-```{bash}
+```{bash, eval = FALSE}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/Trimmed_run.sge
 ```
 
 #7. Contiene los adaptadores para paired-end *****NO ESTOY SEGURA, VIVALDO LO PUSO. CHECAR.
 
-```{bash}
+```{bash, eval = FALSE}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/TruSeq3-PE.fa
 ```
 
 8. Contiene los datos (SRA) sin adaptadores (limpios) y sus fastqc.gz que se enviaron a la carpeta FastQC_trimmed para su análisis
 
-```{bash}
+```{bash, eval = FALSE}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/data_trimmed
 ```
 
 9. Contiene el análisis de calidad de los datos limpios, sin adaptadores.
 
-```{bash}
+```{bash, eval = FALSE}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_trimmed
 ```
 
 9.1. Contiene el análisis MultiQC de datos sin adaptadores.
 
-```{bash}
+```{bash, eval = FALSE}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_trimmed/multiqc_report.html
 ```
 
 10. 
 
-```{bash}
+```{bash, eval = FALSE}
 cd 
 ```
 
@@ -142,7 +142,7 @@ cd
 
 #Comandos de descarga del Vivaldo. SE OCUPAN + TARDE. **********************
 
-```{bash}
+```{bash, eval = FALSE}
 # Descargar analisis FastQC --> computadora
 rsync -rptuvl mrivera@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_rawData ./Documents
 
@@ -158,9 +158,9 @@ cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_trim
 
 Auí van las imagenes que quiero poner. 
 
-```{bash} 
+```{bash, eval = FALSE} 
 
-#####ANALISIS DE VIVALDO. NO ESTABA EN BASH 
+#####ANALISIS DE VIVALDO. NO ESTABA EN bash
 
 # Analisis MultiQC rawdata
 
@@ -206,7 +206,7 @@ Auí van las imagenes que quiero poner.
 
 En una carpeta creada llamada data_trimmed vamos a almacenar las secuencias limpias mediante un job llamado Trimmed_run.sge
 
-```{bash}
+```{bash, eval = FALSE}
 module load trimmomatic/0.33
 mkdir data_trimmed
 
@@ -237,14 +237,14 @@ Auí van las imagenes que quiero poner.
 
 ## Alineacion 
 
-
-```{bash}
-
-
+```{bash, eval = FALSE}
 # Kallisto pseudo alligment
+```
 
 - Descargar transcriptoma de referencia
-```bash
+
+```{bash, eval = FALSE}
+# Kallisto pseudo alligment
 # Generar transcriptoma de referencia meaidnte el JOB 'Transcript_down.sge', con las instrucciones:
 wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_43/gencode.v43.transcripts.fa.gz 
 
@@ -253,10 +253,10 @@ cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/gencode.v43
 
 # Carpeta de archivos kallisto
 mkdir kallisto_quant_test
-
+```
 
 - Generar un JOB 'Kallisto_down_data.sge'.
-```bash
+```{bash, eval = FALSE}
 #!/bin/bash
 #
 # Use Current working directory
@@ -300,11 +300,11 @@ do
   kallisto quant --index ./kallisto_quant_test/HS_ref.kidx --output-dir ./kallisto_quant_test/${clean} --threads 12 ${file} ${file_2}
 done
 
-
+```
 
 - Mostrar resultados del alineamiento
 
-```bash
+```{bash, eval = FALSE}
 
 # JOB 'Kallisto_down_data.sge' para generar el alineamiento
 cd ./Kallisto_down_data.sge
