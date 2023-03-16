@@ -881,7 +881,7 @@ plot(barplot(Go_results, showCategory = 20))
 
 ## Discusión
 
-Los resultados obtenidos de todo el pipeline realizado por nosotros concuerdan con los resultados que reportan en el paper, sin embargo...
+Los resultados obtenidos de todo el pipeline realizado por nosotros concuerdan con los resultados que reportan en el paper ya que los genes encontrados... sin embargo...
 
 --------------------------------------------------------------------------------
 
