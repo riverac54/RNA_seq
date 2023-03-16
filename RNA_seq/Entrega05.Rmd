@@ -599,17 +599,10 @@ Podemos observar que...
 
 
 ```{bash, eval = FALSE}
-=======
 ## Programa de predicción de cuentas
+```
 
-
-## Programa de predicción de cuentas
-=======
-
-```{bash}
-
-
->>>>>>> d316ccb60d7d43993e90a818b8258e1d120c91db
+```{bash, eval = FALSE}
 # Kallisto pseudo alligment
 ```
 
