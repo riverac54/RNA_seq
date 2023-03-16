@@ -21,7 +21,7 @@ output:
 
 # Objetivo: 
 
-Realizar el análisis de datos de RNA-Seq (pipeline completa) obtenidos de un trofoblasto humano. ***COMPLETAR CON LA LECTURA DEL PAPER
+Realizar el análisis de datos de RNA-Seq (pipeline completa) obtenidos de trofoblasto humano. ***COMPLETAR CON LA LECTURA DEL PAPER
 
 --------------------------------------------------------------------------------
 
@@ -72,19 +72,19 @@ cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens
 1. Contiene los nombres de los SRA
 
 ```{bash}
-cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/human_fastq.txt
+cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/human_fastq.txt
 ```
 
 2. Contiene las instrucciones de descarga de los datos (SRA) y el cambio a Fastq de los mismos.
 
 ```{bash}
-cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/SRAData_dow.sh
+cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/SRAData_dow.sh
 ```
 
 3. Contiene el JOB de descarga de los SRA
 
 ```{bash}
-cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/SRA_run.sge
+cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/SRA_run.sge
 ```
 
 4. Contiene los datos crudos y sus fastqc.gz que se enviaron a la carpeta FastQC_rawData para su análisis.
@@ -102,13 +102,13 @@ cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_rawD
 6. Contiene el JOB para recortar y curar datos de Illumina, como eliminar adaptadores de los datos crudos
 
 ```{bash}
-cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/Trimmed_run.sge
+cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/Trimmed_run.sge
 ```
 
-#7. Contiene los adaptadores para paired-end *****NO ESTOY SEGURA, VIVALDO LO PUSO. CHECAR.
+7. Contiene los adaptadores para paired-end
 
 ```{bash}
-cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/TruSeq3-PE.fa
+cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/TruSeq3-PE.fa
 ```
 
 8. Contiene los datos (SRA) sin adaptadores (limpios) y sus fastqc.gz que se enviaron a la carpeta FastQC_trimmed para su análisis
@@ -126,43 +126,63 @@ cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_trim
 9.1. Contiene el análisis MultiQC de datos sin adaptadores.
 
 ```{bash}
-cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_trimmed/multiqc_report.html
+cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_trimmed/multiqc_report.html
 ```
 
-10. 
+10. Contiene el transcriptoma de referencia humano
 
 ```{bash}
-cd 
+/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/gencode.v43.transcripts.fa.gz
 ```
+
+11. Contiene el JOB para hacer uso de Kallisto quant 
+
+```{bash}
+cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/Kallisto_down_data.sge
+```
+
+12. Contiene el JOB para descagar el transcriptoma de referencia humano.
+
+```{bash}
+cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/Transcript_down.sge
+```
+
+13. Contiene el pseudoalineamiento generado con el uso de la herramienta Kallisto
+
+```{bash}
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/kallisto_quant_test
+```
+
 
 --------------------------------------------------------------------------------
 
 # Resultados y discusión 
 
 
-#Comandos de descarga del Vivaldo. SE OCUPAN + TARDE. **********************
-
-```{bash}
-# Descargar analisis FastQC --> computadora
-rsync -rptuvl mrivera@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_rawData ./Documents
-
-# Descargar analisis FastQC --> computadora
-rsync -rptuvl mrivera@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_rawData ./Documents
-
-#Contiene el análisis MultiQC de datos sin adaptadores.este archivo es descargable para analizar. multiqc
-cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_trimmed/multiqc_report.html
-```
-
-
 ## Calidad de secuencias (FastQC y multiQC) de datos crudos.
 
-Auí van las imagenes que quiero poner. 
+Primeramente, para analizar los datos crudos creamos dos carpetas. La primera, `data` en donde vamos a almacenar los datos crudos y la segunda, `FastQC_rawData` en donde vamos a tener el análisis de calidad de los mismos. 
 
-```{bash} 
 
-#####ANALISIS DE VIVALDO. NO ESTABA EN BASH 
+```{bash}
+mkdir data
+mkdir FastQC_rawData
+```
 
-# Analisis MultiQC rawdata
+El análisis de calidad de genera usando los siguientes modulos y herramientas ****************
+
+```{bash}
+
+```
+
+Para analizar la calidad de los datos crudos descargamos el reporte multiqc a nuestro ordenador con el siguiente comando:
+
+```{bash}
+rsync -rptuvl jgarcia@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_rawData/multiqc_report.html .
+```
+
+Ahora bien, podemos observar que...
+
 
 - Todas son de 150 bp.
 
@@ -175,45 +195,84 @@ Auí van las imagenes que quiero poner.
 - https://dnatech.genomecenter.ucdavis.edu/faqs/should-i-remove-pcr-duplicates-from-my-rna-seq-data/
 - https://www.biostars.org/p/14283/ 
 
-## Per Sequence GC Content 
+Ahora bien, hablo de Per Sequence GC Content 
 
 - Solamente 2 muestras salieron bien, el resto tuvieron alertas (11) o fueron marcadas como errores (9). Esto es normal, ya que las primeras 10-12 bases son resultado del hexamero utilizado como primers, este hexamero esta compuesto de forma aleatoria.
 
 - https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon/lessons/qc_fastqc_assessment.html#:~:text=The%20%E2%80%9CPer%20sequence%20GC%20content,expected%20%25%20GC%20for%20the%20organism.
 
-## Per Base N Content 
+y de Per Base N Content 
 
 - Todas las muestras pasaron la prueba, esto indica que todas las posiciones tienen asignadas una base.
 
 - https://rtsf.natsci.msu.edu/sites/_rtsf/assets/File/FastQC_TutorialAndFAQ_080717.pdf
 
-## Overrepresented sequence
+Sobre Overrepresented sequence
 
 - Es posible que la sobrerepresentacion de las secuencias se deban a que un transcriptoma es muy abundante.
 
 - https://rtsf.natsci.msu.edu/genomics/tech-notes/fastqc-tutorial-and-faq/#:~:text=Overrepresented%20Sequences,to%20try%20to%20identify%20it.
 
-## Adapter Content 
+Finalmente, para Adapter Content 
 
 - Solamente 2 muestras tienen alerta 'SRR18745771_1 y SRR18745768_1' esto ocurre debido a que el adaptador esta presente en mas del $5 \% $ de las lecturas. El resto de las muestras tienen errores, esto indica que el adaptador esta presente en mas del $10 \% $ de las lecturas.
 
 - https://www.ridom.de/seqsphere/u/FASTQ_Quality_Control_(FastQC).html
-```
 
 
 
 ## Limpieza de adaptadores
 
-En una carpeta creada llamada data_trimmed vamos a almacenar las secuencias limpias mediante un job llamado Trimmed_run.sge
+Para la limpieza de adaptadores primeramente creamos una carpeta llamada `data_trimmed` en donde vamos a almacenar las secuencias limpias que, mediante un job llamado `Trimmed_run.sge` vamos a generar un análisis de datos y posteriormente reedirigirlo a una carpeta llamada `FastQC_trimmed`.
 
 ```{bash}
+mkdir data_trimmed 
+mkdir FastQC_trimmed
+nano Trimmed_run.sge
+```
+
+El JOB `Trimmed_run.sge` contiene lo siguiente:
+
+```{bash}
+cat Trimmed_run.sge
+```
+
+```{bash}
+
+#!/bin/bash
+#
+# Use Current working directory
+#$ -cwd
+#
+# Join stdout and stderr
+#$ -j n
+#
+# Run job through bash shell
+#$ -S /bin/bash
+#
+# You can edit the script since this line
+#
+# Your job name
+#$ -N Trimmed_HommoSappiens
+#
+# Send an email after the job has finished
+#$ -m e
+#$ -M axelrdz5205@gmail.com
+#
+#
+# If modules are needed, source modules environment (Do not delete the next line):
+. /etc/profile.d/modules.sh
+#
+# Add any modules you might require:
+module load fastqc/0.11.3
+module load multiqc/1.5
 module load trimmomatic/0.33
-mkdir data_trimmed
+# 
+# PARTE 1.- FastQC y multiQC
+fastqc ./data/*.fastq.gz -o ./FastQC_rawData
+multiqc ./FastQC_rawData -o ./FastQC_rawData
 
-# Crear symlink
-ln -s /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/adapters/TruSeq3-PE.fa .
-ln -s /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/adapters/TruSeq-SE.fa .
-
+# PARTE 2.- Limpieza de adaptadores
 # paired-end
 cd data
 for i in *_1.fastq.gz;
@@ -224,15 +283,26 @@ trimmomatic PE -threads 8 -phred33 $i "${i%_1.fastq.gz}_2.fastq.gz" \
 ILLUMINACLIP:../TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:5:20 MINLEN:60
 done
 
-# Regresar
+# PARTE 3.- FastQC y multiQC
 cd ../
+fastqc ./data_trimmed/*.fastq.gz -o ./FastQC_trimmed
+# Reporte en MultiQC
+multiqc ./FastQC_trimmed -o ./FastQC_trimmed
+
 ```
+
+**Trimmomatic** es la herramienta de línea de comandos rápida que utilizamos para recortar y curar datos de Illumina (FASTQ), así como para eliminar adaptadores.
 
 
 ## Calidad de secuencias (FastQC y multiQC) con datos limpios. 
 
-Auí van las imagenes que quiero poner. 
+Para analizar la calidad de secuencias descargamos el reporte multiqc a nuestro ordenador.
 
+```{bash}
+rsync -rptuvl jgarcia@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_trimmed/multiqc_report.html .
+```
+
+Podemos observar que...
 
 
 ## Alineacion 
