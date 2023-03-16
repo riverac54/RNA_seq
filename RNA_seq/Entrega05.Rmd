@@ -33,7 +33,7 @@ Realizar el análisis de datos de RNA-Seq (pipeline completa) obtenidos de trofo
 
 - Número de transcriptomas: 6 transcriptomas 
 
-- Número de réplicas biológicas: 3 con un total de 11 corridas *** PREGUNTA A EVELIA: Las muestras las obtuvimos de NCBI y son 6. Cabe destacar que la muestra #4 tiene 2 corridas, la #5 y #6 tienen 3 corridas, así que el número real de archivos que vamos a descargar en el cluster son 11.
+- Número de réplicas biológicas: 3
 
 - Secuenciador: Illumina NovaSeq 6000
 
