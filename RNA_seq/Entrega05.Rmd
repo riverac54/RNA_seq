@@ -165,23 +165,45 @@ Primeramente, para analizar los datos crudos creamos dos carpetas. La primera, `
 
 
 ```{bash}
+# Colocarse en la carpeta de trabajo
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens
+
+# Crear carpetas
 mkdir data
 mkdir FastQC_rawData
 ```
 
-El análisis de calidad de genera usando los siguientes modulos y herramientas ****************
+Posteriormente, vamos a iniciar el análisis de calidad de las lecturas crudas o sin procesar (raw data)
 
 ```{bash}
 
+# cargar module FastQC
+qlogin
+module load fastqc/0.11.3
+
+# Crear fastqc por lectura
+fastqc ./data/*.fastq.gz -o ./FastQC_rawData
+
 ```
 
-Para analizar la calidad de los datos crudos descargamos el reporte multiqc a nuestro ordenador con el siguiente comando:
+`fastqc ./data/*.fastq.gz -o ./FastQC_rawData` indica que realice un fastqc a todos los archivos contenidos en la carpeta data que terminen con .fastq.gz y que los outputs los ponga en la carpeta FastQC_rawData.
+
+Ahora bien, se utiliza la herrmaienta MultiQC, la cual crea un único informe con gráficos interactivos para múltiples análisis bioinformáticos en muchas muestras. Se corre el siguiente código.
+
+```{bash}
+# Cargar modulo
+module load multiqc/1.5
+# Generar reporte multiqc
+multiqc ./FastQC_rawData -o ./FastQC_rawData
+```
+
+Para poder visualizar el informe multiqc,  se descarga el archivo a nuestro ordenador con el siguiente comando:
 
 ```{bash}
 rsync -rptuvl jgarcia@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_rawData/multiqc_report.html .
 ```
 
-Ahora bien, podemos observar que...
+Podemos observar que...
 
 
 - Todas son de 150 bp.
@@ -305,7 +327,8 @@ rsync -rptuvl jgarcia@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_
 Podemos observar que...
 
 
-## Alineacion 
+
+## Programa de predicción de cuentas
 
 
 ```{bash}
@@ -383,8 +406,6 @@ cd ./Kallisto_down_data.sge
 cat Kallisto_down_data.e276381 
 ```
 
-
-## Programa de predicción de cuentas
 
 # Expresión diferencial
 
