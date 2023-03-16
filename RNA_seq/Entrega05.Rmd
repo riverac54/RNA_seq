@@ -1164,20 +1164,21 @@ plot(barplot(Go_results1, showCategory = 20))
 
 ![](./Imagenes/Hs_all.png)
 
-- Interpretacion de la grafica
+- Interpretacion 
 Para el plot solo se tomaron en cuenta los primeros 20 genes, los cuales tuvieran un $log2FoldChange > 1.5$, el valor de log2FoldChange es arbitrario. Utilizamos $padj$ para obtener los genes que son mas significativos, padj utiliza el matodo de ' Benjamini-Hochberg Procedure'. 
 
 El metodo Benjamini-Hochberg disminuye el numero de errores tipo 1 (falsos positivos). Rankea todos los pvalores de menor a mayor y les asigna una posicion en el ranking, siendo el numero 1 el que tenga el pvalor mas pequeño, despues divide la posicion en el rankeo entre el numero de muestras para obtener $posicion-ranking/muestras=p-adjusted$
 
-Con $padj < 0.05$, esperamos que $5 \%$ de los genes sean falsos positivosesto, obteniendo solo los genes mas significativos.
+Con $padj < 0.05$, esperamos que $5 \%$ de los datos(genes) sean falsos positivos, obteniendo solo los genes mas significativos. La grafica solo muestra los primeros 100 genes de la tabla, ya que son muchos.
 
-Tenemos mas de 9 genes que pertencen a la regulacion del desarrollo neuronal, su p.adjust es menor a 0.2, lo que indica su significancia, es decir, podemos afirmar que presenta esa funcion.
+Tenemos mas de 9 genes que pertencen a la regulacion de la actividad de la endopeptidasa, la cual tiene la funcion del desdoblamiento de enlaces peptidicos en las proteinas. Su p.adjust es menor a 0.2, lo que indica su significancia, por lo que podemos afirmar que presenta esa funcion. 
 
-Asi mismo, contamos con menos de 6 genes que pertenecen a la 'negative regulation of response to wounding', la cual se encarga de disminuir la frecuencia de eventos en la restauracion de tejidos dañados posterior a una lesion. 
+Asi mismo, contamos con menos de 6 genes que pertenecen a la 'negative regulation of response to wounding', la cual se encarga de disminuir la frecuencia de restauracion de los tejidos dañados en una lesion. 
 
 ## Referencias
 - https://www.statisticshowto.com/benjamini-hochberg-procedure/ 
--
+- https://www.informatics.jax.org/vocab/gene_ontology/GO:0052548
+
 ----------------------------------------------------------------
 # Generar con subgrupos 
 
@@ -1203,7 +1204,9 @@ data_up = Hs_all_de_gene_matrix_UP # Grupo UP
 data_up = na.omit(data_up)
 
 # Tomar solo los genes posiblemente diferentemente expresados significativoas. Solamente requerimos los nombres de lo anterior, por lo que:
-genes_up = rownames(data_up[data_up$log2FoldChange >= 0.5 & data_up$padj < 0.05, ])
+data = data_up[data_up$log2FoldChange >= 0.05, ]
+data = data_up[data_up$padj < 0.05, ]
+genes_up = rownames(data_up)
 
 # Convertirlo en matriz y utilizar solo los primeros 100 IDs del grupo UP
 genes_up = as.matrix(genes_up)
@@ -1227,12 +1230,15 @@ data_down= Hs_all_de_gene_matrix_DOWN # Grupo DOWN
 data_down = na.omit(data_down)
 
 # Convertirlo en matriz y utilizar solo los primeros 100 IDs del grupo UP
-genes_down <- subset(Hs_res_all, padj < 0.01 & log2FoldChange < -2)
+genes_down <- subset(Hs_res_all, padj < 0.01 & log2FoldChange < -0.5)
 genes_down = genes_down[ order(genes_down$log2FoldChange, decreasing = FALSE), ] # Ordenar por log2FoldChange
-genes_down = rownames(genes_down) # Nombres de los genes
-genes_down = as.matrix(genes_down) # Hacer matriz
-genes_down = genes_down[1:100,] # Tomar los primeros 100
 
+# Nombres de los genes
+genes_down = rownames(genes_down) 
+
+# Tomar los primeros 100
+genes_down = as.matrix(genes_down) # Convertirlo matriz
+genes_down = genes_down[1:100,] 
 
 # Modificar nombres, solo quiero los primeros 15 caracteres del grupo UP
 genes_down = as.matrix(genes_down) #convertir a matriz
@@ -1254,22 +1260,23 @@ as.data.frame(Go_results_DOWN)
 - Generar la grafica de ambos subgrupos (UP &  DOWN)
 ```{r plot, eval= FALSE}
  # Generar la plot de los primeros 20 genes
-plot(barplot(Go_results_UP, showCategory = 15, horiz=TRUE)) + barplot(Go_results_DOWN, showCategory = 15, horiz=TRUE) 
+plot(barplot(Go_results_UP, showCategory = 15, horiz=TRUE)) + barplot(Go_results_DOWN, showCategory = 8, horiz=TRUE) 
 ```
 
 ![](./Imagenes/Hs_groups.png)
 
 - Interpretacion de la grafica
 
+La grafica de los genes UP solo muestra 6 grupos de funciones , mientras que la grafica de los genes DOWN muestra los primeros 10 grupos de funciones. Utilizamos un $padj<0.05$ esperando que el $5 \%$ de los datos(genes) sean falsos positivos, obteniendo solo los genes mas significativos. Ambas graficas solo muestran los primeros 100 genes de la tabla, ya que son muchos.
 
+En el grupo UP tenemos mas de 9 genes que pertencen a la regulacion de la actividad de la endopeptidasa, la cual tiene la funcion del desdoblamiento de enlaces peptidicos en las proteinas. Su p.adjust es menor a 0.2, lo que indica su significancia, por lo que podemos afirmar que presenta esa funcion. 
 
+Asi mismo, contamos con menos de 6 genes que pertenecen a la 'negative regulation of response to wounding', la cual se encarga de disminuir la frecuencia de restauracion de los tejidos dañados en una lesion. 
 
+En el grupo DOWN todos los grupos tienen 5 genes que pertenecen a esa funcion, el grupo con mas significancia es el de 'proton motive force-driven mithochondrial ATP synthesis' con un $padj=0.00005$, este grupo tiene la funcion de transportar protones a traves de la membrana mitocondrial para generar un gradiante electroquimico que active la sintesis de ATP.
 
 
 # Referencias
 
-- 
-
-
-
+- https://www.informatics.jax.org/vocab/gene_ontology/GO:0042776#:~:text=proton%20motive%20force%2Ddriven%20mitochondrial,Ontology%20Term%20(GO%3A0042776)&text=Definition%3A,force)%20that%20powers%20ATP%20synthesis. 
 
