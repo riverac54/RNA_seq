@@ -1263,7 +1263,7 @@ as.data.frame(Go_results_DOWN)
 plot(barplot(Go_results_UP, showCategory = 15, horiz=TRUE)) + barplot(Go_results_DOWN, showCategory = 8, horiz=TRUE) 
 ```
 
-![](./Imagenes/Hs_groups.png)
+![](./Imagenes/Hs_groups.jpeg)
 
 - Interpretacion de la grafica
 
@@ -1276,7 +1276,7 @@ Asi mismo, contamos con menos de 6 genes que pertenecen a la 'negative regulatio
 En el grupo DOWN todos los grupos tienen 5 genes que pertenecen a esa funcion, el grupo con mas significancia es el de 'proton motive force-driven mithochondrial ATP synthesis' con un $padj=0.00005$, este grupo tiene la funcion de transportar protones a traves de la membrana mitocondrial para generar un gradiante electroquimico que active la sintesis de ATP.
 
 
-# Referencias
+## Referencias
 
 - https://www.informatics.jax.org/vocab/gene_ontology/GO:0042776#:~:text=proton%20motive%20force%2Ddriven%20mitochondrial,Ontology%20Term%20(GO%3A0042776)&text=Definition%3A,force)%20that%20powers%20ATP%20synthesis. 
 
