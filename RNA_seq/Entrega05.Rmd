@@ -19,6 +19,7 @@ output:
       in_header: preamble.tex
 ---
 
+<<<<<<< HEAD
 # Objetivo: 
 
 Realizar el análisis de datos de RNA-Seq (pipeline completa) obtenidos de un trofoblasto humano. ***COMPLETAR CON LA LECTURA DEL PAPER
@@ -161,6 +162,8 @@ Auí van las imagenes que quiero poner.
 ```{bash, eval = FALSE} 
 
 #####ANALISIS DE VIVALDO. NO ESTABA EN bash
+=======
+>>>>>>> d316ccb60d7d43993e90a818b8258e1d120c91db
 
 # Analisis MultiQC rawdata
 
@@ -198,22 +201,379 @@ Auí van las imagenes que quiero poner.
 - Solamente 2 muestras tienen alerta 'SRR18745771_1 y SRR18745768_1' esto ocurre debido a que el adaptador esta presente en mas del $5 \% $ de las lecturas. El resto de las muestras tienen errores, esto indica que el adaptador esta presente en mas del $10 \% $ de las lecturas.
 
 - https://www.ridom.de/seqsphere/u/FASTQ_Quality_Control_(FastQC).html
+=======
+Realizar el análisis de datos de RNA-Seq (pipeline completa) obtenidos de trofoblasto humano. ***COMPLETAR CON LA LECTURA DEL PAPER
+
+
+--------------------------------------------------------------------------------
+# Analisis MultiQC sin adaptadores
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------
+# Kallisto pseudo alligment
+
+- Descargar transcriptoma de referencia
+```bash
+# Generar transcriptoma de referencia meaidnte el JOB 'Transcript_down.sge', con las instrucciones:
+wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_43/gencode.v43.transcripts.fa.gz 
+
+# Ubicacion transciptoma de referencia
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/gencode.v43.transcripts.fa.gz
+
+# Carpeta de archivos kallisto
+mkdir kallisto_quant_test
+```
+
+- Generar un JOB 'Kallisto_down_data.sge'.
+```bash
+#!/bin/bash
+#
+# Use Current working directory
+#$ -cwd
+#
+# Join stdout and stderr
+#$ -j n
+#
+# Run job through bash shell
+#$ -S /bin/bash
+#
+# You can edit the script since this line
+#
+# Your job name
+#$ -N Kallisto_down_data
+#
+# Send an email after the job has finished
+#$ -m e
+#$ -M rivera20c3@gmail.com
+#
+#
+# If modules are needed, source modules environment (Do not delete the next line):
+. /etc/profile.d/modules.sh
+#
+# Add any modules you might require:
+module load kallisto/0.45.0
+#
+# Write your commands in the next line
+
+# Generar index de kallisto
+kallisto index ./gencode.v43.transcripts.fa.gz -i ./kallisto_quant_test/HS_ref.kidx 
+
+# - i nombre del archivo de salida, i.e., indice
+#- Input =  gencode.v43.transcripts.fa.gz, transcriptoma de referencia
+
+ # Paired-end  
+for file in ./data_trimmed/*_1_trimmed.fastq.gz                                                 # Read1
+do
+  clean=$(echo $file | sed 's/_trimmed//;s/\.fastq\.gz//;s/_1//')         # Nombre de la carpeta de salida, mismo nombre de SRA
+  file_2=$(echo ${clean}_2_trimmed.fastq.gz| sed 's/FP/RP/')                                            # Read2
+  kallisto quant --index ./kallisto_quant_test/HS_ref.kidx --output-dir ./kallisto_quant_test/${clean} --threads 12 ${file} ${file_2}
+done
 ```
 
 
+- Mostrar resultados del alineamiento
+```bash
+
+# JOB 'Kallisto_down_data.sge' para generar el alineamiento
+cd ./Kallisto_down_data.sge
+
+# Se encuentran en el archivo de errores del JOB
+cat Kallisto_down_data.e276381 
+```
+
+
+#################################################################################
+--------------------------------------------------------------------------------
+# Descripcion de los datos
+
+- Tipo de bibliotecas: Paired-end
+
+- Método de selección: ARN Total, cDNA ****************** PREGUNTA A EVELIA: cDNA ¿es complementary DNA?
+
+- Número de transcriptomas: 6 transcriptomas 
+
+- Número de réplicas biológicas: 3 con un total de 11 corridas ***************** PREGUNTA A EVELIA: Las muestras las obtuvimos de NCBI y son 6. Cabe destacar que la muestra #4 tiene 2 corridas, la #5 y #6 tienen 3 corridas, así que el número real de archivos que vamos a descargar en el cluster son 11.
+
+- Secuenciador: Illumina NovaSeq 6000
+
+- Distribución de las muestras: 
+
+  Control: tratamiento con DMSO (hTSC, DMSO) - SRR18745765 (repbio1), SRR18745766 (repbio1), SRR18745770 (repbio2), SRR18745771 (repbio2), SRR18745772 (repbio2), SRR18745767 (repbio3), SRR18745768 (repbio3), SRR18745769 (repbio3) 
+
+  Tratamiento con SP600125 (hTSC, SP600125) - SRR18745764 (repbio1), SRR18745763 (repbio2) y SRR18745762 (repbio3)
+
+- Profundidad de secuenciación de cada transcriptoma: ************************** PREGUNTA ¿DÓNDE VEO ESTO? 
+
+--------------------------------------------------------------------------------
+
+# Abstract
+
+¿Qué comparamos?
+
+¿Qué tipo de datos analizaste? RNA-seq
+
+¿Qué programas usaste y por qué? Kllisto quant, FastQC, trimm... 
+
+Información breve de que obtuviste
+
+Máximo 200 palabras
+
+--------------------------------------------------------------------------------
+
+# Rutas de trabajo generadas en el proyecto
+
+0. Carpeta de trabajo del equipo 
+
+```{bash}
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens 
+```
+
+1. Contiene los nombres de los SRA
+
+```{bash}
+cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/human_fastq.txt
+```
+
+2. Contiene las instrucciones de descarga de los datos (SRA) y el cambio a Fastq de los mismos.
+
+```{bash}
+cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/SRAData_dow.sh
+```
+
+3. Contiene el JOB de descarga de los SRA
+
+```{bash}
+cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/SRA_run.sge
+```
+
+4. Contiene los datos crudos y sus fastqc.gz que se enviaron a la carpeta FastQC_rawData para su análisis.
+
+```{bash}
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/data
+```
+
+5. Contiene el análisis de calidad fastqc de los datos crudos
+
+```{bash}
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_rawData
+```
+
+#####################################
+
+6. Contiene el JOB para realizar la limpieza de adaptadores **** MANUEL Contiene el JOB generado para realizar el análisis de calidad de la 'rawdata'
+
+```{bash}
+
+ /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/Trimmed_run.sge
+```
+
+7. Contiene los adaptadores para paired-end *****NO ESTOY SEGURA, VIVALDO LO PUSO. CHECAR.
+=======
+cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/Trimmed_run.sge
+```
+
+7. Contiene los adaptadores para paired-end
+
+
+```{bash}
+cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/TruSeq3-PE.fa
+```
+
+7. Contiene las muestras (SRA) sin adaptadores
+
+```{bash}
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/data_trimmed
+```
+
+8. Contiene el analisis MultiQC de datos sin adaptadores
+
+```{bash}
+cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_trimmed/multiqc_report.html
+```
+
+=======
+10. Contiene el transcriptoma de referencia humano
+
+```{bash}
+/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/gencode.v43.transcripts.fa.gz
+```
+
+11. Contiene el JOB para hacer uso de Kallisto quant 
+
+```{bash}
+cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/Kallisto_down_data.sge
+```
+
+12. Contiene el JOB para descagar el transcriptoma de referencia humano.
+
+```{bash}
+cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/Transcript_down.sge
+```
+
+13. Contiene el pseudoalineamiento generado con el uso de la herramienta Kallisto
+
+```{bash}
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/kallisto_quant_test
+```
+
+
+--------------------------------------------------------------------------------
+
+# Resultados y discusión 
+
+
+
+## Calidad de secuencias (FastQC y multiQC) de datos crudos.
+
+Primeramente, para analizar los datos crudos creamos dos carpetas. La primera, `data` en donde vamos a almacenar los datos crudos y la segunda, `FastQC_rawData` en donde vamos a tener el análisis de calidad de los mismos. 
+
+
+```{bash}
+# Colocarse en la carpeta de trabajo
+cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens
+
+# Crear carpetas
+mkdir data
+mkdir FastQC_rawData
+```
+
+Posteriormente, vamos a iniciar el análisis de calidad de las lecturas crudas o sin procesar (raw data)
+
+```{bash}
+
+# cargar module FastQC
+qlogin
+module load fastqc/0.11.3
+
+# Crear fastqc por lectura
+fastqc ./data/*.fastq.gz -o ./FastQC_rawData
+
+```
+
+`fastqc ./data/*.fastq.gz -o ./FastQC_rawData` indica que realice un fastqc a todos los archivos contenidos en la carpeta data que terminen con .fastq.gz y que los outputs los ponga en la carpeta FastQC_rawData.
+
+
+# Resultados y discusión 
+=======
+Ahora bien, se utiliza la herrmaienta MultiQC, la cual crea un único informe con gráficos interactivos para múltiples análisis bioinformáticos en muchas muestras. Se corre el siguiente código.
+
+```{bash}
+# Cargar modulo
+module load multiqc/1.5
+# Generar reporte multiqc
+multiqc ./FastQC_rawData -o ./FastQC_rawData
+```
+
+Para poder visualizar el informe multiqc,  se descarga el archivo a nuestro ordenador con el siguiente comando:
+
+```{bash}
+rsync -rptuvl jgarcia@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_rawData/multiqc_report.html .
+```
+
+Podemos observar que...
+
+
+- Todas son de 150 bp.
+
+- El SRA que tiene mas secuenciaciones es 'SRR18745762' con $66.1 \space Millones$. El SRA con menos secuencias fue 'SRR18745771' con $3 \space Millones$.
+
+- El SRA 'SRR18745762' tiene $75.6 \% $ de duplicados. Si bien esto podría suponer un problema, debemos recordar que trabajamos con RNA-seq y los duplicados se puede deber a la expresion de un pequeño numero de genes. En RRna-seq no deben de eliminarse los duplicados, a menos que tengan UMIs(barcodes).
+
+- Esta grafica nos muestra que todos los archivos tuvieron una buena calidad. Siendo la muestra 'SRR18745771_1' la que tiene la calidad mas baja de $24.53$, es decir, el error esta entre $0.01<error<.001$
+
+- https://dnatech.genomecenter.ucdavis.edu/faqs/should-i-remove-pcr-duplicates-from-my-rna-seq-data/
+- https://www.biostars.org/p/14283/ 
+
+Ahora bien, hablo de Per Sequence GC Content 
+
+- Solamente 2 muestras salieron bien, el resto tuvieron alertas (11) o fueron marcadas como errores (9). Esto es normal, ya que las primeras 10-12 bases son resultado del hexamero utilizado como primers, este hexamero esta compuesto de forma aleatoria.
+
+- https://hbctraining.github.io/Intro-to-rnaseq-hpc-salmon/lessons/qc_fastqc_assessment.html#:~:text=The%20%E2%80%9CPer%20sequence%20GC%20content,expected%20%25%20GC%20for%20the%20organism.
+
+y de Per Base N Content 
+
+- Todas las muestras pasaron la prueba, esto indica que todas las posiciones tienen asignadas una base.
+
+- https://rtsf.natsci.msu.edu/sites/_rtsf/assets/File/FastQC_TutorialAndFAQ_080717.pdf
+
+Sobre Overrepresented sequence
+
+- Es posible que la sobrerepresentacion de las secuencias se deban a que un transcriptoma es muy abundante.
+
+- https://rtsf.natsci.msu.edu/genomics/tech-notes/fastqc-tutorial-and-faq/#:~:text=Overrepresented%20Sequences,to%20try%20to%20identify%20it.
+
+Finalmente, para Adapter Content 
+
+- Solamente 2 muestras tienen alerta 'SRR18745771_1 y SRR18745768_1' esto ocurre debido a que el adaptador esta presente en mas del $5 \% $ de las lecturas. El resto de las muestras tienen errores, esto indica que el adaptador esta presente en mas del $10 \% $ de las lecturas.
+
+- https://www.ridom.de/seqsphere/u/FASTQ_Quality_Control_(FastQC).html
+
+
+## Calidad de secuencias (FastQC y multiQC), tanto de raw data como después de la limpieza de adaptadores.
+
+Auí van las imagenes que quiero poner. 
 
 ## Limpieza de adaptadores
 
-En una carpeta creada llamada data_trimmed vamos a almacenar las secuencias limpias mediante un job llamado Trimmed_run.sge
+Para la limpieza de adaptadores primeramente creamos una carpeta llamada `data_trimmed` en donde vamos a almacenar las secuencias limpias que, mediante un job llamado `Trimmed_run.sge` vamos a generar un análisis de datos y posteriormente reedirigirlo a una carpeta llamada `FastQC_trimmed`.
 
+<<<<<<< HEAD
 ```{bash, eval = FALSE}
+=======
+```{bash}
+mkdir data_trimmed 
+mkdir FastQC_trimmed
+nano Trimmed_run.sge
+```
+
+El JOB `Trimmed_run.sge` contiene lo siguiente:
+
+```{bash}
+cat Trimmed_run.sge
+```
+
+```{bash}
+
+#!/bin/bash
+#
+# Use Current working directory
+#$ -cwd
+#
+# Join stdout and stderr
+#$ -j n
+#
+# Run job through bash shell
+#$ -S /bin/bash
+#
+# You can edit the script since this line
+#
+# Your job name
+#$ -N Trimmed_HommoSappiens
+#
+# Send an email after the job has finished
+#$ -m e
+#$ -M axelrdz5205@gmail.com
+#
+#
+# If modules are needed, source modules environment (Do not delete the next line):
+. /etc/profile.d/modules.sh
+#
+# Add any modules you might require:
+module load fastqc/0.11.3
+module load multiqc/1.5
+>>>>>>> d316ccb60d7d43993e90a818b8258e1d120c91db
 module load trimmomatic/0.33
-mkdir data_trimmed
+# 
+# PARTE 1.- FastQC y multiQC
+fastqc ./data/*.fastq.gz -o ./FastQC_rawData
+multiqc ./FastQC_rawData -o ./FastQC_rawData
 
-# Crear symlink
-ln -s /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/adapters/TruSeq3-PE.fa .
-ln -s /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/adapters/TruSeq-SE.fa .
-
+# PARTE 2.- Limpieza de adaptadores
 # paired-end
 cd data
 for i in *_1.fastq.gz;
@@ -224,20 +584,45 @@ trimmomatic PE -threads 8 -phred33 $i "${i%_1.fastq.gz}_2.fastq.gz" \
 ILLUMINACLIP:../TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:5:20 MINLEN:60
 done
 
-# Regresar
+# PARTE 3.- FastQC y multiQC
 cd ../
+fastqc ./data_trimmed/*.fastq.gz -o ./FastQC_trimmed
+# Reporte en MultiQC
+multiqc ./FastQC_trimmed -o ./FastQC_trimmed
+
 ```
+
+**Trimmomatic** es la herramienta de línea de comandos rápida que utilizamos para recortar y curar datos de Illumina (FASTQ), así como para eliminar adaptadores.
+
+
 
 
 ## Calidad de secuencias (FastQC y multiQC) con datos limpios. 
 
-Auí van las imagenes que quiero poner. 
+Para analizar la calidad de secuencias descargamos el reporte multiqc a nuestro ordenador.
+
+```{bash}
+rsync -rptuvl jgarcia@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_trimmed/multiqc_report.html .
+```
+
+Podemos observar que...
 
 
 
-## Alineacion 
 
+<<<<<<< HEAD
 ```{bash, eval = FALSE}
+=======
+## Programa de predicción de cuentas
+
+
+## Programa de predicción de cuentas
+=======
+
+```{bash}
+
+
+>>>>>>> d316ccb60d7d43993e90a818b8258e1d120c91db
 # Kallisto pseudo alligment
 ```
 
@@ -312,9 +697,6 @@ cd ./Kallisto_down_data.sge
 # Se encuentran en el archivo de errores del JOB
 cat Kallisto_down_data.e276381 
 ```
-
-
-## Programa de predicción de cuentas
 
 # Expresión diferencial
 
@@ -592,13 +974,13 @@ https://bioconductor.org/packages/devel/bioc/vignettes/GenomicFeatures/inst/doc/
 https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html
 
 
-<<<<<<< HEAD
+
 
 --------------------------------------------------------------------------------
 # Graficas GO (Manuel)
 
 - Instalar 'clusterProfiler', 'AnnotationDbi' y Base de Datos de homo_sapiens 'org.Hs.eg.db'
-```{r, echo=FALSE}
+```{r eval=FALSE}
 # Comando
 install.packages('AnnotationDbi')
 
@@ -625,7 +1007,7 @@ data2 = na.omit(data)
 
 # Tomar solo los genes posiblemente diferentemente expresados significativoas
 # Solamente requerimos los nombres de lo anterior, por lo que:
-genes_to_test = rownames(data2[data2$log2FoldChange > 0.5 & data2$padj < 0.5, ])
+genes_to_test = rownames(data2[data2$log2FoldChange > 1.5 & data2$padj < 0.05, ])
 
 # Convertirlo en matriz y utilizar solo los primeros 100 IDs, ya que son un total de 12,999
 genes_to_test = as.matrix(genes_to_test)
@@ -633,7 +1015,7 @@ genes_to_test = genes_to_test[1:100,]
 
 # Modificar nombres, solo quiero los primeros 15 caracteres
 genes_to_test = as.matrix(genes_to_test) #convertir a matriz
-for (i in 1:100) {
+for (i in 100) {
 genes_to_test[i,]=substr(genes_to_test[i,], start=1, stop=15)                           
 }
 
@@ -655,37 +1037,34 @@ plot(barplot(Go_results, showCategory = 20))
 
 - Interpretacion de la grafica
 
-
-## Generar con subgrupos UP
-
-- Con subgrupo UP
-```{r, eval=FALSE}
+```{r libraries installation, message=FALSE}
 #Importar libreria
 library(clusterProfiler) #Enrichment analysis
 library (AnnotationDbi)
 library(org.Hs.eg.db) # Human DB
+```
 
+
+## Generar con subgrupos
+
+- Con subgrupo UP
+
+```{r, eval=FALSE}
+library(forcats)
+library(ggrepel)
+library(gprofiler2)
 # Tomar tabla de datos de DESEQ2
 data_up = Hs_all_de_gene_matrix_UP # Grupo UP
-data_down = Hs_all_de_gene_matrix_DOWN
 
 #Eliminar NAs
 data_up = na.omit(data_up)
-data_down = na.omit(data_down)
 
 # Tomar solo los genes posiblemente diferentemente expresados significativoas. Solamente requerimos los nombres de lo anterior, por lo que:
-genes_up = rownames(data_up[data_up$log2FoldChange > 0.5 & data_up$padj < 0.5, ])
-
-# No me arroja nada, por lo que no hay nada significativo
-genes_down = rownames(data_down[data_down$log2FoldChange > 0.5 & data_down$padj < 0.5, ]) 
+genes_up = rownames(data_up[data_up$log2FoldChange >= 0.5 & data_up$padj < 0.05, ])
 
 # Convertirlo en matriz y utilizar solo los primeros 100 IDs del grupo UP
 genes_up = as.matrix(genes_up)
 genes_up = genes_up[1:100,]
-
-# Convertirlo en matriz y utilizar solo los primeros 100 IDs del grupo UP
-genes_down = as.matrix(genes_down)
-# genes_down = genes_down[1:100,]
 
 # Modificar nombres, solo quiero los primeros 15 caracteres del grupo UP
 genes_up = as.matrix(genes_up) #convertir a matriz
@@ -694,26 +1073,60 @@ genes_up[i,]=substr(genes_up[i,], start=1, stop=15)
 }
 
 # Analisis terminos GO de lor primero 100 terminos, ya que en total son 12,999 y son muchos terminos
-Go_results <- enrichGO(gene=genes_up, OrgDb="org.Hs.eg.db", keyType = "ENSEMBL", ont = "BP")
-
+Go_results_UP <- enrichGO(gene=genes_up, OrgDb="org.Hs.eg.db", keyType = "ENSEMBL", ont = "BP")
 ```
 
 
 - Convertir en data frame
 ```{r}
 # Convwertir en data-frame
-as.data.frame(Go_results)
+as.data.frame(Go_results_UP)
 ```
 
 - Generar la grafica
 ```{r}
  # Generar la plot de los primeros 20 genes
-plot(barplot(Go_results, showCategory = 20))
+plot(barplot(Go_results_UP, showCategory = 20))
 ```
+
+
+- Con subgrupo DOWN
+
+```{r}
+data_down= Hs_all_de_gene_matrix_DOWN # Grupo DOWN
+
+#Eliminar NAs
+data_down = na.omit(data_down)
+
+# Convertirlo en matriz y utilizar solo los primeros 100 IDs del grupo UP
+genes_down <- subset(Hs_res_all, padj < 0.01 & log2FoldChange < -2)
+genes_down = genes_down[ order(genes_down$log2FoldChange, decreasing = FALSE), ] # Ordenar por log2FoldChange
+genes_down = rownames(genes_down) # Nombres de los genes
+genes_down = as.matrix(genes_down) # Hacer matriz
+genes_down = genes_down[1:100,] # Tomar los primeros 100
+
+
+# Modificar nombres, solo quiero los primeros 15 caracteres del grupo UP
+genes_down = as.matrix(genes_down) #convertir a matriz
+for (i in 1:100) {
+genes_down[i,]=substr(genes_down[i,], start=1, stop=15)                           
+}
+
+# Analisis terminos GO de lor primero 100 terminos, ya que en total son 12,999 y son muchos terminos
+Go_results_DOWN <- enrichGO(gene=genes_down, OrgDb="org.Hs.eg.db", keyType = "ENSEMBL", ont = "BP")
+```
+
+- Generar la grafica
+```{r}
+ # Generar la plot de los primeros 20 genes
+plot(barplot(Go_results_DOWN, showCategory = 30))
+```
+
+
 - Interpretacion de la grafica
 
 
 
->>>>>>> 0220df6d942e339d6e75704006e4138c2428516d
+
 
 
