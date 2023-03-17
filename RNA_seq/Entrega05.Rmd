@@ -690,7 +690,7 @@ Tras este filtrado, encontramos que existen 3612 genes sobreexpresados y 2646 ge
 
 En este caso, para visualizar los datos normalizados podemos hacer uso de un _volcano plot_ De esta manera, podremos dar cuenta fácilmente de los genes que tienen un valor $p$ de mayor significacia.
 
-```{r}
+```{r Volcano plot, warning=FALSE}
 
 Hs_de <- as.data.frame(Hs_res_all)
 # add a column of NAs
@@ -705,16 +705,14 @@ Hs_de$names <- NA
 filter <- which(Hs_de$diffexpressed != "NO" & Hs_de$padj < 0.05 & (Hs_de$log2FoldChange >= 5  | Hs_de$log2FoldChange <= -5))
 Hs_de$names[filter] <- rownames(Hs_de)[filter]
 # grafica
-png(file = "volcano05-res.png",
-    width = 800, height = 800) # guardar el plot en formato png
+#png(file = "volcano05-res.png",
+#    width = 800, height = 800) # guardar el plot en formato png
 ggplot(data=Hs_de, aes(x=log2FoldChange, y=-log10(pvalue), col=diffexpressed, label=names)) +
     geom_point() +
     scale_color_manual(values=c("blue", "black", "red")) + # cambiar colores de puntos
     theme_minimal() +
     geom_text_repel() +
     xlim(-15,15)
-
-dev.off()
 ```
 
 ### Heatmap 
@@ -725,7 +723,7 @@ Utilizamos un mapa de calor para visualizar la agrupación de genes que llevan u
 BiocManager::install("genefilter")
 ```
 
-```{r heatmap}
+```{r heatmap, warning=FALSE, message=FALSE}
 library("genefilter")
 library("pheatmap")
 topVarGenes <- head(order(rowVars(assay(Hs_all_normalized)), decreasing = TRUE), 20)  # Seleccion de mayores genes
@@ -745,11 +743,10 @@ https://bioconductor.org/packages/devel/bioc/vignettes/GenomicFeatures/inst/doc/
 https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html
 
 
---------------------------------------------------------------------------------
 # Graficas GO (Manuel)
 
 - Instalar 'clusterProfiler', 'AnnotationDbi' y Base de Datos de homo_sapiens 'org.Hs.eg.db'
-```{r, echo=FALSE}
+```{r Paquetes GO, echo=FALSE, message=FALSE, warning=FALSE}
 # Comando
 install.packages('AnnotationDbi')
 
@@ -761,7 +758,7 @@ BiocManager::install("org.Hs.eg.db")
 ```
 
 - Extraer informacion de BD
-```{r, eval=FALSE}
+```{r, warning=FALSE, message=FALSE}
 #Importar libreria
 library(clusterProfiler) #Enrichment analysis
 library (AnnotationDbi)
@@ -810,11 +807,7 @@ plot(barplot(Go_results, showCategory = 20))
 ## Generar con subgrupos UP
 
 - Con subgrupo UP
-```{r, eval=FALSE}
-#Importar libreria
-library(clusterProfiler) #Enrichment analysis
-library (AnnotationDbi)
-library(org.Hs.eg.db) # Human DB
+```{r}
 
 # Tomar tabla de datos de DESEQ2
 data_up = Hs_all_de_gene_matrix_UP # Grupo UP
@@ -864,14 +857,10 @@ plot(barplot(Go_results, showCategory = 20))
 - Interpretacion de la grafica
 
 
-
---------------------------------------------------------------------------------
-
 ## Discusión
 
 Los resultados obtenidos del pipeline dan evidencia a que los transposones han contribuido de forma importante a la regulación génica del trofoblasto humano ya que hay genes de elementos transponibles que tienen mayor expresión génica. Resultado también reportado en el paper correspondiente al proyecto. 
 
---------------------------------------------------------------------------------
 
 # Referencias
 
