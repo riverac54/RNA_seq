@@ -777,13 +777,13 @@ Go_results1 <- enrichGO(gene=genes_to_test, OrgDb="org.Hs.eg.db", keyType = "ENS
 ```
 
 - Convertir en data frame
-```{r Data frame, eval=FALSE}
+```{r Dataframe GO results, eval=FALSE}
 # Convwertir en data-frame
 as.data.frame(Go_results1)
 ```
 
 - Generar la grafica
-```{r plot, eval=FALSE}
+```{r plot GO results, eval=FALSE}
 # Generar la plot de los primeros 20 genes
 plot(barplot(Go_results1, showCategory = 20))
 ```
@@ -805,7 +805,6 @@ Asi mismo, contamos con menos de 6 genes que pertenecen a la 'negative regulatio
   
   - Cargar librerias
 ```{r librerias, eval=FALSE}
-
 #Importar libreria
 library(clusterProfiler) #Enrichment analysis
 library (AnnotationDbi)
@@ -872,14 +871,14 @@ Go_results_DOWN <- enrichGO(gene=genes_down, OrgDb="org.Hs.eg.db", keyType = "EN
 ```
 
 - Convertir en data frame ambos subgrupos
-```{r data frame, eval=FALSE}
+```{r dataframe UP n DOWN, eval=FALSE}
 # Convwertir en data-frame
 as.data.frame(Go_results_UP)
 as.data.frame(Go_results_DOWN)
 ```
 
 - Generar la grafica de ambos subgrupos (UP &  DOWN)
-```{r plot, eval= FALSE}
+```{r plot GO, eval= FALSE}
 # Generar la plot de los primeros 20 genes
 plot(barplot(Go_results_UP, showCategory = 15, horiz=TRUE)) + barplot(Go_results_DOWN, showCategory = 8, horiz=TRUE) 
 ```
