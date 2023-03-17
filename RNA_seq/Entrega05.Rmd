@@ -16,14 +16,12 @@ output:
     number_sections: true
     pandoc_args: --listings # Para que no se salga el codigo del margen
     includes:
-      in_header: preamble.tex
+      in_header: preamble.tex # Codigo no se salga de la pagina en el pdf
 ---
 
 # Objetivo: 
 
 Realizar el análisis de datos de RNA-Seq (pipeline completa) obtenidos de células madre de trofoblasto humano tratadas con un inhibidor de JNK (SP600125) y con control DMSO.
-
---------------------------------------------------------------------------------
 
 # Descripcion de los datos
 
@@ -43,13 +41,9 @@ Realizar el análisis de datos de RNA-Seq (pipeline completa) obtenidos de célu
 
   Tratamiento con SP600125 (hTSC, SP600125) - SRR18745764 (repbio1), SRR18745763 (repbio2) y SRR18745762 (repbio3)
 
---------------------------------------------------------------------------------
-
 # Abstract
 
 Células hTSC CT27 (células madre de trofoblasto humano) fueron tratadas con SP60015 y con DMSO para evaluar la contribución de los elementos transponibles en la expresión génica como promotores o potencializadores en células de trofoblasto humano. Utilizando los datos epigenéticos del proyecto realizamos un pipeline haciendo uso de varias herramientas y paqueterías como Kallisto quant (pseudoalineamiento), fastqc (análisis de calidad de las lecturas crudas), Trimmomatic (recortar y curar datos), tximport (importar y resumir datos a nivel de transcripción), tidyverse (manipulación, visualización y análisis de datos), DESeq2 (identificar genes que se expresan diferencialmente entre dos o más condiciones experimentales), etc. en donde obtuvimos como resultados que efectivamente los transposones han contribuido de forma importante a la regulación génica del trofoblasto humano.
-
---------------------------------------------------------------------------------
 
 # Rutas de trabajo generadas en el proyecto
 
@@ -235,8 +229,6 @@ Finalmente para enviar el JOB de descarga y tener las muestras a trabajar usamos
 qsub SRA_Hs_run.sge
 ```
 
-
---------------------------------------------------------------------------------
 
 # Resultados y discusión 
 
@@ -735,29 +727,11 @@ pheatmap(mat, annotation_col = anno) # Grafica
 
 Lo que podemos observar es que, para un conjunto de genes para los cuales las muestras tratadas con SP600125 (inhibidor de enzimas JNK) tienen mayor (en rojo) o menor (en azul) expresión génica.
 
-<<<<<<< HEAD
-=======
-#### Fuentes
-http://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#Downstream_DGE_in_Bioconductor
-https://f1000research.com/articles/4-1070/v2#s2
-http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#the-deseqdataset
-https://bioconductor.org/packages/devel/bioc/vignettes/GenomicFeatures/inst/doc/GenomicFeatures.html
-https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html
-
-
---------------------------------------------------------------------------------
-<<<<<<< HEAD
->>>>>>> dffb55a2396a196b3249e38213d5fb9d8b0fc939
 # Graficas GO (Manuel)
 
-- Instalar 'clusterProfiler', 'AnnotationDbi' y Base de Datos de homo_sapiens 'org.Hs.eg.db'
-```{r, echo=FALSE}
-=======
- # Graficas GO 
-  
-  - Instalar 'clusterProfiler', 'AnnotationDbi' y Base de Datos de homo_sapiens 'org.Hs.eg.db'
+- Instalar `clusterProfiler`, `AnnotationDbi` y Base de Datos de homo_sapiens `org.Hs.eg.db`
+
 ```{r instalaciones, eval=FALSE}
->>>>>>> 1493104e03f22e026e0d6e006565ffd0ce395032
 # Comando
 install.packages('AnnotationDbi')
 
@@ -769,6 +743,7 @@ BiocManager::install("org.Hs.eg.db")
 ```
 
 - Extraer informacion de BD
+
 ```{r Codigo, eval=FALSE}
 #Importar libreria
 library(clusterProfiler) #Enrichment analysis
@@ -826,11 +801,6 @@ Tenemos mas de 9 genes que pertencen a la regulacion de la actividad de la endop
 
 Asi mismo, contamos con menos de 6 genes que pertenecen a la 'negative regulation of response to wounding', la cual se encarga de disminuir la frecuencia de restauracion de los tejidos dañados en una lesion. 
 
-## Referencias
-- https://www.statisticshowto.com/benjamini-hochberg-procedure/ 
-- https://www.informatics.jax.org/vocab/gene_ontology/GO:0052548
-
-----------------------------------------------------------------
 # Generar con subgrupos 
   
   - Cargar librerias
@@ -926,20 +896,12 @@ Asi mismo, contamos con menos de 6 genes que pertenecen a la 'negative regulatio
 
 En el grupo DOWN todos los grupos tienen 5 genes que pertenecen a esa funcion, el grupo con mas significancia es el de 'proton motive force-driven mithochondrial ATP synthesis' con un $padj=0.00005$, este grupo tiene la funcion de transportar protones a traves de la membrana mitocondrial para generar un gradiante electroquimico que active la sintesis de ATP.
 
-
-## Referencias
-
-- https://www.informatics.jax.org/vocab/gene_ontology/GO:0042776#:~:text=proton%20motive%20force%2Ddriven%20mitochondrial,Ontology%20Term%20(GO%3A0042776)&text=Definition%3A,force)%20that%20powers%20ATP%20synthesis. 
-
---------------------------------------------------------------------------------
-
 ## Discusión
 
 Los resultados obtenidos del pipeline dan evidencia a que los transposones han contribuido de forma importante a la regulación génica del trofoblasto humano ya que hay genes de elementos transponibles que tienen mayor expresión génica. Resultado también reportado en el paper correspondiente al proyecto. 
 
-Adicionalmente, buscamos tres artículos más en donde se habla de la función biológica de estos transposones, incluyendo los retrovirus endógenos (ERV). En uno de los artículos que lleva por título `Endogenous Retroviruses in Trophoblast Differentiation and Placental Development` evidencia que la presencia de ERV expresados en los sincitiotrofoblastos multinucleados de la placenta de varios organismos como humano, ratón y conejo desempeñan un papel esencial en el desarrollo de la placenta y que estos ERVfueron seleccionados positivamente para desempeñar un papel fundamental en la evolución de los mamíferos placentarios y el desarrollo de la viviparidad.
+Adicionalmente, buscamos tres artículos más en donde se habla de la función biológica de estos transposones, incluyendo los retrovirus endógenos (ERV). En uno de los artículos que lleva por título `Endogenous Retroviruses in Trophoblast Differentiation and Placental Development` evidencia que la presencia de ERV expresados en los sincitiotrofoblastos multinucleados de la placenta de varios organismos como humano, ratón y conejo desempeñan un papel esencial en el desarrollo de la placenta y que estos ERV fueron seleccionados positivamente para desempeñar un papel fundamental en la evolución de los mamíferos placentarios y el desarrollo de la viviparidad.
 
---------------------------------------------------------------------------------
 
 # Referencias
 
@@ -983,5 +945,8 @@ Soneson, C., Love, M. I., & Robinson, M. D. (2015). Differential analyses for RN
 
 Trapnell, C., Hendrickson, D. G., Sauvageau, M., Goff, L., Rinn, J. L., & Pachter, L. (2013). Differential analysis of gene regulation at transcript resolution with RNA-seq. Nature Biotechnology, 31(1), 46–53. https://doi.org/10.1038/nbt.2450
 
+Proton motive force-driven mitochondrial ATP synthesis Gene Ontology Term (GO:0042776). (n.d.). Retrieved March 16, 2023, from https://www.informatics.jax.org/vocab/gene_ontology/GO:0042776#:~:text=proton%20motive%20force%2Ddriven%20mitochondrial,Ontology%20Term%20(GO%3A0042776)&text=Definition%3A,force)%20that%20powers%20ATP%20synthesis.
+
+Stephanie. (2015, October 13). Benjamini-Hochberg Procedure. Statistics How To. https://www.statisticshowto.com/benjamini-hochberg-procedure/
 
 
