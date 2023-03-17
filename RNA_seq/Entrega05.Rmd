@@ -871,6 +871,8 @@ plot(barplot(Go_results, showCategory = 20))
 
 Los resultados obtenidos del pipeline dan evidencia a que los transposones han contribuido de forma importante a la regulación génica del trofoblasto humano ya que hay genes de elementos transponibles que tienen mayor expresión génica. Resultado también reportado en el paper correspondiente al proyecto. 
 
+Adicionalmente, buscamos tres artículos más en donde se habla de la función biológica de estos transposones, incluyendo los retrovirus endógenos (ERV). En uno de los artículos que lleva por título `Endogenous Retroviruses in Trophoblast Differentiation and Placental Development` evidencia que la presencia de ERV expresados en los sincitiotrofoblastos multinucleados de la placenta de varios organismos como humano, ratón y conejo desempeñan un papel esencial en el desarrollo de la placenta y que fueron seleccionados positivamente para desempeñar un papel fundamental en la evolución de los mamíferos placentarios y el desarrollo de la viviparidad.
+
 --------------------------------------------------------------------------------
 
 # Referencias
