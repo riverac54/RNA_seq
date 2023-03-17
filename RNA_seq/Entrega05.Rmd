@@ -803,8 +803,17 @@ plot(barplot(Go_results, showCategory = 20))
 ```
 
 - Interpretación de la gráfica
+Para el plot solo se tomaron en cuenta los primeros 20 genes, los cuales tuvieran un $log2FoldChange > 1.5$, el valor de log2FoldChange es arbitrario. Utilizamos $padj$ para obtener los genes que son mas significativos, padj utiliza el matodo de ' Benjamini-Hochberg Procedure'. 
 
+El metodo Benjamini-Hochberg disminuye el numero de errores tipo 1 (falsos positivos). Rankea todos los pvalores de menor a mayor y les asigna una posicion en el ranking, siendo el numero 1 el que tenga el pvalor mas pequeño, despues divide la posicion en el rankeo entre el numero de muestras para obtener $posicion-ranking/muestras=p-adjusted$
 
+Con $padj < 0.05$, esperamos que $5 \%$ de los datos(genes) sean falsos positivos, obteniendo solo los genes mas significativos. La grafica solo muestra los primeros 100 genes de la tabla, ya que son muchos.
+
+Tenemos mas de 9 genes que pertencen a la regulacion de la actividad de la endopeptidasa, la cual tiene la funcion del desdoblamiento de enlaces peptidicos en las proteinas. Su p.adjust es menor a 0.2, lo que indica su significancia, por lo que podemos afirmar que presenta esa funcion. 
+
+Asi mismo, contamos con menos de 6 genes que pertenecen a la 'negative regulation of response to wounding', la cual se encarga de disminuir la frecuencia de restauracion de los tejidos dañados en una lesion. 
+
+--------------------------------------------------------------------------------
 ## Generar con subgrupos UP
 
 - Con subgrupo UP
@@ -859,9 +868,16 @@ as.data.frame(Go_results)
  # Generar la plot de los primeros 20 genes
 plot(barplot(Go_results, showCategory = 20))
 ```
+
 - Interpretación de la gráfica
 
+La grafica de los genes UP solo muestra 6 grupos de funciones , mientras que la grafica de los genes DOWN muestra los primeros 10 grupos de funciones. Utilizamos un $padj<0.05$ esperando que el $5 \%$ de los datos(genes) sean falsos positivos, obteniendo solo los genes mas significativos. Ambas graficas solo muestran los primeros 100 genes de la tabla, ya que son muchos.
 
+En el grupo UP tenemos mas de 9 genes que pertencen a la regulacion de la actividad de la endopeptidasa, la cual tiene la funcion del desdoblamiento de enlaces peptidicos en las proteinas. Su p.adjust es menor a 0.2, lo que indica su significancia, por lo que podemos afirmar que presenta esa funcion. 
+
+Asi mismo, contamos con menos de 6 genes que pertenecen a la 'negative regulation of response to wounding', la cual se encarga de disminuir la frecuencia de restauracion de los tejidos dañados en una lesion. 
+
+En el grupo DOWN todos los grupos tienen 5 genes que pertenecen a esa funcion, el grupo con mas significancia es el de 'proton motive force-driven mithochondrial ATP synthesis' con un $padj=0.00005$, este grupo tiene la funcion de transportar protones a traves de la membrana mitocondrial para generar un gradiante electroquimico que active la sintesis de ATP.
 
 --------------------------------------------------------------------------------
 
