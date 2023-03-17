@@ -727,7 +727,7 @@ pheatmap(mat, annotation_col = anno) # Grafica
 
 Lo que podemos observar es que, para un conjunto de genes para los cuales las muestras tratadas con SP600125 (inhibidor de enzimas JNK) tienen mayor (en rojo) o menor (en azul) expresión génica.
 
-# Análisis funcional GO
+## Análisis funcional GO
 
 - Instalar `clusterProfiler`, `AnnotationDbi` y Base de Datos de homo_sapiens `org.Hs.eg.db`
 
@@ -801,7 +801,7 @@ Tenemos mas de 9 genes que pertencen a la regulacion de la actividad de la endop
 
 Asi mismo, contamos con menos de 6 genes que pertenecen a la 'negative regulation of response to wounding', la cual se encarga de disminuir la frecuencia de restauracion de los tejidos dañados en una lesion. 
 
-# Generar con subgrupos 
+### Generar con subgrupos 
   
   - Cargar librerias
 ```{r librerias, eval=FALSE}
