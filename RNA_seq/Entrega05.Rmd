@@ -813,6 +813,10 @@ Tenemos mas de 9 genes que pertencen a la regulacion de la actividad de la endop
 
 Asi mismo, contamos con menos de 6 genes que pertenecen a la 'negative regulation of response to wounding', la cual se encarga de disminuir la frecuencia de restauracion de los tejidos dañados en una lesion. 
 
+## Referencias
+- https://www.statisticshowto.com/benjamini-hochberg-procedure/ 
+- https://www.informatics.jax.org/vocab/gene_ontology/GO:0052548
+
 --------------------------------------------------------------------------------
 ## Generar con subgrupos UP
 
@@ -878,6 +882,10 @@ En el grupo UP tenemos mas de 9 genes que pertencen a la regulacion de la activi
 Asi mismo, contamos con menos de 6 genes que pertenecen a la 'negative regulation of response to wounding', la cual se encarga de disminuir la frecuencia de restauracion de los tejidos dañados en una lesion. 
 
 En el grupo DOWN todos los grupos tienen 5 genes que pertenecen a esa funcion, el grupo con mas significancia es el de 'proton motive force-driven mithochondrial ATP synthesis' con un $padj=0.00005$, este grupo tiene la funcion de transportar protones a traves de la membrana mitocondrial para generar un gradiante electroquimico que active la sintesis de ATP.
+
+## Referencias
+
+- https://www.informatics.jax.org/vocab/gene_ontology/GO:0042776#:~:text=proton%20motive%20force%2Ddriven%20mitochondrial,Ontology%20Term%20(GO%3A0042776)&text=Definition%3A,force)%20that%20powers%20ATP%20synthesis. 
 
 --------------------------------------------------------------------------------
 
