@@ -744,10 +744,10 @@ https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.ht
 
 
 --------------------------------------------------------------------------------
-# Graficas GO (Manuel)
-
-- Instalar 'clusterProfiler', 'AnnotationDbi' y Base de Datos de homo_sapiens 'org.Hs.eg.db'
-```{r, echo=FALSE}
+ # Graficas GO 
+  
+  - Instalar 'clusterProfiler', 'AnnotationDbi' y Base de Datos de homo_sapiens 'org.Hs.eg.db'
+```{r instalaciones, eval=FALSE}
 # Comando
 install.packages('AnnotationDbi')
 
@@ -758,8 +758,8 @@ BiocManager::install("clusterProfiler")
 BiocManager::install("org.Hs.eg.db")
 ```
 
-- Extraer información de BD
-```{r, eval=FALSE}
+- Extraer informacion de BD
+```{r Codigo, eval=FALSE}
 #Importar libreria
 library(clusterProfiler) #Enrichment analysis
 library (AnnotationDbi)
@@ -767,14 +767,15 @@ library(org.Hs.eg.db) # Human DB
 
 # Tomar tabla de datos de DESEQ2
 data = Hs_res_all
-class(data)
 
 #Eliminar NAs
-data2 = na.omit(data)
+data = na.omit(data)
 
 # Tomar solo los genes posiblemente diferentemente expresados significativoas
 # Solamente requerimos los nombres de lo anterior, por lo que:
-genes_to_test = rownames(data2[data2$log2FoldChange > 0.5 & data2$padj < 0.5, ])
+data = data[data$log2FoldChange >= 0.05, ]
+data = data[data$padj < 0.05, ]
+genes_to_test = rownames(data)
 
 # Convertirlo en matriz y utilizar solo los primeros 100 IDs, ya que son un total de 12,999
 genes_to_test = as.matrix(genes_to_test)
@@ -783,31 +784,33 @@ genes_to_test = genes_to_test[1:100,]
 # Modificar nombres, solo quiero los primeros 15 caracteres
 genes_to_test = as.matrix(genes_to_test) #convertir a matriz
 for (i in 1:100) {
-genes_to_test[i,]=substr(genes_to_test[i,], start=1, stop=15)                           
+  genes_to_test[i,] = substr(genes_to_test[i,], start=1, stop=15)                           
 }
 
 # Analisis terminos GO de lor primero 100 terminos, ya que en total son 12,999 y son muchos terminos
-Go_results <- enrichGO(gene=genes_to_test, OrgDb="org.Hs.eg.db", keyType = "ENSEMBL", ont = "BP")
+Go_results1 <- enrichGO(gene=genes_to_test, OrgDb="org.Hs.eg.db", keyType = "ENSEMBL", ont = "BP")
 ```
 
 - Convertir en data frame
-```{r}
+```{r Data frame, eval=FALSE}
 # Convwertir en data-frame
-as.data.frame(Go_results)
+as.data.frame(Go_results1)
 ```
 
-- Generar la gráfica
-```{r}
- # Generar la plot de los primeros 20 genes
-plot(barplot(Go_results, showCategory = 20))
+- Generar la grafica
+```{r plot, eval=FALSE}
+# Generar la plot de los primeros 20 genes
+plot(barplot(Go_results1, showCategory = 20))
 ```
 
-- Interpretación de la gráfica
+![](./Imagenes/Hs_all.png)
+
+- Interpretacion 
 Para el plot solo se tomaron en cuenta los primeros 20 genes, los cuales tuvieran un $log2FoldChange > 1.5$, el valor de log2FoldChange es arbitrario. Utilizamos $padj$ para obtener los genes que son mas significativos, padj utiliza el matodo de ' Benjamini-Hochberg Procedure'. 
 
 El metodo Benjamini-Hochberg disminuye el numero de errores tipo 1 (falsos positivos). Rankea todos los pvalores de menor a mayor y les asigna una posicion en el ranking, siendo el numero 1 el que tenga el pvalor mas pequeño, despues divide la posicion en el rankeo entre el numero de muestras para obtener $posicion-ranking/muestras=p-adjusted$
-
-Con $padj < 0.05$, esperamos que $5 \%$ de los datos(genes) sean falsos positivos, obteniendo solo los genes mas significativos. La grafica solo muestra los primeros 100 genes de la tabla, ya que son muchos.
+  
+  Con $padj < 0.05$, esperamos que $5 \%$ de los datos(genes) sean falsos positivos, obteniendo solo los genes mas significativos. La grafica solo muestra los primeros 100 genes de la tabla, ya que son muchos.
 
 Tenemos mas de 9 genes que pertencen a la regulacion de la actividad de la endopeptidasa, la cual tiene la funcion del desdoblamiento de enlaces peptidicos en las proteinas. Su p.adjust es menor a 0.2, lo que indica su significancia, por lo que podemos afirmar que presenta esa funcion. 
 
@@ -817,30 +820,45 @@ Asi mismo, contamos con menos de 6 genes que pertenecen a la 'negative regulatio
 - https://www.statisticshowto.com/benjamini-hochberg-procedure/ 
 - https://www.informatics.jax.org/vocab/gene_ontology/GO:0052548
 
---------------------------------------------------------------------------------
-# Generar con subgrupos
+----------------------------------------------------------------
+# Generar con subgrupos 
+  
+  - Cargar librerias
+```{r librerias, eval=FALSE}
+
+#Importar libreria
+library(clusterProfiler) #Enrichment analysis
+library (AnnotationDbi)
+library(org.Hs.eg.db) # Human DB
+```
 
 - Con subgrupo UP
 ```{r Grupo UP, eval=FALSE}
 library(forcats)
 library(ggrepel)
 library(gprofiler2)
+
 # Tomar tabla de datos de DESEQ2
 data_up = Hs_all_de_gene_matrix_UP # Grupo UP
+
 #Eliminar NAs
 data_up = na.omit(data_up)
+
 # Tomar solo los genes posiblemente diferentemente expresados significativoas. Solamente requerimos los nombres de lo anterior, por lo que:
 data = data_up[data_up$log2FoldChange >= 0.05, ]
 data = data_up[data_up$padj < 0.05, ]
 genes_up = rownames(data_up)
+
 # Convertirlo en matriz y utilizar solo los primeros 100 IDs del grupo UP
 genes_up = as.matrix(genes_up)
 genes_up = genes_up[1:100,]
+
 # Modificar nombres, solo quiero los primeros 15 caracteres del grupo UP
 genes_up = as.matrix(genes_up) #convertir a matriz
 for (i in 1:100) {
-genes_up[i,]=substr(genes_up[i,], start=1, stop=15)                           
+  genes_up[i,]=substr(genes_up[i,], start=1, stop=15)                           
 }
+
 # Analisis terminos GO de lor primero 100 terminos, ya que en total son 12,999 y son muchos terminos
 Go_results_UP <- enrichGO(gene=genes_up, OrgDb="org.Hs.eg.db", keyType = "ENSEMBL", ont = "BP")
 ```
@@ -848,38 +866,47 @@ Go_results_UP <- enrichGO(gene=genes_up, OrgDb="org.Hs.eg.db", keyType = "ENSEMB
 - Con subgrupo DOWN
 ```{r Grupo DOWN, eval=FALSE}
 data_down= Hs_all_de_gene_matrix_DOWN # Grupo DOWN
+
 #Eliminar NAs
 data_down = na.omit(data_down)
+
 # Convertirlo en matriz y utilizar solo los primeros 100 IDs del grupo UP
 genes_down <- subset(Hs_res_all, padj < 0.01 & log2FoldChange < -0.5)
 genes_down = genes_down[ order(genes_down$log2FoldChange, decreasing = FALSE), ] # Ordenar por log2FoldChange
+
 # Nombres de los genes
 genes_down = rownames(genes_down) 
+
 # Tomar los primeros 100
 genes_down = as.matrix(genes_down) # Convertirlo matriz
 genes_down = genes_down[1:100,] 
+
 # Modificar nombres, solo quiero los primeros 15 caracteres del grupo UP
 genes_down = as.matrix(genes_down) #convertir a matriz
 for (i in 1:100) {
-genes_down[i,]=substr(genes_down[i,], start=1, stop=15)                           
+  genes_down[i,]=substr(genes_down[i,], start=1, stop=15)                           
 }
+
 # Analisis terminos GO de lor primero 100 terminos, ya que en total son 12,999 y son muchos terminos
 Go_results_DOWN <- enrichGO(gene=genes_down, OrgDb="org.Hs.eg.db", keyType = "ENSEMBL", ont = "BP")
 ```
 
-- Convertir en data frame
-```{r}
+- Convertir en data frame ambos subgrupos
+```{r data frame, eval=FALSE}
 # Convwertir en data-frame
-as.data.frame(Go_results)
+as.data.frame(Go_results_UP)
+as.data.frame(Go_results_DOWN)
 ```
 
-- Generar la gráfica
-```{r}
- # Generar la plot de los primeros 20 genes
-plot(barplot(Go_results, showCategory = 20))
+- Generar la grafica de ambos subgrupos (UP &  DOWN)
+```{r plot, eval= FALSE}
+# Generar la plot de los primeros 20 genes
+plot(barplot(Go_results_UP, showCategory = 15, horiz=TRUE)) + barplot(Go_results_DOWN, showCategory = 8, horiz=TRUE) 
 ```
 
-- Interpretación de la gráfica
+![](./Imagenes/Hs_groups.jpeg)
+
+- Interpretacion de la grafica
 
 La grafica de los genes UP solo muestra 6 grupos de funciones , mientras que la grafica de los genes DOWN muestra los primeros 10 grupos de funciones. Utilizamos un $padj<0.05$ esperando que el $5 \%$ de los datos(genes) sean falsos positivos, obteniendo solo los genes mas significativos. Ambas graficas solo muestran los primeros 100 genes de la tabla, ya que son muchos.
 
@@ -888,6 +915,7 @@ En el grupo UP tenemos mas de 9 genes que pertencen a la regulacion de la activi
 Asi mismo, contamos con menos de 6 genes que pertenecen a la 'negative regulation of response to wounding', la cual se encarga de disminuir la frecuencia de restauracion de los tejidos dañados en una lesion. 
 
 En el grupo DOWN todos los grupos tienen 5 genes que pertenecen a esa funcion, el grupo con mas significancia es el de 'proton motive force-driven mithochondrial ATP synthesis' con un $padj=0.00005$, este grupo tiene la funcion de transportar protones a traves de la membrana mitocondrial para generar un gradiante electroquimico que active la sintesis de ATP.
+
 
 ## Referencias
 
