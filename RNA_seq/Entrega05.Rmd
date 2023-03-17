@@ -905,6 +905,8 @@ Poniendo especial atención en el gen *NOS3*, los autores apuntan a una sobreexp
 
 Adicionalmente, buscamos tres artículos más en donde se habla de la función biológica de estos transposones, incluyendo los retrovirus endógenos (ERV). En uno de los artículos que lleva por título `Endogenous Retroviruses in Trophoblast Differentiation and Placental Development` evidencia que la presencia de ERV expresados en los sincitiotrofoblastos multinucleados de la placenta de varios organismos como humano, ratón y conejo desempeñan un papel esencial en el desarrollo de la placenta y que estos ERV fueron seleccionados positivamente para desempeñar un papel fundamental en la evolución de los mamíferos placentarios y el desarrollo de la viviparidad.
 
+Finalmente, observamos que elementos de la familia de genes PSG (pregnancy-specific glycoprotein), como PSG11 y PSG4, mostraron un incremento en su expresión durante la diferenciación de syncytiotrophoblasts (SynT), como es reportado por Kwak et al., 2019. 
+
 <div class="alert alert-block alert-info">
 **NOTA**: Para poder identificar la sobreexpresión del gen *NOS3*, se realizó: __(1)__ Identificar el nombre del gen dentro del paper. __(2)__ En terminal, buscar el id del gen dentro del archivo de anotaciones [(`gencode.v43.annotation.gtf`)](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_43/) con el comando `cat gencode.v43.annotation.gtf | grep 'ERVFRD' | head`. __(3)__ Buscar si el gen está sobre o subregulado en nuestros datos con `Hs_de["ENSG00000244476.3",]` (dentro de la consola de Rstudio).
 </div>
@@ -954,3 +956,6 @@ Trapnell, C., Hendrickson, D. G., Sauvageau, M., Goff, L., Rinn, J. L., & Pachte
 Proton motive force-driven mitochondrial ATP synthesis Gene Ontology Term (GO:0042776). (n.d.). Retrieved March 16, 2023, from https://www.informatics.jax.org/vocab/gene_ontology/GO:0042776#:~:text=proton%20motive%20force%2Ddriven%20mitochondrial,Ontology%20Term%20(GO%3A0042776)&text=Definition%3A,force)%20that%20powers%20ATP%20synthesis.
 
 Stephanie. (2015, October 13). Benjamini-Hochberg Procedure. Statistics How To. https://www.statisticshowto.com/benjamini-hochberg-procedure/
+
+Kwak, Y.-T., Muralimanoharan, S., Gogate, A. A., & Mendelson, C. R. (2019). Human Trophoblast Differentiation Is Associated With Profound Gene Regulatory and Epigenetic Changes. Endocrinology, 160(9), 2189–2203. https://doi.org/10.1210/en.2019-00144
+
