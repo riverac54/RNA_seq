@@ -818,48 +818,54 @@ Asi mismo, contamos con menos de 6 genes que pertenecen a la 'negative regulatio
 - https://www.informatics.jax.org/vocab/gene_ontology/GO:0052548
 
 --------------------------------------------------------------------------------
-## Generar con subgrupos UP
+# Generar con subgrupos
 
 - Con subgrupo UP
-```{r, eval=FALSE}
-#Importar libreria
-library(clusterProfiler) #Enrichment analysis
-library (AnnotationDbi)
-library(org.Hs.eg.db) # Human DB
-
+```{r Grupo UP, eval=FALSE}
+library(forcats)
+library(ggrepel)
+library(gprofiler2)
 # Tomar tabla de datos de DESEQ2
 data_up = Hs_all_de_gene_matrix_UP # Grupo UP
-data_down = Hs_all_de_gene_matrix_DOWN
-
 #Eliminar NAs
 data_up = na.omit(data_up)
-data_down = na.omit(data_down)
-
-# Tomar solo los genes posiblemente diferentemente expresados significativos. Solamente requerimos los nombres de lo anterior, por lo que:
-genes_up = rownames(data_up[data_up$log2FoldChange > 0.5 & data_up$padj < 0.5, ])
-
-# No me arroja nada, por lo que no hay nada significativo
-genes_down = rownames(data_down[data_down$log2FoldChange > 0.5 & data_down$padj < 0.5, ]) 
-
+# Tomar solo los genes posiblemente diferentemente expresados significativoas. Solamente requerimos los nombres de lo anterior, por lo que:
+data = data_up[data_up$log2FoldChange >= 0.05, ]
+data = data_up[data_up$padj < 0.05, ]
+genes_up = rownames(data_up)
 # Convertirlo en matriz y utilizar solo los primeros 100 IDs del grupo UP
 genes_up = as.matrix(genes_up)
 genes_up = genes_up[1:100,]
-
-# Convertirlo en matriz y utilizar solo los primeros 100 IDs del grupo UP
-genes_down = as.matrix(genes_down)
-# genes_down = genes_down[1:100,]
-
 # Modificar nombres, solo quiero los primeros 15 caracteres del grupo UP
 genes_up = as.matrix(genes_up) #convertir a matriz
 for (i in 1:100) {
 genes_up[i,]=substr(genes_up[i,], start=1, stop=15)                           
 }
-
-# Análisis términos GO de lor primero 100 términos, ya que en total son 12,999 y son muchos términos
-Go_results <- enrichGO(gene=genes_up, OrgDb="org.Hs.eg.db", keyType = "ENSEMBL", ont = "BP")
-
+# Analisis terminos GO de lor primero 100 terminos, ya que en total son 12,999 y son muchos terminos
+Go_results_UP <- enrichGO(gene=genes_up, OrgDb="org.Hs.eg.db", keyType = "ENSEMBL", ont = "BP")
 ```
 
+- Con subgrupo DOWN
+```{r Grupo DOWN, eval=FALSE}
+data_down= Hs_all_de_gene_matrix_DOWN # Grupo DOWN
+#Eliminar NAs
+data_down = na.omit(data_down)
+# Convertirlo en matriz y utilizar solo los primeros 100 IDs del grupo UP
+genes_down <- subset(Hs_res_all, padj < 0.01 & log2FoldChange < -0.5)
+genes_down = genes_down[ order(genes_down$log2FoldChange, decreasing = FALSE), ] # Ordenar por log2FoldChange
+# Nombres de los genes
+genes_down = rownames(genes_down) 
+# Tomar los primeros 100
+genes_down = as.matrix(genes_down) # Convertirlo matriz
+genes_down = genes_down[1:100,] 
+# Modificar nombres, solo quiero los primeros 15 caracteres del grupo UP
+genes_down = as.matrix(genes_down) #convertir a matriz
+for (i in 1:100) {
+genes_down[i,]=substr(genes_down[i,], start=1, stop=15)                           
+}
+# Analisis terminos GO de lor primero 100 terminos, ya que en total son 12,999 y son muchos terminos
+Go_results_DOWN <- enrichGO(gene=genes_down, OrgDb="org.Hs.eg.db", keyType = "ENSEMBL", ont = "BP")
+```
 
 - Convertir en data frame
 ```{r}
