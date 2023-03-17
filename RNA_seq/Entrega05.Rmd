@@ -276,11 +276,14 @@ Para poder visualizar el informe multiqc,  se descarga el archivo a nuestro orde
 rsync -rptuvl jgarcia@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_rawData/multiqc_report.html .
 ```
 
-Podemos observar en el histogramas de calidad de secuencias que la mayoría de muestras tienen una calidad aceptable, sin embargo, existen dos SRA con una calidad menor al resto `SRR18745771_1` y `SRR18745768_1` que fue de $24.53$ y $24.78$ respectivamente. Esto puede deberse a muchas razones, entre ellas, el tratamiento experimental llevado en el laboratorio en específico de estas muestras. 
+Podemos observar en los histogramas de calidad de secuencias que la mayoría de muestras tienen una calidad aceptable, sin embargo, existen dos SRA con una calidad menor al resto `SRR18745771_1` y `SRR18745768_1` que fue de $24.53$ y $24.78$ respectivamente. Esto puede deberse a muchas razones, entre ellas, el tratamiento experimental llevado en el laboratorio en específico de estas muestras. 
 
 
 Por otro lado, en la gráfica de contenido de adaptadores observamos que la mayoría de las muestra tienen niveles altos de contaminación de adaptadores. Algunos otros SRA tienen un contenido mucho menor, pero no llegan a un valor considerable para trabajar con estos datos crudos. 
 
+<div class="alert alert-block alert-info">
+Se puede encontrar el archivo reporte del analisis de MultiQC en el archivo `multiqc_report_rawData.html`.
+</div>
 
 ## Limpieza de adaptadores
 
@@ -366,6 +369,10 @@ rsync -rptuvl jgarcia@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_
 Para los datos limpios, podemos observar en el histograma de calidad de secuencias un aumento de la calidad. En donde el valor más bajo reportado fue de $29.66$ en una única muestra y el valor más alto fue de $36.73$. 
 
 Ahora bien, en la gráfica de contenido de adaptadores observamos que 7 de las 11 muestras tiene una contaminación de adaptadores bastante baja, 2 de los SRA tienen un contenido por arriba del valor del promedio con valores de: $5.69$ y $6.61$ y otras 2 muy muy por encima del promedio con valores de $21.16$ y $21.66$ de contenido de adaptadores.
+
+<div class="alert alert-block alert-info">
+Se puede encontrar el archivo reporte del analisis de MultiQC en el archivo `multiqc_report_trimmed.html`.
+</div>
 
 ## Programa de predicción de cuentas
 
@@ -908,7 +915,7 @@ Adicionalmente, buscamos tres artículos más en donde se habla de la función b
 Finalmente, observamos que elementos de la familia de genes PSG (pregnancy-specific glycoprotein), como PSG11 y PSG4, mostraron un incremento en su expresión durante la diferenciación de syncytiotrophoblasts (SynT), como es reportado por Kwak et al., 2019. 
 
 <div class="alert alert-block alert-info">
-**NOTA**: Para poder identificar la sobreexpresión del gen *NOS3*, se realizó: __(1)__ Identificar el nombre del gen dentro del paper. __(2)__ En terminal, buscar el id del gen dentro del archivo de anotaciones [(`gencode.v43.annotation.gtf`)](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_43/) con el comando `cat gencode.v43.annotation.gtf | grep 'ERVFRD' | head`. __(3)__ Buscar si el gen está sobre o subregulado en nuestros datos con `Hs_de["ENSG00000244476.3",]` (dentro de la consola de Rstudio).
+**NOTA**: Para poder identificar la sobreexpresión del gen *NOS3* (y los demás mencionados), se realizó lo siguiente : __(1)__ Identificar el nombre del gen dentro del paper. __(2)__ En terminal, buscar el id del gen dentro del archivo de anotaciones [(`gencode.v43.annotation.gtf`)](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_43/) con el comando `cat gencode.v43.annotation.gtf | grep 'ERVFRD' | head`. __(3)__ Buscar si el gen está sobre o subregulado en nuestros datos con `Hs_de["ENSG00000244476.3",]` (dentro de la consola de Rstudio).
 </div>
 
 # Referencias
