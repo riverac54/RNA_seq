@@ -735,14 +735,6 @@ pheatmap(mat, annotation_col = anno) # Grafica
 
 Lo que podemos observar es que, para un conjunto de genes para los cuales las muestras tratadas con SP600125 (inhibidor de enzimas JNK) tienen mayor (en rojo) o menor (en azul) expresión génica.
 
-#### Fuentes
-http://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#Downstream_DGE_in_Bioconductor
-https://f1000research.com/articles/4-1070/v2#s2
-http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#the-deseqdataset
-https://bioconductor.org/packages/devel/bioc/vignettes/GenomicFeatures/inst/doc/GenomicFeatures.html
-https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html
-
-
 # Graficas GO (Manuel)
 
 - Instalar 'clusterProfiler', 'AnnotationDbi' y Base de Datos de homo_sapiens 'org.Hs.eg.db'
