@@ -1,2 +1,2 @@
-# Bioinformatica
-Repositorio destinado a los trabajos de bioinfo
+# Entrega RNA_seq
+Repositorio destinado a la entrega de enrichment analysis
