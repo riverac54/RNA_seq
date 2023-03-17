@@ -556,7 +556,7 @@ Hs_tx2gene   <- read.csv("tx2gene.gencode.v43.csv", sep=",",header=TRUE)
 head(Hs_tx2gene)
 ```
 
-- `read.csv` lee un archivo en formato tabla y crea un *data frame* a partir de él, con casos correspondientes a líneas y variables a campos del archivo.
+- `read.csv` lee un archivo en formato tabla y crea un *data frame* a partir de el, con casos correspondientes a líneas y variables a campos del archivo.
 
 El paquete `tximport` tiene una sola función para importar estimaciones a nivel de transcripción, es decir los datos de cuantificación necesarios para DESeq2.
 - El argumento `type` se utiliza para especificar qué software se utilizó para la estimación, en este caso fue `kallisto`.   
@@ -571,7 +571,7 @@ names(Hs_txi_kallisto)
 head(Hs_txi_kallisto$counts)
 ```
 
-Note que añadimos un argumento adicional en este fragmento de código, `ignoreAfterBar=TRUE`. Esto se debe a que las transcripciones del código genético tienen nombres como “ENST00000456328. 2|ENSG00000223972. 5|. . . ”, aunque nuestra tabla tx2gene solo incluye el primer identificador “ENST”. Por lo tanto, queremos dividir los nombres de las filas de la matriz de cuantificación entrante en la primera barra “|”, y solo usar esto como identificador.
+Noté que añadimos un argumento adicional en este fragmento de código, `ignoreAfterBar=TRUE`. Esto se debe a que las transcripciones del código genético tienen nombres como “ENST00000456328. 2|ENSG00000223972. 5|. . . ”, aunque nuestra tabla tx2gene solo incluye el primer identificador “ENST”. Por lo tanto, queremos dividir los nombres de las filas de la matriz de cuantificación entrante en la primera barra “|”, y solo usar esto como identificador.
 
 El usuario debe asegurarse de que los nombres de fila de la tabla `Hs_samples` se alineen con los nombres de columna de `Hs_txi_kallisto$counts`, si hay nombres de fila.
 
@@ -583,7 +583,7 @@ head(rownames(Hs_samples))
 head(colnames(Hs_txi_kallisto$counts))
 ```
 
-Posteriormente, podemos construir un _DESeqDataSet_ (`Hs_ddsTxi_all`), un objeto utilizado para almacenar las _read counts_ y las cantidades intermedias estimadas (*intermediate estimated quantities*) duarnte el análisis estadístico, a partir del objeto `Hs_txi_kallisto` y mostrar información en muestras.
+Posteriormente, podemos construir un _DESeqDataSet_ (`Hs_ddsTxi_all`), un objeto utilizado para almacenar las _read counts_ y las cantidades intermedias estimadas (*intermediate estimated quantities*) durante el análisis estadístico, a partir del objeto `Hs_txi_kallisto` y mostrar información en muestras.
 
 ```{r Importacion de datos DESeqDataSetFromTximport, warning=FALSE}
 # Importacion de los datos convirtiendolos en un objeto que puede leer Deseq.
@@ -649,7 +649,7 @@ Hs_res_all
 - La primera columna, `baseMean`, es una media de los valores normalizados de conteo, divididos por los factores de tamaño (*size factors*), tomada sobre todas las muestras del DESeqDataSet (`Hs_dds_all`).
 - La columna `log2FoldChange` es la estimación del tamaño del efecto (*effect size estimate.*). Nos dice cuánto parece haber cambiado la expresión del gen debido al tratamiento con SP6000125 (inhibidas de JKN) en comparación con las muestras tratadas con DMSO (control).
 - Por supuesto, esta estimación tiene una incertidumbre asociada con ella, que está disponible en la columna `lfcSE`, la estimación de error estándar para la estimación del _log2 fold change_.
-- La columna `pvalue` es el resultado de una prueba estadística que DESeq2 realiza para cada gen, en el que la hipotesis nula es que no hay efecto del tratamiento en el gen y que la diferencia observada entre el tratamiento y el control fue causada meramente por la variabilidad experimental (es decir, el tipo de variabilidad que se puede esperar entre diferentes muestras en el mismo grupo de tratamiento). 
+- La columna `pvalue` es el resultado de una prueba estadística que DESeq2 realiza para cada gen, en el que la hipótesis nula es que no hay efecto del tratamiento en el gen y que la diferencia observada entre el tratamiento y el control fue causada meramente por la variabilidad experimental (es decir, el tipo de variabilidad que se puede esperar entre diferentes muestras en el mismo grupo de tratamiento). 
 
 También podemos resumir los resultados con la siguiente línea de código, que reporta alguna información adicional.
 
@@ -662,7 +662,7 @@ Nótese que hay muchos genes con expresión diferencial (5112 up y 4012 down) de
 1. reducir el umbral de falsos detectados (el umbral del `padj` en el cuadro de resultados)
 2. elevar el umbral de _log2 fold change_ desde 0 usando el argumento `log2FoldChange` de los resultados. 
 
-En este caso, tanto para extrer los genes sobreexpresados (Up) como para los subexpresados, reducimos el umbral de `padj` a menor a 0.5 y pedimos que el log2 fold change sea mayor o igual a 0.5.
+En este caso, tanto para extraer los genes sobreexpresados (Up) como para los subexpresados, reducimos el umbral de `padj` a menor a 0.5 y pedimos que el log2 fold change sea mayor o igual a 0.5.
 
 ```{r UP and DOWN genes}
 # extraer UP
@@ -758,7 +758,7 @@ BiocManager::install("clusterProfiler")
 BiocManager::install("org.Hs.eg.db")
 ```
 
-- Extraer informacion de BD
+- Extraer información de BD
 ```{r, eval=FALSE}
 #Importar libreria
 library(clusterProfiler) #Enrichment analysis
@@ -796,13 +796,13 @@ Go_results <- enrichGO(gene=genes_to_test, OrgDb="org.Hs.eg.db", keyType = "ENSE
 as.data.frame(Go_results)
 ```
 
-- Generar la grafica
+- Generar la gráfica
 ```{r}
  # Generar la plot de los primeros 20 genes
 plot(barplot(Go_results, showCategory = 20))
 ```
 
-- Interpretacion de la grafica
+- Interpretación de la gráfica
 
 
 ## Generar con subgrupos UP
@@ -822,7 +822,7 @@ data_down = Hs_all_de_gene_matrix_DOWN
 data_up = na.omit(data_up)
 data_down = na.omit(data_down)
 
-# Tomar solo los genes posiblemente diferentemente expresados significativoas. Solamente requerimos los nombres de lo anterior, por lo que:
+# Tomar solo los genes posiblemente diferentemente expresados significativos. Solamente requerimos los nombres de lo anterior, por lo que:
 genes_up = rownames(data_up[data_up$log2FoldChange > 0.5 & data_up$padj < 0.5, ])
 
 # No me arroja nada, por lo que no hay nada significativo
@@ -842,7 +842,7 @@ for (i in 1:100) {
 genes_up[i,]=substr(genes_up[i,], start=1, stop=15)                           
 }
 
-# Analisis terminos GO de lor primero 100 terminos, ya que en total son 12,999 y son muchos terminos
+# Análisis términos GO de lor primero 100 términos, ya que en total son 12,999 y son muchos términos
 Go_results <- enrichGO(gene=genes_up, OrgDb="org.Hs.eg.db", keyType = "ENSEMBL", ont = "BP")
 
 ```
@@ -854,12 +854,12 @@ Go_results <- enrichGO(gene=genes_up, OrgDb="org.Hs.eg.db", keyType = "ENSEMBL",
 as.data.frame(Go_results)
 ```
 
-- Generar la grafica
+- Generar la gráfica
 ```{r}
  # Generar la plot de los primeros 20 genes
 plot(barplot(Go_results, showCategory = 20))
 ```
-- Interpretacion de la grafica
+- Interpretación de la gráfica
 
 
 
