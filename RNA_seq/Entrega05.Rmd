@@ -55,91 +55,91 @@ Células hTSC CT27 (células madre de trofoblasto humano) fueron tratadas con SP
 
 0. Carpeta de trabajo del equipo 
 
-```{bash}
+```{bash, eval = FALSE}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens 
 ```
 
 1. Contiene los nombres de los SRA
 
-```{bash}
+```{bash, eval = FALSE}
 cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/human_fastq.txt
 ```
 
 2. Contiene las instrucciones de descarga de los datos (SRA) y el cambio a Fastq de los mismos.
 
-```{bash}
+```{bash, eval = FALSE}
 cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/SRAData_dow.sh
 ```
 
 3. Contiene el JOB de descarga de los SRA
 
-```{bash}
+```{bash, eval = FALSE}
 cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/SRA_run.sge
 ```
 
 4. Contiene los datos crudos y sus fastqc.gz que se enviaron a la carpeta FastQC_rawData para su análisis.
 
-```{bash}
+```{bash, eval = FALSE}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/data
 ```
 
 5. Contiene el análisis de calidad de los datos crudos
 
-```{bash}
+```{bash, eval = FALSE}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_rawData
 ```
 
 6. Contiene el JOB para recortar y curar datos de Illumina, como eliminar adaptadores de los datos crudos
 
-```{bash}
+```{bash, eval = FALSE}
 cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/Trimmed_run.sge
 ```
 
 7. Contiene los adaptadores para paired-end
 
-```{bash}
+```{bash, eval = FALSE}
 cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/TruSeq3-PE.fa
 ```
 
 8. Contiene los datos (SRA) sin adaptadores (limpios) y sus fastqc.gz que se enviaron a la carpeta FastQC_trimmed para su análisis
 
-```{bash}
+```{bash, eval = FALSE}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/data_trimmed
 ```
 
 9. Contiene el análisis de calidad de los datos limpios, sin adaptadores.
 
-```{bash}
+```{bash, eval = FALSE}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_trimmed
 ```
 
 9.1. Contiene el análisis MultiQC de datos sin adaptadores.
 
-```{bash}
+```{bash, eval = FALSE}
 cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_trimmed/multiqc_report.html
 ```
 
 10. Contiene el transcriptoma de referencia humano
 
-```{bash}
+```{bash, eval = FALSE}
 /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/gencode.v43.transcripts.fa.gz
 ```
 
 11. Contiene el JOB para hacer uso de Kallisto quant 
 
-```{bash}
+```{bash, eval = FALSE}
 cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/Kallisto_down_data.sge
 ```
 
 12. Contiene el JOB para descagar el transcriptoma de referencia humano.
 
-```{bash}
+```{bash, eval = FALSE}
 cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/Transcript_down.sge
 ```
 
 13. Contiene el pseudoalineamiento generado con el uso de la herramienta Kallisto
 
-```{bash}
+```{bash, eval = FALSE}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/kallisto_quant_test
 ```
 
@@ -147,7 +147,7 @@ cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/kallisto_qu
 
 Antes de comenzar todo el proyecto, dentro del cluster guardamos una sesión en screen con la finalidad de poder tener un registro de los comando utilizados durante la práctica 
 
-```{bash}
+```{bash, eval = FALSE}
 # Trabajando en el nodo principal generamos un screen
 screen -S SRAdata
 # Ingresar a un nodo de computo 
@@ -160,7 +160,7 @@ qlogin
 - Ctrl + a + d : Salir del screen
 - Ctrl + a + esc : scroll
 
-```{bash}
+```{bash, eval = FALSE}
 # Ingresar a la carpeta de trabajo 
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens 
 # Crear una carpeta donde colocaremos los SRA correspondientes a nuestro proyecto que descargaremos de NCBI con ayuda de un JOB 
@@ -173,7 +173,7 @@ nano human_fastq.txt
 
 El contenido del nano `human_fastq.txt` es el siguiente
 
-```{bash}
+```{bash, eval = FALSE}
 cat human_fastq.txt # Abrir archivo txt 
 ```
 
@@ -191,11 +191,11 @@ SRR18745772
 
 Por otra parte, el contenido del nano `SRA_run.sge` es el siguiente
 
-```{bash}
+```{bash, eval = FALSE}
 cat SRA_run.sge # Abrir archivo JOB con instrucciones de descarga
 ```
 
-```{bash}
+```{bash, eval = FALSE}
 #!/bin/bash
 #
 # Use Current working directory
@@ -230,7 +230,7 @@ module load sra/3.0.0 # módulo para descagar SRA
 
 Finalmente para enviar el JOB de descarga y tener las muestras a trabajar usamos el siguiente comando
 
-```{bash}
+```{bash, eval = FALSE}
 # Salir de qlogin, moverse a nodo principal para subir JOB
 qsub SRA_Hs_run.sge
 ```
@@ -245,7 +245,7 @@ qsub SRA_Hs_run.sge
 
 Primeramente, para analizar los datos crudos creamos dos carpetas. La primera, `data` en donde vamos a almacenar los datos crudos y la segunda, `FastQC_rawData` en donde vamos a tener el análisis de calidad de los mismos. 
 
-```{bash}
+```{bash, eval = FALSE}
 # Colocarse en la carpeta de trabajo
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens
 
@@ -256,7 +256,7 @@ mkdir FastQC_rawData
 
 Posteriormente, vamos a iniciar el análisis de calidad de las lecturas crudas o sin procesar (raw data)
 
-```{bash}
+```{bash, eval = FALSE}
 
 # cargar module FastQC
 qlogin
@@ -271,7 +271,7 @@ fastqc ./data/*.fastq.gz -o ./FastQC_rawData
 
 Ahora bien, se utiliza la herrmaienta MultiQC, la cual crea un único informe con gráficos interactivos para múltiples análisis bioinformáticos en muchas muestras. Se corre el siguiente código.
 
-```{bash}
+```{bash, eval = FALSE}
 # Cargar modulo
 module load multiqc/1.5
 # Generar reporte multiqc
@@ -280,7 +280,7 @@ multiqc ./FastQC_rawData -o ./FastQC_rawData
 
 Para poder visualizar el informe multiqc,  se descarga el archivo a nuestro ordenador con el siguiente comando:
 
-```{bash}
+```{bash, eval = FALSE}
 rsync -rptuvl jgarcia@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_rawData/multiqc_report.html .
 ```
 
@@ -294,7 +294,7 @@ Por otro lado, en la gráfica de contenido de adaptadores observamos que la mayo
 
 Para la limpieza de adaptadores primeramente creamos una carpeta llamada `data_trimmed` en donde vamos a almacenar las secuencias limpias que, mediante un job llamado `Trimmed_run.sge` vamos a generar un análisis de datos y posteriormente reedirigirlo a una carpeta llamada `FastQC_trimmed`.
 
-```{bash}
+```{bash, eval = FALSE}
 mkdir data_trimmed 
 mkdir FastQC_trimmed
 nano Trimmed_run.sge
@@ -302,11 +302,11 @@ nano Trimmed_run.sge
 
 El JOB `Trimmed_run.sge` contiene lo siguiente:
 
-```{bash}
+```{bash, eval = FALSE}
 cat Trimmed_run.sge
 ```
 
-```{bash}
+```{bash, eval = FALSE}
 
 #!/bin/bash
 #
@@ -367,7 +367,7 @@ multiqc ./FastQC_trimmed -o ./FastQC_trimmed
 
 Para analizar la calidad de secuencias descargamos el reporte multiqc a nuestro ordenador.
 
-```{bash}
+```{bash, eval = FALSE}
 rsync -rptuvl jgarcia@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_trimmed/multiqc_report.html .
 ```
 
@@ -381,7 +381,7 @@ Continuando con los pasos del pipeline, haremos uso de Kallisto quant el cual es
 
 Para ello, creamos una nueva carpeta llamada `kallisto_quant_test` y un JOB llamado `Kallisto_down_data.sge` que contiene las intrucciones para realizar el pseudoalineamiento con ayuda de un transcrito de referencia que obtuvimos con las siguientes líneas de código.
 
-```{bash}
+```{bash, eval = FALSE}
 # Carpeta de archivos kallisto
 mkdir kallisto_quant_test
 
@@ -396,11 +396,11 @@ nano Kallisto_down_data.sge
 
 Información que contiene el JOB `Kallisto_down_data.sge`
 
-```{bash}
+```{bash, eval = FALSE}
 cat Kallisto_down_data.sge
 ```
 
-```{bash}
+```{bash, eval = FALSE}
 #!/bin/bash
 #
 # Use Current working directory
@@ -448,7 +448,7 @@ done
 
 Ahora bien, para asegurarnos que el pseudoalineamiento se realizó correctamente deberíamos tener los archivos tipo .h5, .tsv y json de cada muestra así que realizamos las siguientes líneas de código para verificar que efectivamente se encuentran esos archivos.
 
-```{bash}
+```{bash, eval = FALSE}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/kallisto_quant_test
 cd SRR18745762 #entrar a cada una de las muestras
 ls
@@ -456,14 +456,14 @@ ls
 
 Observamos que en cada muestra hubo un buen alineamiento, así que procedemos a recuperar estos resultados descargando los datos a nuestro computador con la siguiente línea de comando
 
-```{bash}
+```{bash, eval = FALSE}
 # Descagar resultados de kallisto
 rsync -rptuvl jgarcia@dna.liigh.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/kallisto_quant_test/SRR* .
 ```
 
 Nota: Los archivos de errores del JOB de Kallisto se observan con el siguiente comando
 
-```{bash}
+```{bash, eval = FALSE}
 cat Kallisto_down_data.e276381 #ejemplo
 ```
 
