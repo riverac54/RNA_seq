@@ -801,7 +801,7 @@ Tenemos mas de 9 genes que pertencen a la regulacion de la actividad de la endop
 
 Asi mismo, contamos con menos de 6 genes que pertenecen a la 'negative regulation of response to wounding', la cual se encarga de disminuir la frecuencia de restauracion de los tejidos dañados en una lesion. 
 
-### Generar con subgrupos 
+## Generar con subgrupos (analisis GO)
   
   - Cargar librerias
 ```{r librerias, eval=FALSE}
@@ -895,6 +895,7 @@ Asi mismo, contamos con menos de 6 genes que pertenecen a la 'negative regulatio
 
 En el grupo DOWN todos los grupos tienen 5 genes que pertenecen a esa funcion, el grupo con mas significancia es el de 'proton motive force-driven mithochondrial ATP synthesis' con un $padj=0.00005$, este grupo tiene la funcion de transportar protones a traves de la membrana mitocondrial para generar un gradiante electroquimico que active la sintesis de ATP.
 
+--------------------------------------------------------------------------------
 ## Discusión
 
 Los resultados obtenidos del pipeline dan evidencia a que los transposones han contribuido de forma importante a la regulación génica del trofoblasto humano ya que hay genes de elementos transponibles que tienen mayor expresión génica. Resultado también reportado en el paper correspondiente al proyecto. 
@@ -911,51 +912,62 @@ Finalmente, observamos que elementos de la familia de genes PSG (pregnancy-speci
 **NOTA**: Para poder identificar la sobreexpresión del gen *NOS3*, se realizó: __(1)__ Identificar el nombre del gen dentro del paper. __(2)__ En terminal, buscar el id del gen dentro del archivo de anotaciones [(`gencode.v43.annotation.gtf`)](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_43/) con el comando `cat gencode.v43.annotation.gtf | grep 'ERVFRD' | head`. __(3)__ Buscar si el gen está sobre o subregulado en nuestros datos con `Hs_de["ENSG00000244476.3",]` (dentro de la consola de Rstudio).
 </div>
 
+
+En el articulo “*Endogenous retrovirus-derived enhancers confer the transcriptional regulation of human trophoblast syncytialization *” se utilizan marcadores de histonas para comparar entre los elementos regulatorios que son compartidos o especificos en hTSC y STB, esto con el objetivo de estudiar la funcion de los ERVs en la actividad regulatoria de genes y la generacion de trofoblastos.
+
+Para estudiar esto primero se identificaron los genes que estan activos en STB (syncytiotrophoblast). Después vieron la ocurrencia de aparicion de ERVs cerca de los genes previamente identificados. Entre los ERVs se identificaron identifico a MER41A, MER50 and LTR8B. Se encontro que “MER50” esta mas presente entre los enhancers y los genes en STB. 
+
+Para estudiar como afecta a la celula utilizaron un gen reportero “luciferase” con y sin su promotor para medir la actividad de MER50 como promotor.Se encontro una relacion entre MER50 y los genes involucrados en la formacion de STB. 
+
+Genes como ERVFRD-1, MFSD2A, SPHK1, PSGs, IFITMs y ERVV-2  pertenecen a MER50. estos genes se encontraban presenten entre los datos que habian generados en la expresion diferencial, algunos como 'ERVFRD-1' no se encontraban expresados, esto tiene sentido, puesto que solo aparecen en las celulas ya diferenciadas (BTS).
+
+--------------------------------------------------------------------------------
 # Referencias
 
-FastQC tutorial & FAQ. (n.d.). Msu.edu. Retrieved March 16, 2023, from https://rtsf.natsci.msu.edu/genomics/tech-notes/fastqc-tutorial-and-faq/
+- FastQC tutorial & FAQ. (n.d.). Msu.edu. Retrieved March 16, 2023, from https://rtsf.natsci.msu.edu/genomics/tech-notes/fastqc-tutorial-and-faq/
 
-Should I remove PCR duplicates from my RNA-seq data? (n.d.). Ucdavis.edu. Retrieved March 16, 2023, from https://dnatech.genomecenter.ucdavis.edu/faqs/should-i-remove-pcr-duplicates-from-my-rna-seq-data/
+- Should I remove PCR duplicates from my RNA-seq data? (n.d.). Ucdavis.edu. Retrieved March 16, 2023, from https://dnatech.genomecenter.ucdavis.edu/faqs/should-i-remove-pcr-duplicates-from-my-rna-seq-data/
 
-(N.d.-a). Biostars.org. Retrieved March 16, 2023, from https://www.biostars.org/p/14283/
+- (N.d.-a). Biostars.org. Retrieved March 16, 2023, from https://www.biostars.org/p/14283/
 
-(N.d.-b). Ridom.de. Retrieved March 16, 2023, from https://www.ridom.de/seqsphere/u/FASTQ_Quality_Control_(FastQC).html
+- (N.d.-b). Ridom.de. Retrieved March 16, 2023, from https://www.ridom.de/seqsphere/u/FASTQ_Quality_Control_(FastQC).html
 
-GEO Accession viewer. (n.d.-a). Nih.gov. Retrieved March 16, 2023, from https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE200762
+- GEO Accession viewer. (n.d.-a). Nih.gov. Retrieved March 16, 2023, from https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE200762
 
-GEO Accession viewer. (n.d.-b). Nih.gov. Retrieved March 16, 2023, from https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM6043329
+- GEO Accession viewer. (n.d.-b). Nih.gov. Retrieved March 16, 2023, from https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM6043329
 
-Bell, G. (2016). Replicates and repeats. BMC Biology, 14, 28. https://doi.org/10.1186/s12915-016-0254-5
+- Bell, G. (2016). Replicates and repeats. BMC Biology, 14, 28. https://doi.org/10.1186/s12915-016-0254-5
 
-Dai, H., & Guan, Y. (2020). Nubeam-dedup: A fast and RAM-efficient tool to de-duplicate sequencing reads without mapping. Bioinformatics, 36(10), 3254–3256. https://doi.org/10.1093/bioinformatics/btaa112
+- Dai, H., & Guan, Y. (2020). Nubeam-dedup: A fast and RAM-efficient tool to de-duplicate sequencing reads without mapping. Bioinformatics, 36(10), 3254–3256. https://doi.org/10.1093/bioinformatics/btaa112
 
-Ewels/MultiQC: Aggregate results from bioinformatics analyses across many samples into a single report. (n.d.). Retrieved March 7, 2023, from https://github.com/ewels/MultiQC
+- Ewels/MultiQC: Aggregate results from bioinformatics analyses across many samples into a single report. (n.d.). Retrieved March 7, 2023, from https://github.com/ewels/MultiQC
 
-Fastq-dump. (n.d.). Bioinformatics Notebook. Retrieved March 7, 2023, from https://rnnh.github.io/bioinfo-notebook/docs/fastq-dump.html
+- Fastq-dump. (n.d.). Bioinformatics Notebook. Retrieved March 7, 2023, from https://rnnh.github.io/bioinfo-notebook/docs/fastq-dump.html
 
-Frost, J. M., Amante, S. M., Okae, H., Jones, E. M., Ashley, B., Lewis, R. M., Cleal, J. K., Caley, M. P., Arima, T., Maffucci, T., & Branco, M. R. (2022). Regulation of human trophoblast gene expression by endogenous retroviruses (p. 2022.04.26.489485). bioRxiv. https://doi.org/10.1101/2022.04.26.489485
+- Frost, J. M., Amante, S. M., Okae, H., Jones, E. M., Ashley, B., Lewis, R. M., Cleal, J. K., Caley, M. P., Arima, T., Maffucci, T., & Branco, M. R. (2022). Regulation of human trophoblast gene expression by endogenous retroviruses (p. 2022.04.26.489485). bioRxiv. https://doi.org/10.1101/2022.04.26.489485
 
-Iqbal, K. (2019, October 11). SH - Bash Shell Script File. https://docs.fileformat.com/programming/sh/
+- Iqbal, K. (2019, October 11). SH - Bash Shell Script File. https://docs.fileformat.com/programming/sh/
 
-Love, M. I., Anders, S., Kim, V., & Huber, W. (2016). RNA-Seq workflow: Gene-level exploratory analysis and differential expression (4:1070). F1000Research. https://doi.org/10.12688/f1000research.7035.2
+- Love, M. I., Anders, S., Kim, V., & Huber, W. (2016). RNA-Seq workflow: Gene-level exploratory analysis and differential expression (4:1070). F1000Research. https://doi.org/10.12688/f1000research.7035.2
 
-Making and Utilizing TxDb Objects. (n.d.). Retrieved March 16, 2023, from https://bioconductor.org/packages/devel/bioc/vignettes/GenomicFeatures/inst/doc/GenomicFeatures.html
+- Making and Utilizing TxDb Objects. (n.d.). Retrieved March 16, 2023, from https://bioconductor.org/packages/devel/bioc/vignettes/GenomicFeatures/inst/doc/GenomicFeatures.html
 
-Regulation of human trophoblast gene expression by... (ID 826506)—BioProject—NCBI. (n.d.). Retrieved March 6, 2023, from https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJNA826506
+- Regulation of human trophoblast gene expression by... (ID 826506)—BioProject—NCBI. (n.d.). Retrieved March 6, 2023, from https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJNA826506
 
-Risso, D., Ngai, J., Speed, T. P., & Dudoit, S. (2014). Normalization of RNA-seq data using factor analysis of control genes or samples. Nature Biotechnology, 32(9), 896–902. https://doi.org/10.1038/nbt.2931
+- Risso, D., Ngai, J., Speed, T. P., & Dudoit, S. (2014). Normalization of RNA-seq data using factor analysis of control genes or samples. Nature Biotechnology, 32(9), 896–902. https://doi.org/10.1038/nbt.2931
 
-Sequence Read Archive. (2022). In Wikipedia. https://en.wikipedia.org/w/index.php?title=Sequence_Read_Archive&oldid=1064268529
+- Sequence Read Archive. (2022). In Wikipedia. https://en.wikipedia.org/w/index.php?title=Sequence_Read_Archive&oldid=1064268529
 
-SGE File: How to open SGE file (and what it is). (n.d.). File.Org. Retrieved March 6, 2023, from https://file.org/extension/sge
+- SGE File: How to open SGE file (and what it is). (n.d.). File.Org. Retrieved March 6, 2023, from https://file.org/extension/sge
 
-Soneson, C., Love, M. I., & Robinson, M. D. (2015). Differential analyses for RNA-seq: Transcript-level estimates improve gene-level inferences. F1000Research, 4, 1521. https://doi.org/10.12688/f1000research.7563.1
+- Soneson, C., Love, M. I., & Robinson, M. D. (2015). Differential analyses for RNA-seq: Transcript-level estimates improve gene-level inferences. F1000Research, 4, 1521. https://doi.org/10.12688/f1000research.7563.1
 
-Trapnell, C., Hendrickson, D. G., Sauvageau, M., Goff, L., Rinn, J. L., & Pachter, L. (2013). Differential analysis of gene regulation at transcript resolution with RNA-seq. Nature Biotechnology, 31(1), 46–53. https://doi.org/10.1038/nbt.2450
+- Trapnell, C., Hendrickson, D. G., Sauvageau, M., Goff, L., Rinn, J. L., & Pachter, L. (2013). Differential analysis of gene regulation at transcript resolution with RNA-seq. Nature Biotechnology, 31(1), 46–53. https://doi.org/10.1038/nbt.2450
 
-Proton motive force-driven mitochondrial ATP synthesis Gene Ontology Term (GO:0042776). (n.d.). Retrieved March 16, 2023, from https://www.informatics.jax.org/vocab/gene_ontology/GO:0042776#:~:text=proton%20motive%20force%2Ddriven%20mitochondrial,Ontology%20Term%20(GO%3A0042776)&text=Definition%3A,force)%20that%20powers%20ATP%20synthesis.
+- Proton motive force-driven mitochondrial ATP synthesis Gene Ontology Term (GO:0042776). (n.d.). Retrieved March 16, 2023, from https://www.informatics.jax.org/vocab/gene_ontology/GO:0042776#:~:text=proton%20motive%20force%2Ddriven%20mitochondrial,Ontology%20Term%20(GO%3A0042776)&text=Definition%3A,force)%20that%20powers%20ATP%20synthesis.
 
-Stephanie. (2015, October 13). Benjamini-Hochberg Procedure. Statistics How To. https://www.statisticshowto.com/benjamini-hochberg-procedure/
+- Stephanie. (2015, October 13). Benjamini-Hochberg Procedure. Statistics How To. https://www.statisticshowto.com/benjamini-hochberg-procedure/
 
-Kwak, Y.-T., Muralimanoharan, S., Gogate, A. A., & Mendelson, C. R. (2019). Human Trophoblast Differentiation Is Associated With Profound Gene Regulatory and Epigenetic Changes. Endocrinology, 160(9), 2189–2203. https://doi.org/10.1210/en.2019-00144
+- Kwak, Y.-T., Muralimanoharan, S., Gogate, A. A., & Mendelson, C. R. (2019). Human Trophoblast Differentiation Is Associated With Profound Gene Regulatory and Epigenetic Changes. Endocrinology, 160(9), 2189–2203. https://doi.org/10.1210/en.2019-00144
 
+- Miao Yu, Xiaoqian Hu, Zihang Pan, Cui Du, Jing Jiang, Wanshan Zheng, Han Cai, Yinan Wang, Wenbo Deng, Haibin Wang, Jinhua Lu, Ming-an Sun, Bin Cao, Endogenous retrovirus-derived enhancers confer the transcriptional regulation of human trophoblast syncytialization, Nucleic Acids Research, 2023;, gkad109, https://doi.org/10.1093/nar/gkad109
