@@ -505,7 +505,7 @@ if (!require("BiocManager", quietly = TRUE))
 BiocManager::install("GenomicFeatures")
 ```
 
-Primero, we create a named vector pointing to the quantification files (los abundance.tsv). We will create a vector of filenames first by reading in a table that contains the SRR, and then combining this with "." and "abundance.tsv".
+Primero, creamos un vector apuntando a los archivos de cuantificación (los `abundance.h5`). Leyendo una tabla que contiene su respectivo SRR, y luego combinándolo con `"."` y `"abundance.h5"`, el vector tendrá los nombres de los archivos. 
 
 ```{r Metadatos}
 # > H. sapiens
@@ -877,6 +877,33 @@ GEO Accession viewer. (n.d.-a). Nih.gov. Retrieved March 16, 2023, from https://
 
 GEO Accession viewer. (n.d.-b). Nih.gov. Retrieved March 16, 2023, from https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM6043329
 
+Bell, G. (2016). Replicates and repeats. BMC Biology, 14, 28. https://doi.org/10.1186/s12915-016-0254-5
+
+Dai, H., & Guan, Y. (2020). Nubeam-dedup: A fast and RAM-efficient tool to de-duplicate sequencing reads without mapping. Bioinformatics, 36(10), 3254–3256. https://doi.org/10.1093/bioinformatics/btaa112
+
+Ewels/MultiQC: Aggregate results from bioinformatics analyses across many samples into a single report. (n.d.). Retrieved March 7, 2023, from https://github.com/ewels/MultiQC
+
+Fastq-dump. (n.d.). Bioinformatics Notebook. Retrieved March 7, 2023, from https://rnnh.github.io/bioinfo-notebook/docs/fastq-dump.html
+
+Frost, J. M., Amante, S. M., Okae, H., Jones, E. M., Ashley, B., Lewis, R. M., Cleal, J. K., Caley, M. P., Arima, T., Maffucci, T., & Branco, M. R. (2022). Regulation of human trophoblast gene expression by endogenous retroviruses (p. 2022.04.26.489485). bioRxiv. https://doi.org/10.1101/2022.04.26.489485
+
+Iqbal, K. (2019, October 11). SH - Bash Shell Script File. https://docs.fileformat.com/programming/sh/
+
+Love, M. I., Anders, S., Kim, V., & Huber, W. (2016). RNA-Seq workflow: Gene-level exploratory analysis and differential expression (4:1070). F1000Research. https://doi.org/10.12688/f1000research.7035.2
+
+Making and Utilizing TxDb Objects. (n.d.). Retrieved March 16, 2023, from https://bioconductor.org/packages/devel/bioc/vignettes/GenomicFeatures/inst/doc/GenomicFeatures.html
+
+Regulation of human trophoblast gene expression by... (ID 826506)—BioProject—NCBI. (n.d.). Retrieved March 6, 2023, from https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJNA826506
+
+Risso, D., Ngai, J., Speed, T. P., & Dudoit, S. (2014). Normalization of RNA-seq data using factor analysis of control genes or samples. Nature Biotechnology, 32(9), 896–902. https://doi.org/10.1038/nbt.2931
+
+Sequence Read Archive. (2022). In Wikipedia. https://en.wikipedia.org/w/index.php?title=Sequence_Read_Archive&oldid=1064268529
+
+SGE File: How to open SGE file (and what it is). (n.d.). File.Org. Retrieved March 6, 2023, from https://file.org/extension/sge
+
+Soneson, C., Love, M. I., & Robinson, M. D. (2015). Differential analyses for RNA-seq: Transcript-level estimates improve gene-level inferences. F1000Research, 4, 1521. https://doi.org/10.12688/f1000research.7563.1
+
+Trapnell, C., Hendrickson, D. G., Sauvageau, M., Goff, L., Rinn, J. L., & Pachter, L. (2013). Differential analysis of gene regulation at transcript resolution with RNA-seq. Nature Biotechnology, 31(1), 46–53. https://doi.org/10.1038/nbt.2450
 
 
 
