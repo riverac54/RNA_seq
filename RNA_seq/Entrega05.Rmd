@@ -43,8 +43,6 @@ Realizar el análisis de datos de RNA-Seq (pipeline completa) obtenidos de célu
 
   Tratamiento con SP600125 (hTSC, SP600125) - SRR18745764 (repbio1), SRR18745763 (repbio2) y SRR18745762 (repbio3)
 
-- Profundidad de secuenciación de cada transcriptoma: ***** 
-
 --------------------------------------------------------------------------------
 
 # Abstract
@@ -57,91 +55,91 @@ Células hTSC CT27 (células madre de trofoblasto humano) fueron tratadas con SP
 
 0. Carpeta de trabajo del equipo 
 
-```{bash, eval=FALSE}
+```{bash}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens 
 ```
 
 1. Contiene los nombres de los SRA
 
-```{bash, eval=FALSE}
+```{bash}
 cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/human_fastq.txt
 ```
 
 2. Contiene las instrucciones de descarga de los datos (SRA) y el cambio a Fastq de los mismos.
 
-```{bash, eval=FALSE}
+```{bash}
 cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/SRAData_dow.sh
 ```
 
 3. Contiene el JOB de descarga de los SRA
 
-```{bash, eval=FALSE}
+```{bash}
 cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/SRA_run.sge
 ```
 
 4. Contiene los datos crudos y sus fastqc.gz que se enviaron a la carpeta FastQC_rawData para su análisis.
 
-```{bash, eval=FALSE}
+```{bash}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/data
 ```
 
 5. Contiene el análisis de calidad de los datos crudos
 
-```{bash, eval=FALSE}
+```{bash}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_rawData
 ```
 
 6. Contiene el JOB para recortar y curar datos de Illumina, como eliminar adaptadores de los datos crudos
 
-```{bash, eval=FALSE}
+```{bash}
 cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/Trimmed_run.sge
 ```
 
 7. Contiene los adaptadores para paired-end
 
-```{bash, eval=FALSE}
+```{bash}
 cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/TruSeq3-PE.fa
 ```
 
 8. Contiene los datos (SRA) sin adaptadores (limpios) y sus fastqc.gz que se enviaron a la carpeta FastQC_trimmed para su análisis
 
-```{bash, eval=FALSE}
+```{bash}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/data_trimmed
 ```
 
 9. Contiene el análisis de calidad de los datos limpios, sin adaptadores.
 
-```{bash, eval=FALSE}
+```{bash}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_trimmed
 ```
 
 9.1. Contiene el análisis MultiQC de datos sin adaptadores.
 
-```{bash, eval=FALSE}
+```{bash}
 cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_trimmed/multiqc_report.html
 ```
 
 10. Contiene el transcriptoma de referencia humano
 
-```{bash, eval=FALSE}
+```{bash}
 /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/gencode.v43.transcripts.fa.gz
 ```
 
 11. Contiene el JOB para hacer uso de Kallisto quant 
 
-```{bash, eval=FALSE}
+```{bash}
 cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/Kallisto_down_data.sge
 ```
 
 12. Contiene el JOB para descagar el transcriptoma de referencia humano.
 
-```{bash, eval=FALSE}
+```{bash}
 cat /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/Transcript_down.sge
 ```
 
 13. Contiene el pseudoalineamiento generado con el uso de la herramienta Kallisto
 
-```{bash, eval=FALSE}
+```{bash}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/kallisto_quant_test
 ```
 
@@ -149,7 +147,7 @@ cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/kallisto_qu
 
 Antes de comenzar todo el proyecto, dentro del cluster guardamos una sesión en screen con la finalidad de poder tener un registro de los comando utilizados durante la práctica 
 
-```{bash, eval=FALSE}
+```{bash}
 # Trabajando en el nodo principal generamos un screen
 screen -S SRAdata
 # Ingresar a un nodo de computo 
@@ -162,7 +160,7 @@ qlogin
 - Ctrl + a + d : Salir del screen
 - Ctrl + a + esc : scroll
 
-```{bash, eval=FALSE}
+```{bash}
 # Ingresar a la carpeta de trabajo 
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens 
 # Crear una carpeta donde colocaremos los SRA correspondientes a nuestro proyecto que descargaremos de NCBI con ayuda de un JOB 
@@ -175,7 +173,7 @@ nano human_fastq.txt
 
 El contenido del nano `human_fastq.txt` es el siguiente
 
-```{bash, eval=FALSE}
+```{bash}
 cat human_fastq.txt # Abrir archivo txt 
 ```
 
@@ -193,11 +191,11 @@ SRR18745772
 
 Por otra parte, el contenido del nano `SRA_run.sge` es el siguiente
 
-```{bash, eval=FALSE}
+```{bash}
 cat SRA_run.sge # Abrir archivo JOB con instrucciones de descarga
 ```
 
-```{bash, eval=FALSE}
+```{bash}
 #!/bin/bash
 #
 # Use Current working directory
@@ -232,7 +230,7 @@ module load sra/3.0.0 # módulo para descagar SRA
 
 Finalmente para enviar el JOB de descarga y tener las muestras a trabajar usamos el siguiente comando
 
-```{bash, eval=FALSE}
+```{bash}
 # Salir de qlogin, moverse a nodo principal para subir JOB
 qsub SRA_Hs_run.sge
 ```
@@ -247,7 +245,7 @@ qsub SRA_Hs_run.sge
 
 Primeramente, para analizar los datos crudos creamos dos carpetas. La primera, `data` en donde vamos a almacenar los datos crudos y la segunda, `FastQC_rawData` en donde vamos a tener el análisis de calidad de los mismos. 
 
-```{bash, eval=FALSE}
+```{bash}
 # Colocarse en la carpeta de trabajo
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens
 
@@ -258,7 +256,7 @@ mkdir FastQC_rawData
 
 Posteriormente, vamos a iniciar el análisis de calidad de las lecturas crudas o sin procesar (raw data)
 
-```{bash, eval=FALSE}
+```{bash}
 
 # cargar module FastQC
 qlogin
@@ -273,7 +271,7 @@ fastqc ./data/*.fastq.gz -o ./FastQC_rawData
 
 Ahora bien, se utiliza la herrmaienta MultiQC, la cual crea un único informe con gráficos interactivos para múltiples análisis bioinformáticos en muchas muestras. Se corre el siguiente código.
 
-```{bash, eval=FALSE}
+```{bash}
 # Cargar modulo
 module load multiqc/1.5
 # Generar reporte multiqc
@@ -282,7 +280,7 @@ multiqc ./FastQC_rawData -o ./FastQC_rawData
 
 Para poder visualizar el informe multiqc,  se descarga el archivo a nuestro ordenador con el siguiente comando:
 
-```{bash, eval=FALSE}
+```{bash}
 rsync -rptuvl jgarcia@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_rawData/multiqc_report.html .
 ```
 
@@ -296,7 +294,7 @@ Por otro lado, en la gráfica de contenido de adaptadores observamos que la mayo
 
 Para la limpieza de adaptadores primeramente creamos una carpeta llamada `data_trimmed` en donde vamos a almacenar las secuencias limpias que, mediante un job llamado `Trimmed_run.sge` vamos a generar un análisis de datos y posteriormente reedirigirlo a una carpeta llamada `FastQC_trimmed`.
 
-```{bash, eval=FALSE}
+```{bash}
 mkdir data_trimmed 
 mkdir FastQC_trimmed
 nano Trimmed_run.sge
@@ -304,11 +302,11 @@ nano Trimmed_run.sge
 
 El JOB `Trimmed_run.sge` contiene lo siguiente:
 
-```{bash, eval=FALSE}
+```{bash}
 cat Trimmed_run.sge
 ```
 
-```{bash, eval=FALSE}
+```{bash}
 
 #!/bin/bash
 #
@@ -369,7 +367,7 @@ multiqc ./FastQC_trimmed -o ./FastQC_trimmed
 
 Para analizar la calidad de secuencias descargamos el reporte multiqc a nuestro ordenador.
 
-```{bash, eval=FALSE}
+```{bash}
 rsync -rptuvl jgarcia@dna.lavis.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/FastQC_trimmed/multiqc_report.html .
 ```
 
@@ -383,7 +381,7 @@ Continuando con los pasos del pipeline, haremos uso de Kallisto quant el cual es
 
 Para ello, creamos una nueva carpeta llamada `kallisto_quant_test` y un JOB llamado `Kallisto_down_data.sge` que contiene las intrucciones para realizar el pseudoalineamiento con ayuda de un transcrito de referencia que obtuvimos con las siguientes líneas de código.
 
-```{bash, eval=FALSE}
+```{bash}
 # Carpeta de archivos kallisto
 mkdir kallisto_quant_test
 
@@ -398,11 +396,11 @@ nano Kallisto_down_data.sge
 
 Información que contiene el JOB `Kallisto_down_data.sge`
 
-```{bash, eval=FALSE}
+```{bash}
 cat Kallisto_down_data.sge
 ```
 
-```{bash, eval=FALSE}
+```{bash}
 #!/bin/bash
 #
 # Use Current working directory
@@ -450,7 +448,7 @@ done
 
 Ahora bien, para asegurarnos que el pseudoalineamiento se realizó correctamente deberíamos tener los archivos tipo .h5, .tsv y json de cada muestra así que realizamos las siguientes líneas de código para verificar que efectivamente se encuentran esos archivos.
 
-```{bash, eval=FALSE}
+```{bash}
 cd /mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/kallisto_quant_test
 cd SRR18745762 #entrar a cada una de las muestras
 ls
@@ -458,14 +456,14 @@ ls
 
 Observamos que en cada muestra hubo un buen alineamiento, así que procedemos a recuperar estos resultados descargando los datos a nuestro computador con la siguiente línea de comando
 
-```{bash, eval=FALSE}
+```{bash}
 # Descagar resultados de kallisto
 rsync -rptuvl jgarcia@dna.liigh.unam.mx:/mnt/Timina/bioinfoII/rnaseq/BioProject_2023/rawData/Homo_sapiens/kallisto_quant_test/SRR* .
 ```
 
 Nota: Los archivos de errores del JOB de Kallisto se observan con el siguiente comando
 
-```{bash, eval=FALSE}
+```{bash}
 cat Kallisto_down_data.e276381 #ejemplo
 ```
 
@@ -558,7 +556,7 @@ Hs_tx2gene   <- read.csv("tx2gene.gencode.v43.csv", sep=",",header=TRUE)
 head(Hs_tx2gene)
 ```
 
-- `read.csv` lee un archivo en formato tabla y crea un *data frame* a partir de él, con casos correspondientes a líneas y variables a campos del archivo.
+- `read.csv` lee un archivo en formato tabla y crea un *data frame* a partir de el, con casos correspondientes a líneas y variables a campos del archivo.
 
 El paquete `tximport` tiene una sola función para importar estimaciones a nivel de transcripción, es decir los datos de cuantificación necesarios para DESeq2.
 - El argumento `type` se utiliza para especificar qué software se utilizó para la estimación, en este caso fue `kallisto`.   
@@ -573,7 +571,7 @@ names(Hs_txi_kallisto)
 head(Hs_txi_kallisto$counts)
 ```
 
-Note que añadimos un argumento adicional en este fragmento de código, `ignoreAfterBar=TRUE`. Esto se debe a que las transcripciones del código genético tienen nombres como “ENST00000456328. 2|ENSG00000223972. 5|. . . ”, aunque nuestra tabla tx2gene solo incluye el primer identificador “ENST”. Por lo tanto, queremos dividir los nombres de las filas de la matriz de cuantificación entrante en la primera barra “|”, y solo usar esto como identificador.
+Noté que añadimos un argumento adicional en este fragmento de código, `ignoreAfterBar=TRUE`. Esto se debe a que las transcripciones del código genético tienen nombres como “ENST00000456328. 2|ENSG00000223972. 5|. . . ”, aunque nuestra tabla tx2gene solo incluye el primer identificador “ENST”. Por lo tanto, queremos dividir los nombres de las filas de la matriz de cuantificación entrante en la primera barra “|”, y solo usar esto como identificador.
 
 El usuario debe asegurarse de que los nombres de fila de la tabla `Hs_samples` se alineen con los nombres de columna de `Hs_txi_kallisto$counts`, si hay nombres de fila.
 
@@ -585,7 +583,7 @@ head(rownames(Hs_samples))
 head(colnames(Hs_txi_kallisto$counts))
 ```
 
-Posteriormente, podemos construir un _DESeqDataSet_ (`Hs_ddsTxi_all`), un objeto utilizado para almacenar las _read counts_ y las cantidades intermedias estimadas (*intermediate estimated quantities*) duarnte el análisis estadístico, a partir del objeto `Hs_txi_kallisto` y mostrar información en muestras.
+Posteriormente, podemos construir un _DESeqDataSet_ (`Hs_ddsTxi_all`), un objeto utilizado para almacenar las _read counts_ y las cantidades intermedias estimadas (*intermediate estimated quantities*) durante el análisis estadístico, a partir del objeto `Hs_txi_kallisto` y mostrar información en muestras.
 
 ```{r Importacion de datos DESeqDataSetFromTximport, warning=FALSE}
 # Importacion de los datos convirtiendolos en un objeto que puede leer Deseq.
@@ -651,7 +649,7 @@ Hs_res_all
 - La primera columna, `baseMean`, es una media de los valores normalizados de conteo, divididos por los factores de tamaño (*size factors*), tomada sobre todas las muestras del DESeqDataSet (`Hs_dds_all`).
 - La columna `log2FoldChange` es la estimación del tamaño del efecto (*effect size estimate.*). Nos dice cuánto parece haber cambiado la expresión del gen debido al tratamiento con SP6000125 (inhibidas de JKN) en comparación con las muestras tratadas con DMSO (control).
 - Por supuesto, esta estimación tiene una incertidumbre asociada con ella, que está disponible en la columna `lfcSE`, la estimación de error estándar para la estimación del _log2 fold change_.
-- La columna `pvalue` es el resultado de una prueba estadística que DESeq2 realiza para cada gen, en el que la hipotesis nula es que no hay efecto del tratamiento en el gen y que la diferencia observada entre el tratamiento y el control fue causada meramente por la variabilidad experimental (es decir, el tipo de variabilidad que se puede esperar entre diferentes muestras en el mismo grupo de tratamiento). 
+- La columna `pvalue` es el resultado de una prueba estadística que DESeq2 realiza para cada gen, en el que la hipótesis nula es que no hay efecto del tratamiento en el gen y que la diferencia observada entre el tratamiento y el control fue causada meramente por la variabilidad experimental (es decir, el tipo de variabilidad que se puede esperar entre diferentes muestras en el mismo grupo de tratamiento). 
 
 También podemos resumir los resultados con la siguiente línea de código, que reporta alguna información adicional.
 
@@ -664,7 +662,7 @@ Nótese que hay muchos genes con expresión diferencial (5112 up y 4012 down) de
 1. reducir el umbral de falsos detectados (el umbral del `padj` en el cuadro de resultados)
 2. elevar el umbral de _log2 fold change_ desde 0 usando el argumento `log2FoldChange` de los resultados. 
 
-En este caso, tanto para extrer los genes sobreexpresados (Up) como para los subexpresados, reducimos el umbral de `padj` a menor a 0.5 y pedimos que el log2 fold change sea mayor o igual a 0.5.
+En este caso, tanto para extraer los genes sobreexpresados (Up) como para los subexpresados, reducimos el umbral de `padj` a menor a 0.5 y pedimos que el log2 fold change sea mayor o igual a 0.5.
 
 ```{r UP and DOWN genes}
 # extraer UP
@@ -690,7 +688,7 @@ Tras este filtrado, encontramos que existen 3612 genes sobreexpresados y 2646 ge
 
 En este caso, para visualizar los datos normalizados podemos hacer uso de un _volcano plot_ De esta manera, podremos dar cuenta fácilmente de los genes que tienen un valor $p$ de mayor significacia.
 
-```{r Volcano plot, warning=FALSE}
+```{r}
 
 Hs_de <- as.data.frame(Hs_res_all)
 # add a column of NAs
@@ -705,14 +703,16 @@ Hs_de$names <- NA
 filter <- which(Hs_de$diffexpressed != "NO" & Hs_de$padj < 0.05 & (Hs_de$log2FoldChange >= 5  | Hs_de$log2FoldChange <= -5))
 Hs_de$names[filter] <- rownames(Hs_de)[filter]
 # grafica
-#png(file = "volcano05-res.png",
-#    width = 800, height = 800) # guardar el plot en formato png
+png(file = "volcano05-res.png",
+    width = 800, height = 800) # guardar el plot en formato png
 ggplot(data=Hs_de, aes(x=log2FoldChange, y=-log10(pvalue), col=diffexpressed, label=names)) +
     geom_point() +
     scale_color_manual(values=c("blue", "black", "red")) + # cambiar colores de puntos
     theme_minimal() +
     geom_text_repel() +
     xlim(-15,15)
+
+dev.off()
 ```
 
 ### Heatmap 
@@ -723,7 +723,7 @@ Utilizamos un mapa de calor para visualizar la agrupación de genes que llevan u
 BiocManager::install("genefilter")
 ```
 
-```{r heatmap, warning=FALSE, message=FALSE}
+```{r heatmap}
 library("genefilter")
 library("pheatmap")
 topVarGenes <- head(order(rowVars(assay(Hs_all_normalized)), decreasing = TRUE), 20)  # Seleccion de mayores genes
@@ -735,10 +735,22 @@ pheatmap(mat, annotation_col = anno) # Grafica
 
 Lo que podemos observar es que, para un conjunto de genes para los cuales las muestras tratadas con SP600125 (inhibidor de enzimas JNK) tienen mayor (en rojo) o menor (en azul) expresión génica.
 
+<<<<<<< HEAD
+=======
+#### Fuentes
+http://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html#Downstream_DGE_in_Bioconductor
+https://f1000research.com/articles/4-1070/v2#s2
+http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#the-deseqdataset
+https://bioconductor.org/packages/devel/bioc/vignettes/GenomicFeatures/inst/doc/GenomicFeatures.html
+https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html
+
+
+--------------------------------------------------------------------------------
+>>>>>>> dffb55a2396a196b3249e38213d5fb9d8b0fc939
 # Graficas GO (Manuel)
 
 - Instalar 'clusterProfiler', 'AnnotationDbi' y Base de Datos de homo_sapiens 'org.Hs.eg.db'
-```{r Paquetes GO, echo=FALSE, message=FALSE, warning=FALSE}
+```{r, echo=FALSE}
 # Comando
 install.packages('AnnotationDbi')
 
@@ -749,8 +761,8 @@ BiocManager::install("clusterProfiler")
 BiocManager::install("org.Hs.eg.db")
 ```
 
-- Extraer informacion de BD
-```{r, warning=FALSE, message=FALSE}
+- Extraer información de BD
+```{r, eval=FALSE}
 #Importar libreria
 library(clusterProfiler) #Enrichment analysis
 library (AnnotationDbi)
@@ -787,19 +799,23 @@ Go_results <- enrichGO(gene=genes_to_test, OrgDb="org.Hs.eg.db", keyType = "ENSE
 as.data.frame(Go_results)
 ```
 
-- Generar la grafica
+- Generar la gráfica
 ```{r}
  # Generar la plot de los primeros 20 genes
 plot(barplot(Go_results, showCategory = 20))
 ```
 
-- Interpretacion de la grafica
+- Interpretación de la gráfica
 
 
 ## Generar con subgrupos UP
 
 - Con subgrupo UP
-```{r}
+```{r, eval=FALSE}
+#Importar libreria
+library(clusterProfiler) #Enrichment analysis
+library (AnnotationDbi)
+library(org.Hs.eg.db) # Human DB
 
 # Tomar tabla de datos de DESEQ2
 data_up = Hs_all_de_gene_matrix_UP # Grupo UP
@@ -809,7 +825,7 @@ data_down = Hs_all_de_gene_matrix_DOWN
 data_up = na.omit(data_up)
 data_down = na.omit(data_down)
 
-# Tomar solo los genes posiblemente diferentemente expresados significativoas. Solamente requerimos los nombres de lo anterior, por lo que:
+# Tomar solo los genes posiblemente diferentemente expresados significativos. Solamente requerimos los nombres de lo anterior, por lo que:
 genes_up = rownames(data_up[data_up$log2FoldChange > 0.5 & data_up$padj < 0.5, ])
 
 # No me arroja nada, por lo que no hay nada significativo
@@ -829,7 +845,7 @@ for (i in 1:100) {
 genes_up[i,]=substr(genes_up[i,], start=1, stop=15)                           
 }
 
-# Analisis terminos GO de lor primero 100 terminos, ya que en total son 12,999 y son muchos terminos
+# Análisis términos GO de lor primero 100 términos, ya que en total son 12,999 y son muchos términos
 Go_results <- enrichGO(gene=genes_up, OrgDb="org.Hs.eg.db", keyType = "ENSEMBL", ont = "BP")
 
 ```
@@ -841,19 +857,22 @@ Go_results <- enrichGO(gene=genes_up, OrgDb="org.Hs.eg.db", keyType = "ENSEMBL",
 as.data.frame(Go_results)
 ```
 
-- Generar la grafica
+- Generar la gráfica
 ```{r}
  # Generar la plot de los primeros 20 genes
 plot(barplot(Go_results, showCategory = 20))
 ```
-- Interpretacion de la grafica
+- Interpretación de la gráfica
 
+
+
+--------------------------------------------------------------------------------
 
 ## Discusión
 
 Los resultados obtenidos del pipeline dan evidencia a que los transposones han contribuido de forma importante a la regulación génica del trofoblasto humano ya que hay genes de elementos transponibles que tienen mayor expresión génica. Resultado también reportado en el paper correspondiente al proyecto. 
 
-Adicionalmente, buscamos tres artículos más en donde se habla de la función biológica de estos transposones, incluyendo los retrovirus endógenos (ERV). En uno de los artículos que lleva por título `Endogenous Retroviruses in Trophoblast Differentiation and Placental Development` evidencia que la presencia de ERV expresados en los sincitiotrofoblastos multinucleados de la placenta de varios organismos como humano, ratón y conejo desempeñan un papel esencial en el desarrollo de la placenta y que estos ERVfueron seleccionados positivamente para desempeñar un papel fundamental en la evolución de los mamíferos placentarios y el desarrollo de la viviparidad.
+--------------------------------------------------------------------------------
 
 # Referencias
 
