@@ -461,9 +461,9 @@ cat Kallisto_down_data.e276381 #ejemplo
 
 El siguiente paso que sigue el pipeline que estamos realizando es el análisis de expresión diferencial.
 
-## Análisis de expresión diferencial funcional 
+## Análisis de expresión diferencial
 
-El objetivo del análisis diferencial de expresión es realizar análisis estadísticos para tratar de descubrir cambios en los niveles de expresión de características definidas (genes, transcripciones, exones) entre grupos experimentales con muestras replicadas.
+El objetivo del análisis de expresión diferencial es realizar análisis estadísticos para tratar de descubrir cambios en los niveles de expresión de características definidas (genes, transcripciones, exones) entre grupos experimentales con muestras replicadas.
 
 ### Instalaciones 
 
@@ -727,7 +727,7 @@ pheatmap(mat, annotation_col = anno) # Grafica
 
 Lo que podemos observar es que, para un conjunto de genes para los cuales las muestras tratadas con SP600125 (inhibidor de enzimas JNK) tienen mayor (en rojo) o menor (en azul) expresión génica.
 
-# Graficas GO (Manuel)
+# Análisis funcional GO
 
 - Instalar `clusterProfiler`, `AnnotationDbi` y Base de Datos de homo_sapiens `org.Hs.eg.db`
 
@@ -899,14 +899,14 @@ En el grupo DOWN todos los grupos tienen 5 genes que pertenecen a esa funcion, e
 
 Los resultados obtenidos del pipeline dan evidencia a que los transposones han contribuido de forma importante a la regulación génica del trofoblasto humano ya que hay genes de elementos transponibles que tienen mayor expresión génica. Resultado también reportado en el paper correspondiente al proyecto. 
 
-El artículo “*Regulation of human trophoblast gene expression by endógenous retroviruses*” sugiere que el tratamiento con SP600125 conduce a una mayor expresión de genes regulados por LTR10A (una familia de retrovirus endógenos) porque SP600125 inhibe JNK (c-Jun N-terminal quinasas), lo que a su vez conduce a una mayor fosforilación y estabilidad de c-Jun, lo que termina en el aumento en la expresión de genes regulados por AP-1, los cuales han estado implicado en la regulación de la diferenciación e invasión de trofoblastos, así como en la regulación de genes involucrados en la migración celular.*
+El artículo “*Regulation of human trophoblast gene expression by endógenous retroviruses*” sugiere que el tratamiento con SP600125 conduce a una mayor expresión de genes regulados por LTR10A (una familia de retrovirus endógenos) porque SP600125 inhibe JNK (c-Jun N-terminal quinasas), lo que a su vez conduce a una mayor fosforilación y estabilidad de c-Jun, lo que termina en el aumento en la expresión de genes regulados por AP-1, los cuales han estado implicado en la regulación de la diferenciación e invasión de trofoblastos, así como en la regulación de genes involucrados en la migración celular.
 
 Poniendo especial atención en el gen *NOS3*, los autores apuntan a una sobreexpresión de este en células madre trofoblásticas humanas, evento que nosotros observamos de igual manera, y que hace sentido a la luz de que es un elemento regulado por la familia LTR10A.
 
 Adicionalmente, buscamos tres artículos más en donde se habla de la función biológica de estos transposones, incluyendo los retrovirus endógenos (ERV). En uno de los artículos que lleva por título `Endogenous Retroviruses in Trophoblast Differentiation and Placental Development` evidencia que la presencia de ERV expresados en los sincitiotrofoblastos multinucleados de la placenta de varios organismos como humano, ratón y conejo desempeñan un papel esencial en el desarrollo de la placenta y que estos ERV fueron seleccionados positivamente para desempeñar un papel fundamental en la evolución de los mamíferos placentarios y el desarrollo de la viviparidad.
 
 <div class="alert alert-block alert-info">
-**NOTA**: Para poder identificar la sobreexpresión del gen *NOS3*, fue lo siguiente: __(1)__ Identificar el nombre del gen dentro del paper. __(2)__ En terminal, buscar el id del gen dentro del archivo de anotaciones [(`gencode.v43.annotation.gtf`)](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_43/) con el comando `cat gencode.v43.annotation.gtf | grep 'ERVFRD' | head`. __(3)__ Buscar si el gen está sobre o subregulado en nuestros datos con `Hs_de["ENSG00000244476.3",]` (dentro de la consola de Rstudio).
+**NOTA**: Para poder identificar la sobreexpresión del gen *NOS3*, se realizó: __(1)__ Identificar el nombre del gen dentro del paper. __(2)__ En terminal, buscar el id del gen dentro del archivo de anotaciones [(`gencode.v43.annotation.gtf`)](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_43/) con el comando `cat gencode.v43.annotation.gtf | grep 'ERVFRD' | head`. __(3)__ Buscar si el gen está sobre o subregulado en nuestros datos con `Hs_de["ENSG00000244476.3",]` (dentro de la consola de Rstudio).
 </div>
 
 # Referencias
