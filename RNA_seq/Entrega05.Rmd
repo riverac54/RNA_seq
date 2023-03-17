@@ -43,8 +43,6 @@ Realizar el análisis de datos de RNA-Seq (pipeline completa) obtenidos de célu
 
   Tratamiento con SP600125 (hTSC, SP600125) - SRR18745764 (repbio1), SRR18745763 (repbio2) y SRR18745762 (repbio3)
 
-- Profundidad de secuenciación de cada transcriptoma: ***** 
-
 --------------------------------------------------------------------------------
 
 # Abstract
